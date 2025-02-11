@@ -1,0 +1,125 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <br />
+  <div class="container">
+    <hr />
+   
+    <h5 class="text-center">FUNCIONÁRIOS CADASTRADOS</h5>
+    
+    <hr />
+<br>
+    <div class="row">
+      <div class="col-5">
+        <a class="btn btn-block btn-info"  href="/admin/funcionarios/novo">NOVO</a>
+      </div>
+      <div class="col-7">
+        <!--INICIO BUSCAR PELA QUANTIDADE DE SERVIDOR-->
+        <form action="/admin/funcionarios/index/1" method="get"  style="float: right;">
+          <div class="row">
+            <select id="limit" name="limit" class="form-control ajusteSelect" style="width: 70%;">
+              <option value="10" <%= limit == '10' ? 'selected' : '' %>>Ver 10 servidores</option>
+              <option value="20" <%= limit == '20' ? 'selected' : '' %>>Ver 20 servidores</option>
+              <option value="50" <%= limit == '50' ? 'selected' : '' %>>Ver 50 servidores</option>
+            </select>
+            <button type="submit" id="btnHover" class="btn"><i class="bi bi-search" style="color: #2b29af;"></i></button>
+          </div>
+        </form>
+        <!--FIM BUSCAR PELA QUANTIDADE DE SERVIDOR-->
+      </div>
+    </div>
+    <br />
+
+    <div class="table content mt-3">
+    <table class="rtable table text-center">
+      <thead>
+        <tr class="ajuste-tr">
+          <th>MATRICULA</th>
+          <th>CPF</th>
+          <th>NOME</th>
+          <th>PERMISSÃO</th>
+          <th>SETOR</th>
+          <th>AÇÕES</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <% resultado.funcionarios.rows.forEach(funcionario => { %> 
+          <tr class="ajuste-tr">
+            <td class="align-middle" data-title="MATRICULA:"><%= funcionario.matricula %></td>
+            <td class="align-middle" data-title="CPF:"><%= funcionario.cpf %></td>
+            <td class="align-middle" data-title="NOME:"><%= funcionario.nome %></td>
+            <% permissoes.forEach((permissao) => { %> 
+              <% if (permissao.id == funcionario.permissoId) { %>
+                <td class="align-middle" data-title="PERMISSÃO:"><%= permissao.descricao %></td>
+            <%}}) %>
+            <% setores.forEach((setor) => { %> 
+              <% if (setor.id == funcionario.setoreId) { %>
+                <td class="align-middle" data-title="SETOR:"><%= setor.descricao %></td>
+            <%}}) %>
+            <td class="align-middle">
+              <a
+                href="/admin/funcionarios/editar/<%= funcionario.id %>"
+                class="btn btn-warning"
+                ><i class="bi bi-brush"></i>
+              </a>
+              <form
+                method="POST"
+                action="/funcionarios/deletar"
+                style="display: inline"
+                onsubmit="confirmardelete(event,this)"
+              >
+                <input type="hidden" name="id" value="<%= funcionario.id %>">
+                <button class="btn btn-danger ajuste_botao_delete">
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %> 
+       
+  
+      </tbody>
+    </table>
+    
+  </div>
+  <div>
+    <label style="float: right;">Quantidade de funcionarios: <span style="font-weight: 500;"><%=resultado.totalFuncionarios%></span></label>
+  </div>
+  
+  <br>
+  <!--INICIO PAGINAÇÃO-->
+  <nav aria-label="Page navigation example" class="mt-2">
+    <ul class="pagination pagination justify-content-center">
+      <li class="page-item">
+        <% if (resultado.paginacao > 1){ %>
+        <a class="page-link text-purple" href="/admin/funcionarios/index/<%=resultado.paginacao - 1%>?limit=<%= limit %>" style="color: blueviolet; text-align: center;"><span aria-hidden="true">&laquo; &laquo; &laquo; Anterior</span></a>
+        <% } else if (resultado.paginacao == 1) { %><%}%>
+      </li>
+
+      <li class="page-item">
+        <% if (resultado.next) { %>
+        <a class="page-link text-purple" href="/admin/funcionarios/index/<%= resultado.paginacao + 1 %>?limit=<%= limit %>" style="color: blueviolet; text-align: center;"><span aria-hidden="true">Próximo &raquo; &raquo; &raquo;</span></a>
+        <% } %>
+      </li>
+    </ul>
+  </nav>
+  <!--FIM PAGINAÇÃO-->
+</div>
+</body>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>
+
+<script>
+  function confirmardelete(event, form) {
+    event.preventDefault()
+    var decisao = confirm('Deletar permanentemente esse funcionario?')
+    if (decisao) {
+      form.submit()
+    }
+  }
+</script>

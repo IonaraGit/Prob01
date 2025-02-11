@@ -1,0 +1,938 @@
+<%- include ('./partials/configure_header.ejs') %> 
+<%- include ('./partials/header_servidor.ejs') %>
+<body>
+  
+
+  <!-- ESTE INDEX VAI MUDAR?? -->
+
+  <!--Inicio (lateral e princial) -->
+  <div class="container-fluid">
+    <div id="ajuste-lateral-responsivo" class="row">
+      <!--Inicio coluna lateral esquerda-->
+      <div class="background-lateral col-lg-3">
+        <div id="dados-lateral" class="row mt-2 mb-2">
+          <div class="col-md-10 mx-auto ajustes-fonte-lateral">
+            <p><a href="" data-toggle="modal" data-target="#modalregulamento"><i class="bi bi-file-earmark-medical"></i>Regulamento</a></p>
+            <p><a href="" data-toggle="modal" data-target="#modalcredito"><i class="bi bi-file-earmark-code"></i>Créditos</a></p>
+          </div>
+
+          <!--Inicio container pontuações e dados pessoais-->
+          <% let somaNotasAssiduidade = 0; %>
+          <% let somaNotasPontualidade = 0; %>
+          <% let somaNotasIniciativa = 0; %>
+          <% let somaNotasDisciplina = 0; %>
+          <% let somaNotasResponsabilidade = 0; %>
+          <% let somaNotasAperfeicoamento = 0; %>
+          <% let somaNotasQualidade =0; %>
+
+          <% let contadorNotas = 0; %>
+          
+          <% notas.forEach((nota) => { %>     
+            <%if ((nota.funcionarioId == teste.id)) { %>
+              <% funcionarios.forEach((funcionario) => { %>
+                <% if (teste.id== funcionario.id) { %>
+                  <% contadorNotas++; %>
+                  <% somaNotasAssiduidade += nota.nota_assiduidade; %>
+                  <% somaNotasPontualidade += nota.nota_pontualidade; %>
+                  <% somaNotasIniciativa += nota.nota_iniciativa %>
+                  <% somaNotasDisciplina += nota.nota_disciplina %>
+                  <% somaNotasResponsabilidade += nota.nota_responsabilidade %>
+                  <% somaNotasQualidade += nota.nota_qualidade %>
+                  <% somaNotasAperfeicoamento += nota.nota_aperfeicoamento %>            
+                <% } %>
+              <% }) %>  
+            <% } %>
+          <% }) %>
+          <!--Fim container pontuações e dados pessoais-->
+          
+          <div class="col-md-10 mx-auto background-banner-lateral mt-3">
+            
+            <% funcionarios.forEach((funcionario) => { %>
+              <% if (teste.id== funcionario.id) { %>
+                
+                  <img id="imagem-perfil" src="<%= funcionario.imagem_perfil %>" alt="perfil" />
+                
+                
+                <p class="nome"><%=funcionario.nome%></p>
+                <p class="matricula"><%=funcionario.matricula%></p>
+              <% } %>
+            <% }) %>
+
+            <p class="nome">MÉDIA DAS AVALIAÇÕES</p>
+     
+            <% let notaAssiduidade = Math.floor(somaNotasAssiduidade / contadorNotas) %>
+            <% let notaPontualidade = Math.floor(somaNotasPontualidade / contadorNotas) %>
+            <% let notaIniciativa = Math.floor(somaNotasIniciativa / contadorNotas) %>
+            <% let notaDisciplina = Math.floor(somaNotasDisciplina / contadorNotas) %>
+            <% let notaResponsabilidade = Math.floor(somaNotasResponsabilidade / contadorNotas) %>
+            <% let notaQualidade = Math.floor(somaNotasQualidade / contadorNotas) %>
+            <% let notaAperfeicoamento = Math.floor(somaNotasAperfeicoamento / contadorNotas) %>
+
+            <!--Inicio informações/pontuacoes lateral-->
+            <div class="container">
+            <ul class="lista-personalizada">
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/1-assiduidade.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Assiduidade</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Ser frequente e pontual em suas atividades." data-placement="right" />
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaAssiduidade < 6) { %>
+                          bg-danger
+                        <% } else if (notaAssiduidade < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaAssiduidade * 10 %>%" aria-valuenow="<%=notaAssiduidade * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaAssiduidade%>/10</p>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/2-pontualidade.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Pontualidade</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Ser preciso no horário combinado." data-placement="right"/>
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaPontualidade < 6) { %>
+                          bg-danger
+                        <% } else if (notaPontualidade < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaPontualidade * 10 %>%" aria-valuenow="<%=notaPontualidade * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaPontualidade%>/10</p>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/3-iniciativa.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Iniciativa</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Agir sem precisar de instruções." data-placement="right"/>
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaIniciativa < 6) { %>
+                          bg-danger
+                        <% } else if (notaIniciativa < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaIniciativa * 10 %>%" aria-valuenow="<%=notaIniciativa * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaIniciativa%>/10</p>
+                  </div>  
+                </div>
+              </li>
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/4-disciplina.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Disciplina</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Autocontrole para cumprir regras." data-placement="right"/>
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaDisciplina < 6) { %>
+                          bg-danger
+                        <% } else if (notaDisciplina < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaDisciplina * 10 %>%" aria-valuenow="<%=notaDisciplina * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaDisciplina%>/10</p>
+                  </div>  
+                </div>
+              </li>
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/4-responsabilidade.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Responsabilidade</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Assumir deveres e agir com diligência." data-placement="right"/>
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaResponsabilidade < 6) { %>
+                          bg-danger
+                        <% } else if (notaResponsabilidade < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaResponsabilidade * 10 %>%" aria-valuenow="<%=notaResponsabilidade * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaResponsabilidade%>/10</p>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/5-qualidade.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Qualidade do Trabalho</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Padrão de excelência na realização de tarefas." data-placement="right"/>
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaQualidade < 6) { %>
+                          bg-danger
+                        <% } else if (notaQualidade < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaQualidade * 10 %>%" aria-valuenow="<%=notaQualidade * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaQualidade%>/10</p>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row justify-content-md-center align-items-center">
+                  <div class="col-2" style="margin: auto">
+                    <img src="imagens/6-aperfeicoamento.png" class="icones-quesitos"/>
+                  </div>
+                  <div class="col-7 barra-response" style="padding: 0px">
+                    <span>Aperfeiçoamento</span>
+                    <img src="imagens/interrogacao.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                    data-content="Busca constante por melhorias e aprendizado." data-placement="right"/>
+                    <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated
+                        <% if (notaAperfeicoamento < 6) { %>
+                          bg-danger
+                        <% } else if (notaAperfeicoamento < 9) { %>
+                          bg-warning
+                        <% } else { %>
+                          bg-success
+                        <% } %>"
+                        style="width: <%=notaAperfeicoamento * 10 %>%" aria-valuenow="<%=notaAperfeicoamento * 10 %>" aria-valuemin="0" aria-valuemax="100">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 numero-response">
+                    <p class="texto-numero-lateral"><%=notaAperfeicoamento%>/10</p>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!--Fim informações/pontuacoes lateral-->
+        </div>
+       </div>
+      </div>
+      <!--Fim coluna lateral esquerda-->
+     
+      <!--Inicio container principal-->
+      <div class="background-banner col-lg-9">
+        <div class="row align-items-center mx-auto">
+          <!--Inicio container informacoes de progresso-->
+          <div class="col-12 background-banner-principal mx-auto" style="height: auto";>
+            <div style="position: relative; margin: auto; width: 90%; height: 6px"> 
+
+              <%
+              let maiorPeriodo = 0;
+              let notaMaiorPeriodo;
+              
+              notas.forEach(function(nota) {
+                if ((nota.periodoId > maiorPeriodo) && (nota.funcionarioId == teste.id)) {
+                  maiorPeriodo = nota.periodoId;
+                  notaMaiorPeriodo = nota;
+                }
+              });
+              %>
+            
+              <!--<div style="background: blue; height: 150px; width: 150px;"></div>-->
+              <!--<input
+                type="range"
+                class="position-relative estilo-range"
+                id="myRange"
+                max="3"
+                min="1"
+                style="width: 50%; z-index: 2"
+              />-->
+
+              <input type="range" class="position-relative estilo-range" id="myRange" max="3" min="1" style="width: 50%; z-index: 3"
+              value="<%=notaMaiorPeriodo.periodoId%>" oninput="updateRangeValue()"/>
+
+            </div>
+
+            <!--Inicio informações primeiro banner-->
+            <div id="infospc" class="container" >
+              <div class="row mx-auto justify-content-md-center">
+                
+                <table class="rtable table text-center table-borderless" style="z-index: 2;">
+                  <thead>
+                    <tr style="background: none;">
+                      <th><i class="bi bi-circle-fill" style="color: rgb(60, 60, 238);"></i></th>
+                      <th><i class="bi bi-square-fill" style="color: rgb(53, 151, 53);"></i></th>
+                      <th><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+                      <th><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+                    </tr>
+                  </thead>
+            
+                  <tbody>
+                    
+                    <tr id="response-info" style="background: none;">
+                      <td class="align-middle pb-0 font-weight-bold">Ingresso: </td>
+                      <td class="align-middle pb-0 font-weight-bold">1° Avaliação</td>
+                      <td class="align-middle pb-0 font-weight-bold">2° Avaliação</td>
+                      <td class="align-middle pb-0 font-weight-bold">3° Avaliação</td>
+                    </tr>
+
+                    <tr style="background: none;">
+                      <th id="response-ajuste-icone"><i class="bi bi-circle-fill" style="color: rgb(60, 60, 238);"></i></i></th>
+                      <td class="align-middle ajuste-cor-tabela-resp" data-title="INGRESSO:">18/01/2022</td>
+                      <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(53, 151, 53);"></i></th>
+                      <td class="align-middle ajuste-cor-tabela-resp" data-title="1° AVALIAÇÃO:">18/01/2023</td>
+                      <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+                      <td class="align-middle ajuste-cor-tabela-resp" data-title="2° AVALIAÇÃO:">18/01/2024</td>
+                      <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+                      <td class="align-middle ajuste-cor-tabela-resp" data-title="3° AVALIAÇÃO:">18/01/2025</td>
+                    </tr>
+
+                  </tbody>
+                </table>  
+              </div>
+              
+              <div class="row mx-auto">
+                <div class="col-9 mx-auto barra"></div>
+              </div>
+              <div class="row mx-auto" id="imagem-avaliacao">
+                <div class="col-3 mx-auto"></div>
+                
+                <div class="col-3 mx-auto"></div>
+                <div class="col-3 mx-auto"></div>
+              </div>
+              <!--Inicio mascara imagem ver avaliacao-->
+              <div class="row mx-auto" id="mascara-imagem-avaliacao">
+                <div class="col-9 mx-auto">
+                  <a href="" data-toggle="modal" data-target="#modalavaliacao">
+                    <img src="imagens/veravaliacao.png" class="formata-imagem-avaliacao mt-3 mb-3"/>
+                  </a>
+                </div>
+              </div>
+              <!--Fim mascara imagem ver avaliacao-->
+
+            </div>
+            <!--Fim informações primeiro banner-->
+
+          </div>
+          <!--Fim container informacoes de progresso-->
+
+
+          <div class="col-12 avaliacao mx-auto">
+            <h4 class="text-uppercase">
+             VER AVALIAÇÕES
+              <span class="icon-avaliacao">
+                <a data-toggle="collapse" href="#tabela-dados" aria-expanded="false" aria-controls="collapseExample" class="color-animation">▼</a>
+                <!--collapse-->
+              </span>
+            </h4>
+          </div>
+
+          <% notas.forEach((nota) => { %>     
+            <%if ((nota.funcionarioId == teste.id)) { %>
+              <% if (nota.periodoId == 1) { %>
+                <div class="col-12 avaliacao mx-auto">
+                  <h4 class="text-uppercase">1° Avaliação</h4>
+                </div>
+              <% } %>
+              <% if (nota.periodoId == 2) { %>
+                <div class="col-12 avaliacao mx-auto">
+                  <h4 class="text-uppercase">2° Avaliação</h4>
+                </div>
+              <% } %>
+              <% if (nota.periodoId == 3) { %>
+                <div class="col-12 avaliacao mx-auto">
+                  <h4 class="text-uppercase">3° Avaliação</h4>
+                </div>
+              <% } %>
+               
+              <%
+              const data_inicio = new Date(nota.data_inicio);
+              data_inicio.setUTCDate(data_inicio.getUTCDate() + 1);
+  
+              const data_fim = new Date(nota.data_fim);
+              data_fim.setUTCDate(data_fim.getUTCDate() + 1);
+                
+              let mostrarh = 'sim'
+              let mostrarhc = 'sim'
+              %>
+ 
+              <div class="col-12">
+             <%funcionarios.forEach((funcionario) => {%>
+              <%if (funcionario.id == teste.id) {%>
+                <%respostas.forEach((resposta) =>{%>
+                 
+                  <%if ((nota.periodoId == resposta.periodoId) && (resposta.servidor_matricula == funcionario.matricula)){%>
+                    
+                    <%questionamentos.forEach((questionamento) => { %>
+                      <%if ((questionamento.funcionarioId == teste.id) && (questionamento.periodoId == nota.periodoId) && (questionamento.aceito == 'SIM')) {%>
+                      
+                      <%mostrarh = 'nao'%>
+                     
+                     <%}})%>
+                      
+                     <%comissoes.forEach((comissao) => { %>
+                      <%if ((comissao.funcionarioId == teste.id) && (comissao.periodoId == nota.periodoId)) {%>
+                        <%mostrarhc = 'nao'%>
+                      <%}%>
+                     <%})%>
+
+                     <%if ((mostrarh == 'sim') && (mostrarhc =='sim')) { %>
+                      <span style="float: right;"><a class="btn btn-danger"  href="/pedido/comissao/<%=teste.id%>/<%=nota.periodoId%>">
+                        <i class="bi bi-chat-dots"> Fale com o RH </i>
+                      </a></span>
+                     <%}%>
+                    
+                  <%}%>
+                 <%})%>
+              <%}%>
+             <%})%>
+        
+             
+              
+                
+                <h5>Período Avaliatório: <%= data_inicio.toLocaleDateString('pt-BR') %> - <%= data_fim.toLocaleDateString('pt-BR') %></h5>
+
+                
+                <h5>
+                <%funcionarios.forEach((funcionario) => { %>
+                  <%if (funcionario.id == nota.avaliador){ %>
+                    Avaliador: <%=funcionario.nome%>
+                  <% } %>
+                <% }) %>
+                </h5>
+                
+              </div>
+              
+             
+              
+
+              <!-- Inicio tabela -->
+              <div class="container d-flex justify-content-center">
+                <!--obs apagar a de baixo e descomentar essa, caso queira tirar o collapse>-->
+                <div class="transicao-tabela collapse" id="tabela-dados" style="width: 600px">
+                  <!--<div id="tabela-dados"> Div sem collapse-->
+                  <table class="table border mt-3">
+                    <thead class="text-center">
+                      <tr>
+                        <th class="ajuste-th">Quesito</th>
+                        <th class="ajuste-th">Nota</th>
+                        <th class="ajuste-th">Comentário</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="ajuste-tr">
+                        <td class="ajuste-td">Assiduidade</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_assiduidade%></td>
+                        <td class="td3 text-center ajuste-td" data-toggle="popover" title="Assiduidade"
+                        data-trigger="hover"
+                        data-placement="top"
+                        data-content="<%=nota.comentario_assiduidade%>">
+                          <img src="imagens/lup.png" alt="lupa"/> Ver comentário
+                        </td>
+                      </tr>
+                      <tr class="ajuste-tr">
+                        <td class="ajuste-td">Pontualidade</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_pontualidade%></td>
+                        <td class="td3 text-center ajuste-td" data-toggle="popover"
+                        title="Pontualidade"
+                        data-trigger="hover"
+                        data-placement="top"
+                        data-content="<%=nota.comentario_pontualidade%>">
+                          <img src="imagens/lup.png" alt="lupa"> Ver comentário
+                        </td>
+                      </tr>
+                      <tr  class="ajuste-tr">
+                        <td class="ajuste-td">Iniciativa</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_iniciativa%></td>
+                        <td class="td3 text-center ajuste-td"
+                        data-toggle="popover"
+                        title="Iniciativa"
+                        data-content="<%=nota.comentario_iniciativa%>"
+                        data-trigger="hover"
+                        data-placement="top">
+                          <img src="imagens/lup.png" alt="lupa"/> Ver comentário
+                        </td>
+                      </tr>
+                      <tr class="ajuste-tr">
+                        <td class="ajuste-td">Disciplina</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_disciplina%></td>
+                        <td class="td3 text-center ajuste-td"
+                        data-toggle="popover"
+                        title="Disciplina"
+                        data-content="<%=nota.comentario_disciplina%>"
+                        data-trigger="hover"
+                        data-placement="top">
+                          <img src="imagens/lup.png" alt="lupa"/> Ver comentário
+                        </td>
+                      </tr>
+                      <tr class="ajuste-tr">
+                        <td class="ajuste-td">Responsabilidade</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_responsabilidade%></td>
+                        <td class="td3 text-center ajuste-td"
+                        data-toggle="popover"
+                            title="Responsabilidade"
+                            data-content="<%=nota.comentario_responsabilidade%>"
+                            data-trigger="hover"
+                            data-placement="top">
+                          <img src="imagens/lup.png" alt="lupa"/> Ver comentário
+                        </td>
+                      </tr>
+                      <tr class="ajuste-tr">
+                        <td class="ajuste-td">Qualidade do Trabalho</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_qualidade%></td>
+                        <td class="td3 text-center ajuste-td"
+                        data-toggle="popover"
+                            title="Qualidade do Trabalho"
+                            data-content="<%=nota.comentario_qualidade%>"
+                            data-trigger="hover"
+                            data-placement="top">
+                          <img src="imagens/lup.png" alt="lupa"/> Ver comentário
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="ajuste-td">Aperfeiçoamento</td>
+                        <td class="text-center ajuste-td"><%=nota.nota_aperfeicoamento%></td>
+                        <td class="td3 text-center ajuste-td"
+                        data-toggle="popover"
+                            title="Aperfeiçoamento"
+                            data-content="<%=nota.comentario_aperfeicoamento%>"
+                            data-trigger="hover"
+                            data-placement="top">
+                          <img src="imagens/lup.png" alt="lupa"/> Ver comentário
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!--</div> Div sem collapse -->
+                  <div style="text-align: center;">
+                    <a class="btn btn-info" style="float: left; margin-bottom: 15px" href="" data-toggle="modal" data-target="#questionado">
+                      <i class="bi bi-clipboard-data"></i> Ver Questionamentos
+                    </a>
+                    
+                
+                    <% let naoaceito = "NAO" %>
+
+                    <% let questaosim = 0 %>
+                    <% let questaonao = 0 %>
+
+
+                    <%questionamentos.forEach ((questionamento) => {%>
+                      <% if (questionamento.funcionarioId == teste.id) { %>
+                        <% naoaceito = questionamento.aceito %> 
+                        <% if (questionamento.aceito == 'SIM') {%>
+                            <% questaosim = questaosim + 1%>
+                          <% } %>
+                          <% if (questionamento.aceito == 'NAO') {%>
+                            <% questaonao = questaonao + 1 %>
+                          <%}%>
+                        <% } %>  
+                    <%})%>
+                  
+                  
+            
+                
+                  <!--INICIO, PRIMEIRO ACEITAR/QUESTIONAR-->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 1) && (questaonao == 0) && (questaosim == 0)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                    <a class="btn btn-danger" style="margin-bottom: 15px" href="/naoaceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-x"></i> Questionar Avaliação</i>
+                    </a>
+                  <%}%>
+
+                  <!--A1-->
+                  <% if ((naoaceito == 'SIM') && (nota.periodoId == 2) && (questaonao == 0) && (questaosim == 1)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                    <a class="btn btn-danger" style="margin-bottom: 15px" href="/naoaceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-x"></i> Questionar Avaliação</i>
+                    </a>
+                  <%}%>
+
+                  <!--Q1-->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 1) && (questaonao == 1) && (questaosim == 0)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>           
+                  <%}%>
+          
+                  <!--Q1 - A1-->
+                  <% if ((naoaceito == 'SIM') && (nota.periodoId == 2) && (questaonao == 1) && (questaosim == 1)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                    <a class="btn btn-danger" style="margin-bottom: 15px" href="/naoaceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-x"></i> Questionar Avaliação</i>
+                    </a>
+                  <%}%>
+
+                  <!--A1 - A2-->
+                  <% if ((naoaceito == 'SIM') && (nota.periodoId == 3) && (questaonao == 0) && (questaosim == 2)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                    <a class="btn btn-danger" style="margin-bottom: 15px" href="/naoaceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-x"></i> Questionar Avaliação</i>
+                    </a>
+                  <%}%>
+
+                  <!--A1 - Q2-->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 2) && (questaonao == 1) && (questaosim == 1)) {%>
+                    
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+
+                    </a>
+                  <%}%>
+
+                  <!--A1 - Q2 -A2 OU Q1 - A1 - A2-->
+                  <% if ((naoaceito == 'SIM') && (nota.periodoId == 3) && (questaonao == 1) && (questaosim == 2)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                    <a class="btn btn-danger" style="margin-bottom: 15px" href="/naoaceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-x"></i> Questionar Avaliação</i>
+                    </a>
+                  <%}%>
+                  
+                  <!--Q1 - A1-- Q2 -->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 2) && (questaonao == 2) && (questaosim == 1)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar AvaliaçãO
+                    </a>
+                  <%}%>
+
+                  <!--Q1 - A1 - Q2 - A2 -->
+                  <% if ((naoaceito == 'SIM') && (nota.periodoId == 3) && (questaonao == 2) && (questaosim == 2)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                    <a class="btn btn-danger" style="margin-bottom: 15px" href="/naoaceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-x"></i> Questionar Avaliação</i>
+                    </a>
+                  <%}%>
+
+
+                  <!--A1 - Q2 - A2 - Q3 OU Q1 - A1 - A2 - Q3 -->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 3) && (questaonao == 2) && (questaosim == 2)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                  <%}%>
+
+                  <!--A1 - A2 - Q3 -->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 3) && (questaonao == 1) && (questaosim == 2)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                  <%}%>
+
+                  <!--Q1 - A1 - Q2 - A2 - Q3 -->
+                  <% if ((naoaceito == 'NAO') && (nota.periodoId == 3) && (questaonao == 3) && (questaosim == 2)) {%>
+                    <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
+                    </a>
+                  <%}%>
+
+                  
+                  </div>
+                  
+
+                </div>
+                
+                <!--Div com collapse-->
+                <!--Fim tabela-->
+              
+              </div>
+            
+              <!-- Fim tabela-->
+          <%}}) %>
+        
+
+        </div>
+      </div>
+      <!--Fim container principal-->
+    </div>
+  </div>
+  <!--Fim (lateral e princial)-->
+
+  <!-- Inicio Modal Regulamento -->
+  <div class="modal fade transicao-modal" id="modalregulamento" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Regulamento</h5>
+        </div>
+        <div class="modal-body">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bt-modal" data-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal Regulamento -->
+
+  <!-- Inicio Modal Créditos -->
+  <div class="modal fade transicao-modal" id="modalcredito" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Créditos</h5>
+        </div>
+        <div class="modal-body">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.
+        </div>
+        <div class="modal-body">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.
+        </div>
+        <div class="modal-body">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bt-modal" data-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal Créditos -->
+
+  <!-- Inicio Modal Avaliação -->
+  <div class="modal fade transicao-modal" id="modalavaliacao" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h5>1° Avaliação</h5>
+          <hr />
+          <h6 class="questao-modal">Questão 1</h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry
+          </p>
+          <hr />
+          <h6 class="questao-modal">Questão 2</h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry
+          </p>
+          <hr />
+          <h6 class="questao-modal">Questão 3</h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bt-modal" data-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal Avaliação -->
+
+  
+  <!-- Inicio Modal Questionado -->
+  <div class="modal fade transicao-modal" id="questionado" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+         
+          <h5>QUESTIONAMENTOS</h5>
+          <hr />
+          <% questionamentos.forEach((questionamento) => { %>
+            <% if (teste.id == questionamento.funcionarioId) { %>
+              <% if ( questionamento.aceito == 'NAO') { %>
+                <h5 class="questao-modal fontes_input"><%=questionamento.periodoId%>° AVALIAÇÃO</h5>
+                <div class="questionamento_index">
+                  <br>
+                  <h5 class="questao-modal fontes_input">Motivo:</h5>
+                  <h6><%= questionamento.titulo %></h6>
+                  <div class="form-group">
+                    <h5 class="questao-modal fontes_input">Justificativa:</h5>
+                    <h6><%= questionamento.descricao %></h6>
+                  </div>
+                </div>
+  
+                <br>
+                <%respostas.forEach((resposta) => { %>
+                  <% if (resposta.questionamentoId == questionamento.id){%>
+                    <div class="questionamento_index2">
+                      <br>
+                      <h5 class="questao-modal fontes_input">Resposta:</h5>
+                      <h6><%= resposta.titulo %></h6>
+                
+                      <div class="form-group">
+                        <h5 class="questao-modal fontes_input">Justificativa:</h5>
+                        <h6><%= resposta.descricao %></h6>
+                      </div>
+                    </div>
+                  <%}%>
+                <% })%>
+                <hr />
+              <%}%>
+            <% } %>
+          <% }) %>
+              
+          <h5>AVALIAÇÕES ACEITAS</h5>
+          <hr />
+          <% questionamentos.forEach((questionamento) => { %>
+            <% if (teste.id == questionamento.funcionarioId) { %>
+              <% if ( questionamento.aceito == 'SIM') { %>
+                <h5 class="questao-modal fontes_input"><%=questionamento.periodoId%>° Avaliação <i class="bi bi-emoji-sunglasses"></i></h5>                    
+                <hr />
+              <% } %>
+            <% } %>
+          <% }) %>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">FECHAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal Questionado -->
+
+    <!-- Inicio Modal Fale com RH -->
+    <div class="modal fade transicao-modal" id="modalrh" tabindex="-1" role="dialog" aria-labelledby="ModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h5>FALE COM A COMISSÃO DO ESTÁGIO PROBATÓRIO</h5>
+            <hr />
+            <h6 class="questao-modal">Saiba que:</h6>
+            <p>
+              Este é um recurso, que você poderá utilizar, caso não esteja de acordo com sua avaliação, no estágio. Uma comissão blablabla blablabla blablabla blablabla blablabla blabla blablablabla
+            </p>
+            <hr />
+            <h6 class="questao-modal">Verifique</h6>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry
+            </p>
+            <hr />
+            <h6 class="questao-modal">Tudo certo?</h6>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry
+            </p>
+          </div>
+          
+          <div class="modal-footer mx-auto">
+            <%notas.forEach((nota) => { %>
+              <%if (nota.funcionarioId == teste.id){%>
+                 <%=nota.periodoId%>
+           <% }})%>
+            
+          
+             <a class="btn btn-success" href="/pedido/comissao/<%=teste.id%>" >Prosseguir</a>
+              
+ 
+            <button type="button" class="btn  btn-danger" data-dismiss="modal">
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fim Modal Fale com o RH -->
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  
+  <footer>
+    <div class="row" style="margin-bottom: 0">
+      <div class="col-md-6">
+        <img class="imagem-logo-rodape" src="/imagens/logo_anselmo.png" alt="logo_anselmo" />
+      </div>
+      <div class="col-md-6">
+        <img class="imagem-logo-rodape" src="/imagens/logo_prefeitura.png" alt="logo_prefeitura" />
+      </div>
+      
+    </div>
+  </footer>  
+  
+
+</body>
+<%- include ('./partials/configure_footer.ejs') %>
+
+
+<script>
+  function updateRangeValue() {
+    var rangeInput = document.getElementById("myRange");
+    var fixedValue = <%=notaMaiorPeriodo.periodoId%>; // Valor fixo que você deseja definir
+
+    if (rangeInput.value != fixedValue) {
+        rangeInput.value = fixedValue;
+    }
+}
+</script>

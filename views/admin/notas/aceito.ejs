@@ -1,0 +1,69 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_servidor.ejs') %>
+
+<body class="fundonotas">
+
+<div class="col-10 background-banner-principal mx-auto" style="height: auto">
+
+  <div id="infospc" class="container">
+   <div>
+      <form method="POST" action="/questionamentos/aceitar">       
+          <h5>ACEITAR SUA AVALIAÇÃO </h5>
+          <hr />
+       
+
+           
+          <% notas.forEach((nota) => {%>
+            <% funcionarios.forEach((funcionario) => {%>
+            <% if ((funcionario.id == id) && (nota.periodoId == periodo) && (funcionario.id == nota.funcionarioId)) {%>
+              
+              <input name="servidor_id" value="<%=id%>" type="hidden">
+              <input name="servidor_nome" value="<%=funcionario.nome%>" type="hidden">
+              <input name="servidor_matricula" value="<%=funcionario.matricula%>" type="hidden">
+              <input name="periodo_questionado" value="<%=nota.periodoId%>" type="hidden">
+              <br>
+        
+         
+              <%}%>
+              
+              <% if ((funcionario.id == nota.avaliador) && (nota.periodoId == periodo) && (nota.funcionarioId == id)) {%>
+              
+                <input name="av_nome" value="<%=funcionario.nome%>" type="hidden">
+   
+              <input name="av_matricula" value="<%=funcionario.matricula%>" type="hidden">
+            <%}%>
+              
+          <% }) %>
+        
+          <%})%>
+          
+          
+
+          <h6 class="questao-modal">Motivo:</h6>
+          <select class="form-select form-control fontes_input" aria-label="" name="titulo" id="pergunta-secreta" >
+            <option value="ACEITO AVALIAÇÕES">ACEITO AVALIAÇÕES</option>
+          </select>
+          <hr />
+          <div class="form-group">
+            <h6 class="questao-modal">Justifique:</h6>
+            <textarea class="form-control text-uppercase" id="exampleFormControlTextarea1" name="descricao" rows="6" readonly >SEM QUESTIONAMENTOS, ESTOU DE ACORDO COM AS AVALIAÇÕES A MIM ATRIBUIDAS</textarea>
+          </div>
+      </div>
+      <div style="padding: 30px;">
+        <button class="btn btn-success">ACEITAR</button>
+        </form>
+   
+        <a href="/index"><button type="button" class="btn btn-danger"> FECHAR</button></a>
+        
+       
+      
+        
+    </div>
+  </div>
+</div>
+
+</body>
+
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>

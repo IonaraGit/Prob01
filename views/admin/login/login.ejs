@@ -1,0 +1,47 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+
+<body class="fundologin login">
+  <div class="container">
+    <div class="text-center">
+      <img src="/imagens/prob.png" class="mx-auto" width="300px">
+    </div>
+    
+    <br />
+    <div class="card">
+
+      
+
+      <div class="card-body" style="background: #ffffff;">
+      
+        <form method="POST" action="/autenticacao">
+          <br />
+          <h5>MATRICULA:</h5>
+          <input class="form-control fontes_input" type="text" name="matricula" onkeypress="$(this).mask('0000000');" required/>
+          <br />
+          <h5>SENHA:</h5>
+          <input class="form-control fontes_input" type="password" name="senha" required/>
+          <br />
+          <button class="btn btn-block bt-modal color-animation" onclick="verificarSenha()">PROSSEGUIR</span></button>
+        </form>
+
+        <br>
+        <a href="/esqueci" class="text-center">Esqueci a senha </a>
+        <br>
+    
+      </div>
+    </div>
+    
+  </div>
+  
+  </div>
+  <footer class="footer d-flex flex-column justify-content-center align-items-center" id="teste">
+    <p style="margin-bottom: -16px;">Developed by <a href="https://www.linkedin.com/in/ionara-roque-aba056191/" style="color: #ffff; text-decoration: underline;">Ionara Roque</a>
+      <span>(<img src="/imagens/linkedin.png" class="mx-auto" width="15px">)</span>
+      </p>
+
+</footer>
+</body>
+
+
+
+<%- include ('../../partials/configure_footer.ejs') %>

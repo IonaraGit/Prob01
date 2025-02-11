@@ -1,0 +1,50 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>Cadastro Ligacoes</h2>
+      </div>
+      <div class="card-body">
+       
+          <br>
+          
+        <form method="POST" action="/ligacoes/salvar">
+          <h5>SETOR:</h5>
+          <select id="select-setor" name="setor" class="form-control">
+            <% setores.forEach((setor) => { %>
+              <option value="<%= setor.id %>"><%= setor.descricao %></option>
+            <% }) %>
+           
+          </select>
+          <br/>
+          <h5>CHEFIA:</h5>
+          <select id="select-chefia" name="chefia" class="form-control">
+            <% funcionarios.forEach((funcionario) => { %>
+              <option value="<%= funcionario.id %>"><%= funcionario.nome %></option>
+            <% }) %>
+          </select>
+          <br />
+          <h5>SERVIDOR</h5>
+          <select id="select-servidor" name="servidor" class="form-control">
+            <% funcionarios.forEach((funcionario) => { %>
+              <option value="<%= funcionario.id %>"><%= funcionario.nome %></option>
+            <% }) %>
+          </select>
+          <br />
+          
+          <br />
+          <button class="btn btn-block bt-modal">Cadastrar</button>
+        
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+
+<%- include ('../../partials/configure_footer.ejs') %>

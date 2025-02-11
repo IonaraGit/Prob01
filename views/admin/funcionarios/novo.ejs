@@ -1,0 +1,62 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>CADASTRAR DE FUNCIONÁRIO</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/funcionarios/salvar">
+          <h5>MATRICULA:</h5>
+          <input class="form-control" type="text" name="matricula" onkeypress="$(this).mask('0000000');" required/>
+          <br />
+          <h5>CPF:</h5>
+          <input class="form-control" type="text" name="cpf" onkeypress="$(this).mask('000.000.000-00');" required/>
+          <br />
+          <h5>NOME:</h5>
+          <input class="form-control text-uppercase" type="text" name="nome" required/>
+          <br />
+          <h5>PERMISSÃO:</h5>
+          <select name="permissao" class="form-control">
+            <% permissoes.forEach((permissao) => { %>
+              <option value="<%= permissao.id %>"><%= permissao.descricao %></option>
+            <% }) %>
+          </select>
+          <br />
+          <h5>SETOR:</h5>
+          <select name="setor" class="form-control">
+            <% setores.forEach((setor) => { %>
+              <option value="<%= setor.id %>"><%= setor.descricao %></option>
+            <% }) %>
+          </select>
+          <br />
+          <h5>E-MAIL:</h5>
+          <input class="form-control text-uppercase" type="email" name="email" required/>
+          <br>
+          <h5>SEXO:</h5>
+          <select class="form-select form-control" aria-label="" name="sexo">
+            <option  disabled>SEXO</option>
+            <option selected value="FEM">FEMININO</option>
+            <option value="MAS">MASCULINO</option>
+          </select>
+          <br />
+                  
+        
+          <button class="btn btn-success ajuste-botao" style="float: right;">SALVAR <img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"></button>
+        </form>
+      </form>
+      <form method="GET" action="/admin/funcionarios/index/1" class="mb-5">
+        <div>
+            <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+<%- include ('../../partials/footer.ejs') %> 
+<%- include ('../../partials/configure_footer.ejs') %>

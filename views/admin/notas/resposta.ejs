@@ -1,0 +1,116 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_chefia.ejs') %>
+
+<body class="fundonotas">
+
+  <div class="col-10 background-banner-principal mx-auto" style="height: auto">
+
+  
+
+    <div id="infospc" class="container">
+     <div>
+             
+            <h5>QUESTIONAMENTO </h5>
+            <hr />
+              <% funcionarios.forEach ((funcionario) => { %>
+                <% questionamentos.forEach ((questionamento => { %>
+                  <% if ((questionamento.funcionarioId == id) && (questionamento.periodoId == periodo) && (questionamento.aceito == 'NAO')) { %>
+            
+               
+                 
+          <% if (funcionario.id == questionamento.funcionarioId) { %>
+        
+            <div class="row">
+              <br>
+              <div class="col-sm-8 mt-3"><h6 class="questao-modal text-left">Servidor:</h6>
+                <input class="form-control fontes_input" value="<%=funcionario.nome%>" readonly></div>
+                  <br>
+              <div class="col-sm-4 mt-3">
+             
+                <h6 class="questao-modal text-left">Periodo:</h6>
+              <input class="form-control fontes_input" value="<%=periodo%>" readonly>
+              </div>
+            </div>
+            
+          
+     
+
+
+              <hr>
+    <h6 class="questao-modal text-left">Motivo:</h6>
+    <input class="form-control fontes_input" value="<%=questionamento.titulo%>" readonly>
+    <hr />
+    <div class="form-group">
+      <h6 class="questao-modal text-left">Justificativa:</h6>
+      <input class="form-control fontes_input" value="<%=questionamento.descricao%>" readonly>
+    </div>
+</div>
+<div style="padding: 10px;">      
+  
+</div>
+          <%}%>
+ 
+      <%}%>
+                    <% })) %>
+                  <% }) %>
+    </div>
+  </div>
+  
+<div class="col-10 background-banner-principal mx-auto" style="height: auto">
+
+  
+
+  <div id="infospc" class="container">
+   <div>
+      <form method="POST" action="/resposta/salvar">       
+        <% funcionarios.forEach ((funcionario) => { %>
+          <% questionamentos.forEach ((questionamento) => { %>
+            <% if ((funcionario.id == id) && (questionamento.periodoId == periodo) && (questionamento.aceito == 'NAO')) { %>
+                      
+          <% if (funcionario.id == questionamento.funcionarioId) { %>
+            
+          <h5>RESPOSTA DE AVALIAÇÃO </h5>
+          <hr />
+     
+              <input name="servidor_id" value="<%=funcionario.id%>" type="hidden">
+              <input name="servidor_nome" value="<%=funcionario.nome%>" type="hidden">
+              <input name="servidor_matricula" value="<%=funcionario.matricula%>" type="hidden">
+              <input name="periodo_questionado" value="<%=periodo%>" type="hidden">
+              <input name="av_nome" value="<%=questionamento.avaliador_nome%>" type="hidden">
+              <input name="av_matricula" value="<%=questionamento.avaliador_matricula%>" type="hidden">
+              <input name="questao_id" value="<%=questionamento.id%>" type="hidden">
+
+          <h6 class="questao-modal text-left">Motivo:</h6>
+          <select class="form-select form-control fontes_input" aria-label="" name="titulo" id="pergunta-secreta">
+            <option value="ACEITO">QUESTIONAMENTO ACEITO</option>
+            <option value="NAO ACEITO">QUESTIONAMENTO NÃO ACEITO</option>
+          </select>
+          <hr />
+          <div class="form-group">
+            <h6 class="questao-modal text-left">Justifique:</h6>
+            <textarea class="form-control text-uppercase" id="exampleFormControlTextarea1" name="descricao" rows="4" required></textarea>
+          </div>
+      </div>
+      <div style="padding: 30px;">
+        <button class="btn btn-success">RESPONDER</button>
+            <%}%>
+        
+        <%}%>
+        <% }) %>
+      <% }) %>
+        </form>
+   
+        <a href=""><button type="button" class="btn btn-danger"> FECHAR</button></a>
+        
+       
+      
+        
+    </div>
+  </div>
+</div>
+
+</body>
+
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>

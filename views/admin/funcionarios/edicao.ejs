@@ -1,0 +1,85 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>EDITAR FUNCIONÁRIO</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/funcionarios/atualizar">
+
+         
+          <input type="hidden" value="<%= funcionario.id %>" name="id"/>
+          <h5>MATRICULA:</h5>
+          <input class="form-control" type="text" name="matricula" onkeypress="$(this).mask('0000000');" value="<%=funcionario.matricula%>" required />
+          <br />
+          <h5>CPF:</h5>
+          <input class="form-control" type="text" name="cpf" onkeypress="$(this).mask('000.000.000-00');" value="<%=funcionario.cpf%>" required />
+          <br />
+          <h5>NOME:</h5>
+          <input class="form-control text-uppercase" type="text" name="nome" value="<%=funcionario.nome%>" required />
+          <br />
+          <h5>PERMISSÃO:</h5>
+          <select name="permissao" class="form-control">
+
+            <% permissoes.forEach((permissao) => { %> 
+              <% if (permissao.id === funcionario.permissoId) { %>
+                <option value="<%= permissao.id %>" selected><%= permissao.descricao %></option>
+              <% }else { %>
+                <option value="<%= permissao.id %>"><%= permissao.descricao %></option>
+            <%}}) %>
+                    
+          </select>
+          <br />
+          <h5>SETOR:</h5>
+          <select name="setor" class="form-control">
+
+            <% setores.forEach((setor) => { %> 
+              <% if (setor.id === funcionario.setoreId) { %>
+                <option value="<%= setor.id %>" selected><%= setor.descricao %></option>
+              <% }else { %>
+                <option value="<%= setor.id %>"><%= setor.descricao %></option>
+            <%}}) %>
+                    
+          </select>
+          <br />
+          <h5>E-MAIL:</h5>
+          <input class="form-control text-uppercase" type="email" name="email" value="<%=funcionario.email%>" required/>
+          <br>
+          <h5>SEXO:</h5>
+          <select class="form-select form-control" aria-label="" name="sexo">
+            <option  disabled>SEXO</option>
+            <option value="FEM" <%= funcionario.sexo === 'FEM' ? 'selected' : '' %>>FEMININO</option>
+            <option value="MAS" <%= funcionario.sexo  === 'MAS' ? 'selected' : '' %>>MASCULINO</option>
+          </select>
+          <br />
+          <h5>REDEFINIR SENHA?</h5>
+          <select class="form-select form-control" aria-label="" name="redefinir_senha">
+            <option value="0">SIM</option>
+            <option value="1" selected>NÃO</option>
+          </select>
+          
+          <br />
+          <br />
+
+          <button class="btn btn-success ajuste-botao" style="float: right;">SALVAR ALTERAÇÕES 
+            <img src="/imagens/edicao.png" width="25px" style="padding-bottom: 5px;">
+          </button>
+
+        </form>
+        <form method="GET" action="/admin/funcionarios/index/1" class="mb-5">
+          <div>
+              <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<%- include ('../../partials/configure_footer.ejs') %>

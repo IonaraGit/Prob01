@@ -1,0 +1,24 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+
+
+<body class="fundologin login">
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-body ">
+        <form method="get" action="/esqueci/matricula">
+          <h5>ALTERAR SENHA</h5>
+          <br />
+          <h5>MATRICULA:</h5>
+          <input class="form-control text-uppercase fontes_input" type="text" name="matricula" required />
+          <br>    
+          <button class="btn btn-block bt-modal">PROSSEGUIR</button>
+          <br>
+        </form>
+        <a href="/login" style="text-decoration: none;"><button class="btn btn-block bt-modal">VOLTAR</button></a>
+      </div>
+    </div>
+  </div>
+</body>
+
+<%- include ('../../partials/configure_footer.ejs') %>

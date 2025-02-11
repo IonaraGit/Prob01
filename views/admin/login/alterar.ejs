@@ -1,0 +1,118 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+
+
+<body class="fundologin mt-5">
+
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-body ">
+        <form method="POST" action="/alterar" onsubmit="return validarSenha()">
+          <hr>
+          <h5 class="text-center">ALTERE SUA SENHA</h5>
+          <hr>
+          <br />
+
+          <h5>MATRICULA:</h5>
+          <input class="form-control fontes_input" name="matricula" value="<%=teste.matricula%>" onkeypress="$(this).mask('0000000');"  readonly>
+          <h5 class="fontes_input">
+          <br />
+
+          <h5>SENHA:</h5>
+          <input class="form-control fontes_input" type="password" name="nova_senha" required/>
+          <br />
+
+          <h5>CONFIRMAR SENHA:</h5>
+          <input class="form-control fontes_input" type="password" name="confirmar_senha" required/>
+          <h6 id="senha-erro" style="color: red; display: none;">As senhas digitadas devem ser idênticas.</h6>
+          <br />
+          
+          <h5>PERGUNTA SECRETA:</h5>
+          <select class="form-select form-control fontes_input" aria-label="" name="pergunta_secreta" id="pergunta-secreta">
+            <option value="NOME-MAE">QUAL O NOME COMPLETO DA SUA MÃE? </option>
+            <option value="ANIMAL-ESTIMACAO">QUAL O NOME DO SEU PRIMEIRO ANIMAL DE ESTIMAÇÃO</option>
+            <option value="COR-FAVORITA">QUAL SUA COR FAVORITA?</option>
+            <option value="MELHOR-AMIGO">QUEM É SEU/SUA MELHOR AMIGO(A)?</option>
+            <option value="CIDADE-NASCEU">QUAL CIDADE VOCÊ NASCEU?</option>
+          </select>
+          <br />
+
+          <h5>RESPOSTA SECRETA:</h5>
+          <input class="form-control text-uppercase fontes_input" type="text" name="resposta_secreta" required/>
+          <h6>Por favor, selecione uma pergunta de segurança e resposta que você possa facilmente lembrar. Elas serão necessárias para recuperar sua senha, caso você esqueça.</h6>
+          <br>
+
+          <h5>IMAGEM DE PERFIL:</h5>
+
+          
+            <div class="row">
+              <div class="col">
+                <input type="radio" id="imagem-perfil1" name="imagemperfil" value="imagens/p1.png" checked>
+                <label for="imagem-perfil1"><img src="imagens/p1.png" alt="perfil" class="escolha-perfil"></label>
+              </div>
+              <div class="col">
+                <input type="radio" id="imagem-perfil2" name="imagemperfil" value="imagens/p2.png">
+                <label for="imagem-perfil2"><img src="imagens/p2.png" alt="perfil" class="escolha-perfil"></label>
+              </div>
+              <div class="col">
+                <input type="radio" id="imagem-perfil3" name="imagemperfil" value="imagens/p3.png">
+                <label for="imagem-perfil3"><img src="imagens/p3.png" alt="perfil" class="escolha-perfil"></label>
+              </div>
+              <div class="col">
+                <input type="radio" id="imagem-perfil4" name="imagemperfil" value="imagens/p4.png">
+                <label for="imagem-perfil4"><img src="imagens/p4.png" alt="perfil" class="escolha-perfil"></label>
+              </div>
+              <div class="col">
+                <input type="radio" id="imagem-perfil5" name="imagemperfil" value="imagens/p5.png">
+                <label for="imagem-perfil5"><img src="imagens/p5.png" alt="perfil" class="escolha-perfil"></label>
+              </div>
+              <div class="col">
+                <input type="radio" id="imagem-perfil6" name="imagemperfil" value="imagens/p6.png">
+                <label for="imagem-perfil6"><img src="imagens/p6.png" alt="perfil" class="escolha-perfil"></label>
+              </div>
+            </div>
+          
+          
+          
+          <button class="btn btn-block bt-modal">ALTERAR</button>
+          <br>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validarSenha() {
+      var senha1 = document.getElementsByName("nova_senha")[0].value;
+      var senha2 = document.getElementsByName("confirmar_senha")[0].value;
+      if (senha1 != senha2) {
+        document.getElementById("senha-erro").style.display = "block";
+        return false;
+      } else {
+        return true;
+      }
+    }
+  </script>
+    
+
+    <script>
+      let imagemSelecionada = null;
+
+      function selecionarImagem(numero) {
+        // Remove a classe de destaque de todas as imagens
+        for (let i = 1; i <= 6; i++) {
+          let imagem = document.getElementById(`imagem-perfil${i}`);
+          imagem.classList.remove("selecionada");
+        }
+
+        // Adiciona a classe de destaque na imagem selecionada
+        let imagem = document.getElementById(`imagem-perfil${numero}`);
+        imagem.classList.add("selecionada");
+
+        // Armazena a imagem selecionada na variável
+        imagemSelecionada = `imagens/p${numero}.png`;
+      }
+    </script>
+</body>
+
+<%- include ('../../partials/configure_footer.ejs') %>

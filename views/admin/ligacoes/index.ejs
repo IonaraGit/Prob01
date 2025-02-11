@@ -1,0 +1,80 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <br />
+  <div class="container">
+    <hr />
+    <h5 class="text-center">Ligações Cadastradas</h5>
+    <hr />
+    <a
+        class="btn btn-block bt-modal"
+        href="/admin/ligacoes/novo"
+      >
+        Cadastrar novo
+  </a>
+    <br />
+
+    <table class="table text-center border">
+      <thead>
+        <tr>
+          <th>CHEFIA</th>
+          <th>SERVIDOR</th>
+          <th>SETOR</th>
+          <th>AÇÕES</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% ligacoes.forEach(ligacao => { %> 
+          <tr>
+            <% funcionarios.forEach((funcionario) => { %> 
+              <% if (funcionario.id == ligacao.chefia) { %>
+            <td class="align-middle"><%= funcionario.nome %></td>
+            <%}}) %>
+            <% funcionarios.forEach((funcionario) => { %> 
+              <% if (funcionario.id == ligacao.servidor) { %>
+                <td class="align-middle"><%= funcionario.nome %></td>
+            <%}}) %>
+            <% setores.forEach((setor) => { %> 
+              <% if (setor.id == ligacao.setoreId) { %>
+                <td class="align-middle"><%= setor.descricao %></td>
+            <%}}) %>
+            <td class="align-middle">
+              <a
+                href="/admin/ligacoes/editar/<%= ligacao.id %>"
+                class="btn btn-warning"
+                ><img src="/imagens/edit.png" />
+              </a>
+              <form
+                method="POST"
+                action="/ligacoes/deletar"
+                style="display: inline"
+                onsubmit="confirmardelete(event,this)"
+              >
+                <input type="hidden" name="id" value="<%= ligacao.id %>">
+                <button class="btn btn-danger">
+                  <img src="/imagens/delete.png" />
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %> 
+       
+  
+      </tbody>
+    </table>
+  </div>
+</body>
+
+<%- include ('../../partials/configure_footer.ejs') %>
+
+<script>
+  function confirmardelete(event, form) {
+    event.preventDefault()
+    var decisao = confirm('Deletar permanentemente esse ligação?')
+    if (decisao) {
+      form.submit()
+    }
+  }
+</script>

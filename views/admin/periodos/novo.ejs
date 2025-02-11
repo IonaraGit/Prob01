@@ -1,0 +1,27 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>CADASTRO DE PERÍODOS</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/periodos/salvar">
+          <h5>DESCRIÇÃO:</h5>
+          <input
+            class="form-control text-uppercase"
+            type="text"
+            name="descricao"
+          />
+          <br />
+          <button class="btn btn-block bt-modal" disabled>CADASTRAR</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+<%- include ('../../partials/configure_footer.ejs') %>

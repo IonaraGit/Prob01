@@ -1,0 +1,462 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_rh.ejs') %>
+
+<body class="fundonotas">
+
+  <br />
+  <form method="POST" action="/gerar/relatorio" class="lancar_notas">
+  <!--Inicio container informacoes de progresso-->
+  <div class="col-10 background-banner-principal mx-auto" style="height: auto">
+    
+
+     <!--Inicio informações primeiro banner-->
+     <div id="infospc" class="container">
+      <div class="row mx-auto justify-content-md-center">
+        
+
+        <table class="rtable table text-center table-borderless" style="z-index: 2;">
+          <thead>
+            <tr style="background: none;">
+              <th><i class="bi bi-circle-fill" style="color: rgb(60, 60, 238);"></i></th>
+              <th><i class="bi bi-square-fill" style="color: rgb(53, 151, 53);"></i></th>
+              <th><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+              <th><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+            </tr>
+          </thead>
+    
+          <tbody>
+            
+            <tr id="response-info" style="background: none;">
+              <td class="align-middle pb-0 font-weight-bold">Ingresso: </td>
+              <td class="align-middle pb-0 font-weight-bold">1° Avaliação</td>
+              <td class="align-middle pb-0 font-weight-bold">2° Avaliação</td>
+              <td class="align-middle pb-0 font-weight-bold">3° Avaliação</td>
+            </tr>
+
+            <tr style="background: none;">
+              <th id="response-ajuste-icone"><i class="bi bi-circle-fill" style="color: rgb(60, 60, 238);"></i></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="INGRESSO:" style="font-size: 14px;">18/01/2022</td>
+              <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(53, 151, 53);"></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="1° AVALIAÇÃO:" style="font-size: 14px;">18/01/2023</td>
+              <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="2° AVALIAÇÃO:" style="font-size: 14px;">18/01/2024</td>
+              <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="3° AVALIAÇÃO:" style="font-size: 14px;">18/01/2025</td>
+            </tr>
+
+          </tbody>
+        </table>  
+      </div>       
+    </div>
+    <!--Fim informações primeiro banner-->
+
+  </div>
+  <!--Fim container informacoes de progresso-->
+   
+    <%funcionarios.forEach((funcionario) => {%>
+      <%if (teste.id == funcionario.id) {%>
+        <input name="comissao_nome" value="<%=funcionario.nome%>" type="hidden">
+        <input name="comissao_matricula" value="<%=funcionario.matricula%>" type="hidden">
+        <input name="comissao_cpf" value="<%=funcionario.cpf%>" type="hidden">
+      <%}%>
+    <%})%>
+
+  <h5 class="text-center" style="background-color: #d9d9d9; padding: 11px; margin-top: 15px;">RELATÓRIO <img src="/imagens/notas2.png" width="25px"> </h5>
+  <hr />
+  
+  <% funcionarios.forEach((funcionario) => { %>
+    <% if (id == funcionario.id) {%>
+      <h5>
+        
+        <input name="funcionario" value="<%=funcionario.id%>" type="hidden">
+        <input name="funcionario_nome" value="<%=funcionario.nome%>" type="hidden">
+        <input name="funcionario_matricula" value="<%=funcionario.matricula%>" type="hidden">
+          <img src="/imagens/servidor2.png" width="42px"><%=funcionario.nome%>
+        </input>
+      </h5>
+    <% }%>
+  <% }) %>  
+  <hr />
+
+  <!--INICIO VER NOTAS JÁ LANÇADAS-->
+  <div class="container-fluid">
+    <div id="ajuste-lateral-responsivo" class="row">
+   
+      
+      <%
+      let maiorPeriodo = 0;
+      let notaMaiorPeriodo;
+      
+      notas.forEach(function(nota) {
+        if ((nota.periodoId > maiorPeriodo) && (id == nota.funcionarioId)) {
+          maiorPeriodo = nota.periodoId;
+          notaMaiorPeriodo = nota;
+        }
+      });
+      %>
+      <!--Inicio coluna lateral esquerda-->
+      <div class="col-lg-12">
+        <div id="dados-lateral" class="row mt-2 mb-2 ml-2 mr-2">
+
+          <!--Inicio container pontuações e dados pessoais-->
+          <% notas.forEach((nota) => { %>
+            <% if (id == nota.funcionarioId) {%>
+              
+              <div class="col-md-4 mx-auto background-banner-lateral">
+                <br>
+                <%
+                const data_inicio = new Date(nota.data_inicio);
+                data_inicio.setUTCDate(data_inicio.getUTCDate() + 1);
+
+                const data_fim = new Date(nota.data_fim);
+                data_fim.setUTCDate(data_fim.getUTCDate() + 1);
+                %>
+
+                <h5><%= data_inicio.toLocaleDateString('pt-BR') %> - <%= data_fim.toLocaleDateString('pt-BR') %></h5>
+
+                <br>
+                <% if (nota.periodoId == 1) {%>
+                  <div class="col mx-auto background-banner-lateral"><h5>PRIMEIRA AVALIAÇÃO</h5>
+                    <input name="periodo" value="<%=nota.periodoId%>" type="hidden">
+                  </div>
+                <% } else if (nota.periodoId == 2) { %>
+                  <div class="col mx-auto background-banner-lateral"><h5>SEGUNDA AVALIAÇÃO</h5>
+                    <input name="periodo" value="<%=nota.periodoId%>" type="hidden"></div>
+                <%} else if (nota.periodoId == 3) {%>
+                  <div class="col mx-auto background-banner-lateral"><h5>TERCEIRA AVALIAÇÃO</h5>
+                    <input name="periodo" value="<%=nota.periodoId%>" type="hidden"></div>
+                <%}%>
+
+                <!--Inicio informações/pontuacoes lateral-->
+                <div class="container">
+                  <ul class="lista-personalizada">
+                    <li>
+                      <div class="row justify-content-md-center align-items-center">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/1-assiduidade.png" class="icones-quesitos"/></div>
+                        <div class="col-7 barra-response" style="padding: 0px"><span class="ajuste-descricao">Assiduidade</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover" 
+                          data-content="<%=nota.comentario_assiduidade%>" data-placement="right"/>
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_assiduidade < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_assiduidade < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_assiduidade * 10 %>%" aria-valuenow="<%=nota.nota_assiduidade * 10 %>"
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 numero-response">
+                          <p class="texto-numero-lateral" ><%=nota.nota_assiduidade%>/10</p>
+                          <input name="notat" value="<%=nota.nota_assiduidade%>" type="hidden">
+                        </div>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div class="row">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/2-pontualidade.png" class="icones-quesitos"/></div>
+                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Pontualidade</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao"  data-toggle="popover" data-trigger="hover"
+                          data-content="<%=nota.comentario_pontualidade%>"
+                          data-placement="right"/>
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_pontualidade < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_pontualidade < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_pontualidade * 10 %>%" aria-valuenow="<%=nota.nota_pontualidade * 10 %>"
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <p class="texto-numero-lateral"><%=nota.nota_pontualidade%>/10</p>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div class="row">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/3-iniciativa.png" class="icones-quesitos"/></div>
+                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Iniciativa</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                          data-content="<%=nota.comentario_iniciativa%>" data-placement="right"/>
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_iniciativa < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_iniciativa < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_iniciativa * 10%>%" aria-valuenow="<%=nota.nota_iniciativa%>"
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <p class="texto-numero-lateral"><%=nota.nota_iniciativa%>/10</p>
+                        </div>
+                      </div>
+                    </li>
+                    
+                    <li>
+                      <div class="row">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/4-disciplina.png" class="icones-quesitos"/></div>
+                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Disciplina</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                          data-content="<%=nota.comentario_disciplina%>" data-placement="right"/>
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_disciplina < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_disciplina < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_disciplina * 10%>%" aria-valuenow="<%=nota.nota_disciplina%>" 
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <p class="texto-numero-lateral"><%=nota.nota_disciplina%>/10</p>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div class="row">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/4-responsabilidade.png"class="icones-quesitos"/></div>
+                          <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Responsabilidade</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                          data-content="<%=nota.comentario_responsabilidade%>" data-placement="right"/>
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_responsabilidade < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_responsabilidade < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_responsabilidade *10%>%" aria-valuenow="<%=nota.nota_responsabilidade%>"
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <p class="texto-numero-lateral"><%=nota.nota_responsabilidade%>/10</p>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div class="row">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/5-qualidade.png" class="icones-quesitos"/></div>
+                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Qualidade do Trabalho</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                          data-content="<%=nota.comentario_qualidade%>" data-placement="right"/>
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_qualidade < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_qualidade < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_qualidade *10%>%" aria-valuenow="<%=nota.nota_qualidade%>"
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <p class="texto-numero-lateral"><%=nota.nota_qualidade%>/10</p>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li>
+                      <div class="row">
+                        <div class="col-2" style="margin: auto"><img src="/imagens/6-aperfeicoamento.png" class="icones-quesitos"/></div>
+                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Aperfeiçoamento</span>
+                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                          data-content="<%=nota.comentario_aperfeicoamento%>" data-placement="right" />
+                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated
+                              <% if (nota.nota_aperfeicoamento < 6) { %>
+                                bg-danger
+                              <% } else if (nota.nota_aperfeicoamento < 9) { %>
+                                bg-warning
+                              <% } else { %>
+                                bg-success
+                              <% } %>"
+                              style="width: <%=nota.nota_aperfeicoamento *10%>%" aria-valuenow="<%=nota.nota_aperfeicoamento%>"
+                              aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <p class="texto-numero-lateral"><%=nota.nota_aperfeicoamento%>/10</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <!--Fim informações/pontuacoes lateral-->
+              </div>
+            <%}%>
+
+            
+     
+          <%})%>
+          <!--Fim container pontuações e dados pessoais-->
+
+        </div>
+      </div>
+      <!--Fim coluna lateral esquerda-->
+
+    </div>
+  </div>
+  <!--FIM VER NOTAS JÁ LANÇADAS-->
+    
+  <!--INICIO QUESTIONAMENTOS/RESPOSTAS-->
+
+
+   
+    <%questionamentos.forEach ((questionamento) => { %>
+      <%if (questionamento.funcionarioId == id) { %>
+        <% if (questionamento.aceito == 'SIM'){ %>
+          <br>
+          <div class="col-12 aceito">
+            <%=questionamento.titulo%> - <%=questionamento.periodoId%>° AVALIAÇÃO
+            <hr>
+                <h6><%=questionamento.descricao%></h6>
+            </div>
+            <%}%>
+
+            <% if (questionamento.aceito == 'NAO'){ %>
+              <br>
+              <div class="col-12 questionamento">
+                <%=questionamento.titulo%> - <%=questionamento.periodoId%>° AVALIAÇÃO
+                <hr>
+                    <h6><%=questionamento.descricao%></h6>
+                </div>
+                <%}%>         
+       
+                <%respostas.forEach((resposta) =>{ %>
+                  <% if (questionamento.id == resposta.questionamentoId) {%>
+
+                    <br>
+                    <div class="col-12 resposta">
+                    <%=resposta.titulo%> - <%=questionamento.periodoId%>° AVALIAÇÃO
+                    <hr>
+                    <h6><%=resposta.descricao%></h6>
+                    <input name="avaliador" value="<%=resposta.avaliador_nome%>" type="hidden"></input>
+                    
+                  </div>
+                    <%}%>
+                <% }) %>
+
+
+      <%}%>
+    <%})%>
+
+    <%comissoes.forEach((comissao) => { %>
+      <% if (id == comissao.funcionarioId) { %>
+        <br>
+        <div class="col-12 pedidorh">
+          <h6 class="text-center" style="font-weight: bold;">PEDIDO AO RH</h6>
+          <%=comissao.titulo%> - <%=comissao.periodoId%>° AVALIAÇÃO
+          <hr>
+              <h6><%=comissao.descricao%></h6>
+              <hr>
+              NOTAS QUESTIONADAS:
+
+            <p></p>
+              <%notas.forEach(nota => { %>
+                <%if (nota.funcionarioId == comissao.funcionarioId) { %>
+                  
+                  <% if (comissao.q_assiduidade == true) { %>
+                    <p> • ASSIDUIDADE: <span style="font-weight: 500;"><%= nota.nota_assiduidade %> </span></p>
+                  <% } %>
+
+                  <% if (comissao.q_pontualidade == true) { %>
+                    <p> • PONTUALIDADE: <span style="font-weight: 500;"><%= nota.nota_pontualidade %></span></p>
+                  <% } %>
+
+                  <% if (comissao.q_iniciativa == true) { %>
+                    <p> • INICIATIVA: <span style="font-weight: 500;"><%= nota.nota_iniciativa %></span></p>
+                  <% } %>
+
+                  <% if (comissao.q_disciplina == true) { %>
+                    <p> • DISCIPLINA: <span style="font-weight: 500;"><%= nota.nota_disciplina %></span></p>
+                  <% } %>
+
+                  <%if (comissao.q_responsabilidade == true) { %>
+                    <p> • RESPONSABILIDADE: <span style="font-weight: 500;"><%= nota.nota_aperfeicoamento %></span></p>
+                  <% } %>
+
+                  <% if (comissao.q_qualidade == true) { %>
+                    <p> • QUALIDADE DO TRABALHO: <span style="font-weight: 500;"><%= nota.nota_qualidade %></span></p>
+                  <% } %>
+
+                  <% if (comissao.q_aperfeicoamento) { %>
+                    <p> • APERFEIÇOAMENTO: <span style="font-weight: 500;"><%= nota.nota_aperfeicoamento %></span></p>
+                  <% } %>
+
+             
+
+              <%}%>
+              <%})%>
+          </div>
+      <%}%>
+    <%})%>
+    
+   <br>
+    <button class="btn btn-success ajuste-botao" style="float: right; margin-top: 49px"><img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"> GERAR RELATÓRIO</button>
+    
+  </form>
+  <!--FIM QUESTIONAMENTOS/RESPOSTAS-->
+
+  <div style="margin-left: 45px; margin-right: 45px; text-align: center;">
+    <form method="get" action="/painel/rh" class="mb-5">
+      <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
+    </form>
+  </div>
+  
+  <div style="margin-left: 45px; margin-right: 45px; text-align: center;">
+    <form method="POST" action="/comissao/resolvido" class="mb-5" onsubmit="confirmarfinalizar(event,this)">
+      <input name="finalizaId" value="<%=id%>" type="hidden">
+      <button class="btn btn-info ajuste-botao" data-toggle="popover" data-trigger="hover" data-content="Só finalize o pedido, após o relatório assinado por todas as partes!" data-placement="top"><img src="/imagens/finalizar.png" width="25px" style="padding-bottom: 5px;"> FINALIZAR PEDIDO</button>
+    </form>
+  </div>
+
+</body>
+
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>
+
+<script>
+  function confirmarfinalizar(event, form) {
+    event.preventDefault()
+    var decisao = confirm('Deseja realmente finalizar esse pedido? Todas as etapas, como reunião e assinar o relatório foram concluidas? ')
+    if (decisao) {
+      form.submit()
+    }
+  }
+</script>
+

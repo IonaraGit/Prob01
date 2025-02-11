@@ -1,0 +1,42 @@
+<%- include ('../../partials/configure_header.ejs') %> <%- include
+('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>FUNCIONÁRIOS - <%= setor.descricao %></h2>
+      </div>
+
+      <table class="table text-center rtable">
+        <thead>
+          <tr class="ajuste-tr">
+            <th>NOME</th>
+            <th>PERMISSÃO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% funcionarios.forEach(funcionario => { %> <% if(funcionario.setoreId
+          === setor.id) { %>
+          <tr class="ajuste-tr">
+            <td class="align-middle" value="funcionario.id">
+              <%= funcionario.nome %>
+            </td>
+            <% if(funcionario.permissoId === 3) { %>
+            <td class="align-middle" value="funcionario.id">SERVIDOR</td>
+            <% } else if(funcionario.permissoId === 1) { %>
+            <td class="align-middle" value="funcionario.id">ADM</td>
+            <% } else if (funcionario.permissoId === 2) { %>
+            <td class="align-middle" value="funcionario.id">CHEFIA</td>
+            <% } else if (funcionario.permissoId === 4) { %>
+            <td class="align-middle" value="funcionario.id">RH</td>
+          </tr>
+          <% }%> <% } %> <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+<%- include ('../../partials/configure_footer.ejs') %>

@@ -1,0 +1,29 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+
+
+<body class="fundologin login">
+
+  <h5 class="text-center sem_notas" style="background-color: #f8c7c7; padding: 11px; height: 50px; margin-top: 15px;">VOCÊ AINDA NÃO POSSUI PONTUAÇÕES LANÇADAS! <img src="/imagens/notas2.png" width="25px"> </h5>  
+
+</body>
+
+<style>
+  .sem_notas {
+    background-color: #d9d9d9;
+    padding: 11px;
+    height: 50px;
+    margin-top: 15px;
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-iteration-count: 3;
+    animation-delay: 1s;
+  }
+
+  @keyframes blink {
+    0% { background-color: #65db74; }
+    50% { background-color: #78abf8; }
+    100% { background-color: #d9d9d9; }
+  }
+</style>
+
+<%- include ('../../partials/configure_footer.ejs') %>

@@ -1,0 +1,50 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<body class="fundologin login">
+  <% if (mensagem == ' ') { %>
+  
+  <form method="get" action="/confere" onsubmit="return validarResposta()">
+  <div class="container">
+    <br />
+    <div>
+      <div>
+        <% funcionarios.forEach((funcionario) => { %>
+          <% if (matricula == funcionario.matricula) {%>
+            <input type="hidden" class="form-control text-uppercase" name="funcionario" value="<%=funcionario.id%>">
+            <h5 style="color: #ffff;"><%=funcionario.nome%>"</h5>
+            <br>
+
+            <h5 style="color: #ffff;">PERGUNTA SECRETA</h5>
+            <select class="form-select form-control fontes_input" aria-label="" name="pergunta_secreta" id="pergunta-secreta" disabled>
+              <option value="NOME-MAE" <%= funcionario.pergunta_secreta === 'NOME-MAE' ? 'selected' : '' %>>QUAL O NOME COMPLETO DA SUA MÃE? </option>
+              <option value="ANIMAL-ESTIMACAO" <%= funcionario.pergunta_secreta === 'ANIMAL-ESTIMACAO' ? 'selected' : '' %>>QUAL O NOME DO SEU PRIMEIRO ANIMAL DE ESTIMAÇÃO</option>
+              <option value="COR-FAVORITA" <%= funcionario.pergunta_secreta === 'COR-FAVORITA' ? 'selected' : '' %>>QUAL SUA COR FAVORITA?</option>
+              <option value="MELHOR-AMIGO" <%= funcionario.pergunta_secreta === 'MELHOR-AMIGO' ? 'selected' : '' %>>QUEM É SEU/SUA MELHOR AMIGO(A)?</option>
+              <option value="CIDADE-NASCEU" <%= funcionario.pergunta_secreta === 'CIDADE-NASCEU' ? 'selected' : '' %>>QUAL CIDADE VOCÊ NASCEU?</option>          
+            </select>
+
+            <br>
+            <input type="hidden" class="form-control text-uppercase fontes_input" name="resposta_secreta2" value="<%=funcionario.resposta_secreta%>">
+            
+            <input type="text" class="form-control text-uppercase fontes_input" name="resposta_secreta" required>
+            <br>
+            <h6 id="resposta-errada" style="display: none; text-align: center;" class="color-animation">Resposta Errada!</h6>
+          
+          <% }%>
+        <% }) %>  
+        <br>
+        <button class="btn btn-block bt-modal">PROSSEGUIR</button>
+      </div>
+    </div>
+  </div>
+  
+  </form>
+  <% } else {  %>
+    <div class="alert alert-danger text-center"><%= mensagem %></div>
+    <a href="/esqueci" class="btn btn-block bt-modal">VOLTAR</a>
+  <% } %>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+ 
+  <script src="/js/pergunta.js"></script>
+
+</body>

@@ -1,0 +1,30 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>EDITAR PERMISSÃO</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/permissoes/atualizar">
+          <h5>DESCRIÇÃO:</h5>
+          <input
+            class="form-control text-uppercase"
+            type="text"
+            name="descricao"
+            value="<%= permissao.descricao %>"
+          />
+          <br />
+          <input type="hidden" name="id" value="<%= permissao.id %>">
+          <button class="btn btn-block bt-modal">ATUALIZAR</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<%- include ('../../partials/configure_footer.ejs') %>

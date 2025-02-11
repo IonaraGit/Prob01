@@ -1,0 +1,33 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>CADASTRAR SETOR</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/setores/salvar">
+          <h5>DESCRIÇÃO:</h5>
+          <input
+            class="form-control text-uppercase"
+            type="text"
+            name="descricao"
+          />
+          <br />
+          <button class="btn btn-success ajuste-botao" style="float: right;">SALVAR <img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"></button>
+        </form>
+        <form method="GET" action="/admin/setores" class="mb-5">
+          <div>
+              <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<%- include ('../../partials/configure_footer.ejs') %>

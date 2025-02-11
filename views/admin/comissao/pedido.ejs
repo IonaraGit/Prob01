@@ -1,0 +1,171 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_servidor.ejs') %>
+
+<body class="fundonotas">
+
+<div class="col-10 background-banner-principal mx-auto" style="height: auto">
+
+  <div id="infospc" class="container">
+   <div>
+      <form method="POST" action="/comissao/rh/salvar">       
+        <h5>FALE COM A COMISSÃO DO ESTÁGIO PROBATÓRIO</h5>
+        <hr />
+        <div class="text-left">
+          <h6 class="questao-modal">Saiba que:</h6>
+          <p>
+            Este é um recurso, que você poderá utilizar, caso não esteja de acordo com sua avaliação, no estágio. Uma comissão blablabla blablabla blablabla blablabla blablabla blabla blablablabla
+          </p>
+          <hr />
+          <h6 class="questao-modal">Verifique</h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry
+          </p>
+          <hr />
+          <h6 class="questao-modal">Tudo certo?</h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry
+          </p>
+        </div>
+        
+          <hr />
+          
+          <% notas.forEach((nota) => {%>
+            <% funcionarios.forEach((funcionario) => {%>
+            <% if ((funcionario.id == id) && (nota.periodoId == periodo) && (funcionario.id == nota.funcionarioId)) {%>
+              
+             
+              <input name="servidor_id" value="<%=id%>" type="hidden">
+              <input name="servidor_nome" value="<%=funcionario.nome%>" type="hidden">
+              <input name="servidor_matricula" value="<%=funcionario.matricula%>" type="hidden">
+              <input name="periodo_questionado" value="<%=nota.periodoId%>" type="hidden">
+              <input name="email_servidor" value="<%=funcionario.email%>" type="hidden">
+              
+              
+
+              <br>
+        
+         
+              <%}%>
+              
+              <% if ((funcionario.id == nota.avaliador) && (nota.periodoId == periodo) && (nota.funcionarioId == id)) {%>
+            
+                <input name="email_chefia" value="<%=funcionario.email%>" type="hidden">
+                <br>
+                <div style="text-align: left;">
+                  <h6 class="questao-modal">Chefia: <span><input name="av_nome" value="<%=funcionario.nome%>" class="form-control" readonly></span></h6>
+                  <br>
+                  <h6 class="questao-modal">Periodo: <span><input name="periodo" value="<%=nota.periodoId%>" class="form-control" readonly></span></h6>
+
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_assiduidade%>" id="notaquestionada" name="nota_assiduidade">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Assiduidade: <span class="font-weight-normal"><%=nota.nota_assiduidade%></span></h6> 
+                      <p><%=nota.comentario_assiduidade%></p>
+                    </label>
+                    </label>
+                  </div>
+                  
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_pontualidade%>" name="nota_pontualidade" id="notaquestionada">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Pontualidade: <span class="font-weight-normal"><%=nota.nota_pontualidade%></span></h6>
+                      <p><%=nota.comentario_pontualidade%></p>
+                    </label> 
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_iniciativa%>" name="nota_iniciativa" id="notaquestionada">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Iniciativa: <span class="font-weight-normal"><%=nota.nota_iniciativa%></span></h6> 
+                      <p><%=nota.comentario_iniciativa%></p>
+                    </label>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_disciplina%>" name="nota_disciplina" id="notaquestionada">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Disciplina: <span class="font-weight-normal"><%=nota.nota_disciplina%></span></h6> 
+                      <p><%=nota.comentario_disciplina%></p>
+                    </label>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_responsabilidade%>" name="nota_responsabilidade" id="notaquestionada">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Responsabilidade: <span class="font-weight-normal"><%=nota.nota_responsabilidade%></span></h6> 
+                      <p><%=nota.comentario_responsabilidade%></p>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_qualidade%>" name="nota_qualidade" id="notaquestionada">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Qualidade do Trabalho: <span class="font-weight-normal"><%=nota.nota_qualidade%></span></h6> 
+                      <p><%=nota.comentario_qualidade%></p>
+                    </label>
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <br>
+                    <input class="form-check-input" type="checkbox" value="<%=nota.nota_aperfeicoamento%>" name="nota_aperfeicoamento" id="notaquestionada">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      <h6 class="questao-modal">Aperfeicoamento: <span class="font-weight-normal"><%=nota.nota_aperfeicoamento%></span></h6> 
+                      <p><%=nota.comentario_aperfeicoamento%></p>
+                    </label>
+                    </label>
+                  </div>
+                  
+                  
+
+                </div>
+              
+              
+              <input name="av_matricula" value="<%=funcionario.matricula%>" type="hidden">
+             
+            <%}%>
+        
+        
+          <% }) %>
+        
+          <%})%>
+         
+  
+
+          <h6 class="questao-modal text-left">Motivo:</h6>
+          <select class="form-select form-control fontes_input" aria-label="" name="titulo" id="pergunta-secreta">
+            <option value="NOTAS ABAIXO DO ESPERADO">NOTAS ABAIXO DO ESPERADO</option>
+            <option value="NÃO ENTENDI O COMENTÁRIO">NÃO ENTENDI O COMENTÁRIO</option>
+            <option value="NÃO ESTOU DE ACORDO COM A AVALIAÇÃO">NÃO ESTOU DE ACORDO COM A AVALIAÇÃO</option>
+            <option value="OUTROS">OUTROS</option>
+          </select>
+          <br>
+          <div class="form-group">
+            <h6 class="questao-modal text-left">Justifique:</h6>
+            <textarea class="form-control text-uppercase" id="exampleFormControlTextarea1" name="descricao" rows="4" required></textarea>
+          </div>
+      </div>
+      <div style="padding: 30px;">
+        <button class="btn btn-success">QUESTIONAR</button>
+        </form>
+   
+        <a href="/index"><button type="button" class="btn btn-danger"> FECHAR</button></a>
+        
+       
+      
+        
+    </div>
+  </div>
+</div>
+
+</body>
+
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>

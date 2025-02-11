@@ -1,0 +1,85 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_rh.ejs') %>
+
+<body class="fundonotas">
+  <br />
+  <hr />
+  <h5 class="text-center" style="background-color: #d9d9d9; padding: 11px; height: 50px;">PAINEL COMISSÃO - FINALIZADOS<img src="/imagens/notas2.png" width="25px"> </h5>
+  <hr />
+  <div class="container">
+    <div class="row" style="align-items: center;">
+      <div class="col-2">
+        <% funcionarios.forEach((funcionario) => { %>
+          <%if (teste.id == funcionario.id) {%>        
+            <img id="imagem-perfil-chefia" src="../../../<%= funcionario.imagem_perfil %>" alt="perfil" />
+          <%}%>
+        <% }) %>
+      </div>
+      <div class="col">
+        <h5 class="text-rigth">
+          <%=teste.nome%> 
+          <% setores.forEach(setor => { %>
+          <%if (setor.id == teste.setoreId){%>
+            <br>
+          <%=setor.descricao%>
+          <%}%>
+        <% }) %>
+        </h5>
+      </div>
+    </div>
+    <br>
+    
+    <table class="table text-center border">
+      <thead>
+        <thead>
+          <tr class="ajuste-tr">
+            <th>MATRICULA</th>
+            <th>SERVIDOR</th>
+            <th>DATA</th>    
+          </tr>
+        </thead>
+      </thead>
+      <!--INICIO TABELA PARA MOSTRAR SERVIDORES-->
+      <%comissoes.forEach((comissao) => {%>
+        <% if (comissao.resolvido == true) { %>
+          <tbody>
+       
+            <tr class="ajuste-tr">
+              
+                <tr class="ajuste-tr"> 
+                 
+                    <td class="align-middle ajuste-td"><%=comissao.matricula_servidor%></td>
+                    <td class="align-middle ajuste-td"><%=comissao.nome_servidor%></td>                
+                      
+                    <td class="align-middle" data-title=""><%= new Date(comissao.updatedAt).toLocaleString('pt-BR', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}) %>h</td>
+            </tr>
+          </tbody>
+    
+        <%}%>
+
+      
+      
+      <%})%>
+      <!--FIM TABELA PARA MOSTRAR SERVIDORES-->
+    </table>      
+  </div>  
+
+  
+<br>
+<br>
+
+</body>
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>
+
+<script>
+  function confirmardelete(event, form) {
+    event.preventDefault()
+    var decisao = confirm('Deletar permanentemente essa permissao?')
+    if (decisao) {
+      form.submit()
+    }
+  }
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">

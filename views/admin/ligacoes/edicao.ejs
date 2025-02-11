@@ -1,0 +1,61 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_servidor.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>Edição de Ligações</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/ligacoes/atualizar">
+          <input type="hidden" value="<%= ligacao.id %>" name="id">
+          <h5>CHEFIA:</h5>
+          <select name="chefia" class="form-control">
+          
+            <% funcionarios.forEach((funcionario) => { %> 
+              <% if (funcionario.id === ligacao.chefia) { %>
+                <option value="<%= funcionario.id %>" selected><%= funcionario.nome %></option>
+              <% }else { %>
+                <option value="<%= funcionario.id %>"><%= funcionario.nome %></option>
+            <%}}) %>
+                    
+          </select>
+          <br />
+          <h5>SERVIDOR:</h5>
+          <select name="servidor" class="form-control">
+          
+            <% funcionarios.forEach((funcionario) => { %> 
+              <% if (funcionario.id === ligacao.servidor) { %>
+                <option value="<%= funcionario.id %>" selected><%= funcionario.nome %></option>
+              <% }else { %>
+                <option value="<%= funcionario.id %>"><%= funcionario.nome %></option>
+            <%}}) %>
+                    
+          </select>
+          <br />
+          <h5>SETOR:</h5>
+          <select name="setor" class="form-control">
+          
+            <% setores.forEach((setor) => { %> 
+              <% if (setor.id === ligacao.setoreId) { %>
+                <option value="<%= setor.id %>" selected><%= setor.descricao %></option>
+              <% }else { %>
+                <option value="<%= setor.id %>"><%= setor.descricao %></option>
+            <%}}) %>
+                    
+          </select>
+
+         
+          
+          <br />
+          <button class="btn btn-block bt-modal">Atualizar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+<%- include ('../../partials/footer.ejs') %> 
+<%- include ('../../partials/configure_footer.ejs') %>
