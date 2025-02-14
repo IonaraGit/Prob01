@@ -13,8 +13,6 @@ const adminAuth = require ('../middlewares/adminAuth')
 const expirar = require('../middlewares/expirar');
 
 
-
-
 router.get('/pedido/comissao/:id/:periodo',  expirar, adminAuth,(req, res) =>{
 
   var id = req.params.id
@@ -39,7 +37,6 @@ router.get ('/painel/rh', adminAuth, expirar, (req, res) => {
         res.render('admin/comissao/aberto', {comissoes:comissoes, funcionarios: funcionarios, setores:setores})})})
   })
 })
-
 
 router.get ('/painel/inicio', adminAuth, expirar, (req, res) => {
   Comissao.findAll().then((comissoes) => {

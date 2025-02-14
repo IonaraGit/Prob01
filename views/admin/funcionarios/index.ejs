@@ -45,42 +45,45 @@
       </thead>
       
       <tbody>
-        <% resultado.funcionarios.rows.forEach(funcionario => { %> 
+        <% resultado.funcionarios.forEach(funcionario => { %> 
           <tr class="ajuste-tr">
             <td class="align-middle" data-title="MATRICULA:"><%= funcionario.matricula %></td>
             <td class="align-middle" data-title="CPF:"><%= funcionario.cpf %></td>
             <td class="align-middle" data-title="NOME:"><%= funcionario.nome %></td>
-            <% permissoes.forEach((permissao) => { %> 
-              <% if (permissao.id == funcionario.permissoId) { %>
-                <td class="align-middle" data-title="PERMISSÃO:"><%= permissao.descricao %></td>
-            <%}}) %>
-            <% setores.forEach((setor) => { %> 
-              <% if (setor.id == funcionario.setoreId) { %>
-                <td class="align-middle" data-title="SETOR:"><%= setor.descricao %></td>
-            <%}}) %>
+            
+            <% 
+              let permissaoDescricao = permissoes.find(p => p.id == funcionario.permissoId)?.descricao || 'Não informado';
+              let setorDescricao = setores.find(s => s.id == funcionario.setoreId)?.descricao || 'Não informado';
+            %>
+      
+            <td class="align-middle" data-title="PERMISSÃO:"><%= permissaoDescricao %></td>
+            <td class="align-middle" data-title="SETOR:"><%= setorDescricao %></td>
+            
             <td class="align-middle">
-              <a
-                href="/admin/funcionarios/editar/<%= funcionario.id %>"
-                class="btn btn-warning"
-                ><i class="bi bi-brush"></i>
-              </a>
-              <form
-                method="POST"
-                action="/funcionarios/deletar"
-                style="display: inline"
-                onsubmit="confirmardelete(event,this)"
-              >
-                <input type="hidden" name="id" value="<%= funcionario.id %>">
-                <button class="btn btn-danger ajuste_botao_delete">
+              <% if (funcionario.id !== funcionarioLogadoId) { %>
+                <a href="/admin/funcionarios/editar/<%= funcionario.id %>" class="btn btn-warning">
+                  <i class="bi bi-brush"></i>
+                </a>
+                <form method="POST" action="/funcionarios/deletar" style="display: inline" onsubmit="confirmardelete(event,this)">
+                  <input type="hidden" name="id" value="<%= funcionario.id %>">
+                  <button class="btn btn-danger ajuste_botao_delete">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </form>
+              <% } else { %>
+                <button class="btn btn-secondary" disabled>
+                  <i class="bi bi-brush"></i>
+                </button>
+                <button class="btn btn-secondary ajuste_botao_delete" disabled>
                   <i class="bi bi-trash3"></i>
                 </button>
-              </form>
+              <% } %>
             </td>
           </tr>
         <% }) %> 
-       
-  
       </tbody>
+      
+      
     </table>
     
   </div>

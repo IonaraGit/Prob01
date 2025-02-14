@@ -9,11 +9,51 @@ const Nota = connection.define('notas', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  nota_assiduidade1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_assiduidade2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_assiduidade3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_assiduidade4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_assiduidade5: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   comentario_assiduidade: {
     type: Sequelize.TEXT,
     allowNull: false
   },
   nota_pontualidade: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_pontualidade1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_pontualidade2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_pontualidade3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_pontualidade4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_pontualidade5: {
     type: Sequelize.INTEGER,
     allowNull: false
   },
@@ -25,11 +65,51 @@ const Nota = connection.define('notas', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  nota_iniciativa1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_iniciativa2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_iniciativa3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_iniciativa4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_iniciativa5: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   comentario_iniciativa: {
     type: Sequelize.TEXT,
     allowNull: false
   },
   nota_disciplina: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_disciplina1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_disciplina2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_disciplina3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_disciplina4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_disciplina5: {
     type: Sequelize.INTEGER,
     allowNull: false
   },
@@ -41,6 +121,26 @@ const Nota = connection.define('notas', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  nota_responsabilidade1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_responsabilidade2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_responsabilidade3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_responsabilidade4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_responsabilidade5: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   comentario_responsabilidade: {
     type: Sequelize.TEXT,
     allowNull: false
@@ -49,11 +149,51 @@ const Nota = connection.define('notas', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  nota_qualidade1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_qualidade2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_qualidade3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_qualidade4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_qualidade5: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   comentario_qualidade: {
     type: Sequelize.TEXT,
     allowNull: false
   },
   nota_aperfeicoamento: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_aperfeicoamento1: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_aperfeicoamento2: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_aperfeicoamento3: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_aperfeicoamento4: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  nota_aperfeicoamento5: {
     type: Sequelize.INTEGER,
     allowNull: false
   },

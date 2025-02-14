@@ -35,7 +35,6 @@ router.get('/relatorio/:id', adminAuth, expirar, (req, res) => {
   })})})})})})
 })
 
-
 //PDF
 router.post('/gerar/relatorio', adminAuth, expirar, (req, res) => {
 

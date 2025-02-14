@@ -7,12 +7,9 @@
  
   <!--Inicio container informacoes de progresso-->
   <div class="col-8 background-banner-principal mx-auto" style="height: auto";>
-    
-     <!--Inicio informações primeiro banner-->
-     <div id="infospc" class="container">
+    <!--Inicio informações primeiro banner-->
+    <div id="infospc" class="container">
       <div class="row mx-auto justify-content-md-center">
-        
-
         <table class="rtable table text-center table-borderless" style="z-index: 2;">
           <thead>
             <tr style="background: none;">
@@ -48,256 +45,491 @@
       </div>       
     </div>
     <!--Fim informações primeiro banner-->
-
-    
   </div>
   <!--Fim container informacoes de progresso-->
-   
-    
 
-  <h5 class="text-center" style="background-color: #d9d9d9; padding: 11px; height: 50px; margin-top: 15px;">LANÇAR NOTAS<img src="/imagens/notas2.png" width="25px"> </h5>
+  <!--Inicio das Avaliações-->
+  <h5 class="text-center txt-title-notas">LANÇAR NOTAS<img src="/imagens/notas2.png" width="25px"> </h5>
   <hr />
-    
+  <div class="container">
+    <form method="POST" action="/notas/salvar">
+      <% var quantidadeNotasLancadas = 1 %>
+      <div class="form-row">
+        <div class="col-sm-4 mb-3">
+          <h5 class="text-rigth">SENDO AVALIADO DE <input type="date" name="data_inicio" class="form-control font-weight-bold" required>  </h5>
+        </div>
+        <div class="col-sm-4 mb-3">
+          <h5>ATÉ <input type="date" name="data_fim" class="form-control font-weight-bold" required></h5>
+        </div>
+        <div class="col-sm-4 mb-3">
+          <h5>PERÍODO:
+           
+            <% funcionarios.forEach((funcionario) => { %>    
+              <% if (id == funcionario.id) { %>      
+                <% notas.forEach((nota) => { %>
+                    <% if (nota.funcionarioId == funcionario.id) { %>
+                        <% quantidadeNotasLancadas++ %>
+                    <% } %>
+                  <% }) %>
+              <%}%>
+            <%})%>
+                
+            <input type="text" name="periodo" value="<%=quantidadeNotasLancadas%>" class="form-control font-weight-bold" readonly>
+        </h5>
+        
   
- 
-
- 
- 
-
-
-  <!--INICIO DO FORMULARIO PARA LANÇAR AS NOTAS-->
-  <form method="POST" action="/notas/salvar" class="lancar_notas">
-    <input name="avaliador" value="<%=chefia_av.id%>" type="hidden"></input>
-    <input name="avaliador_nome" value="<%=chefia_av.nome%>" type="hidden"></input>
-    <input name="av_mat" value="<%=chefia_av.matricula%>" type="hidden"></input>
-    <% var quantidadeNotasLancadas = 1 %>
-    <% funcionarios.forEach((funcionario) => { %>
-      <% if (id == funcionario.id) { %>
-        <input name="funcionario" value="<%=funcionario.id%>" type="hidden"></input>
-        <input name="funcionario_matricula" value="<%=funcionario.matricula%>" type="hidden"></input>
-        <img src="/imagens/servidor2.png" width="42px"><input name="funcionario_nome" value="<%=funcionario.nome%>" type="hidden"><%=funcionario.nome%>
-        </input>
-       
-
-      <% }}) %>
-  
-
-      <br>
-      <br>
-    <div class="form-row">
-      <div class="col-sm-4 mb-3">
-        <h5 class="text-rigth">SENDO AVALIADO DE <input type="date" name="data_inicio" class="form-control font-weight-bold" required>  </h5>
+        </div>
       </div>
-      <div class="col-sm-4 mb-3">
-        <h5>ATÉ <input type="date" name="data_fim" class="form-control font-weight-bold" required></h5>
-      </div>
-      <div class="col-sm-4 mb-3">
-        <h5>PERÍODO:
-         
-          <% funcionarios.forEach((funcionario) => { %>    
-            <% if (id == funcionario.id) { %>      
-              <% notas.forEach((nota) => { %>
-                  <% if (nota.funcionarioId == funcionario.id) { %>
-                      <% quantidadeNotasLancadas++ %>
-                  <% } %>
-                <% }) %>
-            <%}%>
-          <%})%>
-              
-          <input type="text" name="periodo" value="<%=quantidadeNotasLancadas%>" class="form-control font-weight-bold" readonly>
-      </h5>
-      
+      <input name="avaliador" value="<%=chefia_av.id%>" type="hidden"></input>
+      <input name="avaliador_nome" value="<%=chefia_av.nome%>" type="hidden"></input>
+      <input name="av_mat" value="<%=chefia_av.matricula%>" type="hidden"></input>
 
-      </div>
-    </div>
-      
-    <div class="form-row">
+      <% funcionarios.forEach((funcionario) => { %>
+        <% if (id == funcionario.id) { %>
+          <input name="funcionario" value="<%=funcionario.id%>" type="hidden"></input>
+          <input name="funcionario_matricula" value="<%=funcionario.matricula%>" type="hidden"></input>
+          <input name="funcionario_nome" value="<%=funcionario.nome%>" type="hidden">
+          <h5 class="font-weight-bold">→ <%=funcionario.nome%></h5>
+        <% } %>
+      <% }) %>
+      <div id="div-assiduidade">
+        <p class="title-container-notas" id="title-assiduidade">Assiduidade <span id="totalScore-assiduidade"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-assiduidade"></div>
+        </div>
     
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Assiduidade" disabled>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_assiduidade" id="nota_assiduidade" required>
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_assiduidade" required>
-      </div>
-    </div>
-    <br>
+          <div class="question">
+              <p>1. O servidor compareceu regularmente ao trabalho durante o período avaliado?</p>
+              <label><input type="radio" name="q1Ass" value="0" required> Faltou injustificadamente mais de uma vez no período. <span class="valor-notas">(0 pts)</span></label><br>
+              <label><input type="radio" name="q1Ass" value="1" required> Faltou uma vez sem justificativa ou teve faltas justificadas recorrentes. <span class="valor-notas">(1 pt)</span></label><br>
+              <label><input type="radio" name="q1Ass" value="2" required> Compareceu a todos os dias ou teve apenas raras ausências justificadas. <span class="valor-notas">(2 pts)</span></label>
+          </div>
 
-    <div class="form-row">
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Pontualidade" disabled>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_pontualidade" id="nota_pontualidade">
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_pontualidade" required>
-      </div>
-    </div>
-    <br>
+          <div class="question">
+              <p>2. O servidor justificou adequadamente suas ausências, em conformidade comas normas??</p>
+              <label><input type="radio" name="q2Ass" value="0" required> Não justificou ou apresentou justificativas inadequadas para as ausências. <span class="valor-notas">(0 pts)</span></label><br>
+              <label><input type="radio" name="q2Ass" value="1" required> Justificou a maioria das auseências, mas houve atrasos ou inconsistências nas justificativas. <span class="valor-notas">(1 pts)</span></label><br>
+              <label><input type="radio" name="q2Ass" value="2" required> Justicou todas as ausências de forma clara e dentro das normas. <span class="valor-notas">(2 pts)</span></label>
+          </div>
 
-    <div class="form-row">
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Iniciativa" disabled>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_iniciativa" id="nota_iniciativa">
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_iniciativa" required>
-      </div>
-    </div>
-    <br>
+          <div class="question">
+              <p>3. O servidor permaneceu no local de trabalho durante o expediente, sem ausências injustificadas?</p>
+              <label><input type="radio" name="q3Ass" value="0" required> Ausentou-se sem justicativa durante o expediente mais de uma vez. <span class="valor-notas">(0 pts)</span></label><br>
+              <label><input type="radio" name="q3Ass" value="1" required> Ocorreram ausências pontuais e justicadas durante o expediente. <span class="valor-notas">(1 pt)</span></label><br>
+              <label><input type="radio" name="q3Ass" value="2" required> PPermaneceu no local de trabalho durante todo o expediente, cumprindo integralmente sua
+                jornada. <span class="valor-notas">(2 pts)</span></label>
+          </div>
 
-    <div class="form-row">
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Disciplina" disabled>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_disciplina" id="nota_disciplina">
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_disciplina" required>
-      </div>
-    </div>
-    <br>
+          <div class="question">
+              <p>4. Oservidorretornou pontualmente ao trabalho após intervalos, como almoço e café?</p>
+              <label><input type="radio" name="q4Ass" value="0" required> Retorna frequentemente com atrasos ou excede os intervalos estabelecidos. <span class="valor-notas">(0 pts)</span></label><br>
+              <label><input type="radio" name="q4Ass" value="1" required> Houve atrasos ocasionais, mas o retorno foi pontual na maior parte das vezes. <span class="valor-notas">(1 pt)</span></label><br>
+              <label><input type="radio" name="q4Ass" value="2" required> Retorna sempre pontualmente,respeitando integralmente os horários dos intervalos. <span class="valor-notas">(2 pts)</span></label>
+          </div>
 
-    <div class="form-row">
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Responsabilidade" disabled>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_responsabilidade" id="nota_responsabilidade">
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_responsabilidade" required>
-      </div>
-    </div>
-    <br>
+          <div class="question">
+              <p>5. Oservidor participou das reuniões e eventos institucionais obrigatórios?</p>
+              <label><input type="radio" name="q5Ass" value="0" required> Não participou de nenhuma reunião ou evento, sem justicativa válida. <span class="valor-notas">(0 pts)</span></label><br>
+              <label><input type="radio" name="q5Ass" value="1" required> Participou da maioria, mas justicou adequadamente as ausências em algumas ocasiões. <span class="valor-notas">(1 pt)</span></label><br>
+              <label><input type="radio" name="q5Ass" value="2" required> Participou de todas as reuniões e eventos obrigatórios, demonstrando compromisso. <span class="valor-notas">(2 pts)</span></label>
+          </div>
 
-    <div class="form-row">
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Qualidade de Trabalho" disabled>
+          <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_assiduidade" required>
+          </div>
       </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_qualidade" id="nota_qualidade">
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_qualidade" required>
-      </div>
-    </div>
-    <br>
+      <hr>
+      <div id="div-pontualidade" class="divs-margin">
+        <p class="title-container-notas mt-3" id="title-pontualidade">Pontualidade <span id="totalScore-pontualidade"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-pontualidade"></div>
+        </div>
 
-    <div class="form-row">
-      <div class="col-sm-3">
-        <input type="text" class="form-control font-weight-bold" placeholder="Aperfeiçoamento" disabled>
-      </div>
-      <div class="col-sm-2">
-        <select class="form-select form-control" aria-label="" name="nota_aperfeicoamento" id="nota_aperfeicoamento">
-          <option  disabled>Notas</option>
-          <option selected value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>
-      </div>
-      <div class="col-sm-7">
-        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_aperfeicoamento" required>
-      </div>
-    </div>  
-    <br>
+        <div class="question">
+          <p>1. O servidor cumpre os horários de entrada estabelecidos?</p>
+          <label><input type="radio" name="q1Pont" value="0" required> Chega atrasado mais de uma vez por semana ou com atrasos que somam mais de 15 minutos por semana. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q1Pont" value="1" required> Apresenta atrasos ocasionais (até uma vez por semana ou atrasos que não ultrapassam 15 minutos por semana). <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q1Pont" value="2" required> Cumpre rigorosamente os horários de entrada. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+      
+        <div class="question">
+          <p>2. O servidor cumpre os horários de saída estabelecidos?</p>
+          <label><input type="radio" name="q2Pont" value="0" required> Sai frequentemente antes do horário sem autorização ou justificativa. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q2Pont" value="1" required> Sai no horário na maior parte das vezes, mas com algumas exceções. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q2Pont" value="2" required> Cumpre rigorosamente os horários de saída. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>3. O servidor entrega tarefas e demandas dentro dos prazos estabelecidos?</p>
+          <label><input type="radio" name="q3Pont" value="0" required> Frequentemente deixa de entregar no prazo ou precisa ser lembrado. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q3Pont" value="1" required> Entrega a maioria das demandas dentro do prazo, com algumas exceções. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q3Pont" value="2" required> Sempre entrega as tarefas dentro dos prazos estabelecidos. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+      
+        <div class="question">
+          <p>4. O servidor registra corretamente os horários de saída e retorno dos intervalos de almoço?</p>
+          <label><input type="radio" name="q4Pont" value="0" required> Comete erros de registro mais de uma vez por mês. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q4Pont" value="1" required> Comete um erro de registro por mês. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q4Pont" value="2" required> Sempre registra corretamente os horários de saída e retorno dos intervalos. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+      
+        <div class="question">
+          <p>5. O servidor realiza pausas não previstas na CLT, como tomar café da manhã durante a jornada ou pausas para fumar?</p>
+          <label><input type="radio" name="q5Pont" value="0" required> Frequentemente faz pausas não autorizadas, prejudicando a rotina de trabalho. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q5Pont" value="1" required> Ocasionalmente realiza pausas não previstas, mas sem impacto significativo. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q5Pont" value="2" required> Não realiza pausas não autorizadas e cumpre integralmente a jornada. <span class="valor-notas">(2 pts)</span></label>
+        </div>
 
-    <button class="btn btn-success ajuste-botao" style="float: right;">SALVAR <img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"></button>
+        <div class="question">
+          <p>Observações: </p>
+          <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_pontualidade" required>
+        </div>
+      </div>
+      <hr>
+      <div id="div-iniciativa" class="divs-margin">
+        <p class="title-container-notas mt-3" id="title-iniciativa">Iniciativa<span id="totalScore-iniciativa"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-iniciativa"></div>
+        </div>
+
+        <div class="question">
+          <p>O servidor propõe soluções para problemas do setor ou atividades de trabalho?</p>
+          <label><input type="radio" name="q1Ini" value="0" required> Nunca propõe soluções, limitando-se apenas às orientações recebidas. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q1Ini" value="1" required> Propõe soluções ocasionalmente, mas sem consistência ou proatividade regular. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q1Ini" value="2" required> Frequentemente propõe soluções e colabora ativamente para melhorar o trabalho. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>2. O servidor realiza tarefas sem necessidade de cobranças constantes?</p>
+          <label><input type="radio" name="q2Ini" value="0" required> Necessita ser frequentemente cobrado para executar suas tarefas. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q2Ini" value="1" required> Realiza as tarefas com alguma autonomia, mas ainda precisa de cobranças ocasionais. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q2Ini" value="2" required> Realiza as tarefas com total autonomia, sem necessidade de cobranças. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>3. O servidor busca formas de melhorar os processos e métodos de trabalho?</p>
+          <label><input type="radio" name="q3Ini" value="0" required> Não demonstra interesse em melhorar processos ou métodos de trabalho. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q3Ini" value="1" required> Demonstra interesse em algumas situações, mas sem regularidade. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q3Ini" value="2" required> Busca ativamente formas de melhorar os processos e métodos de trabalho. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>4. O servidor identifica e resolve problemas no trabalho, mesmo antes de ser solicitado?</p>
+          <label><input type="radio" name="q4Ini" value="0" required> Não identifica problemas ou apenas reage quando solicitado. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q4Ini" value="1" required> Identifica e resolve problemas esporadicamente, mas sem consistência. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q4Ini" value="2" required> Identifica e resolve problemas de forma proativa e consistente. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>5. O servidor colabora com os colegas de trabalho e contribui para o fortalecimento da equipe?</p>
+          <label><input type="radio" name="q5Ini" value="0" required> Não colabora com os colegas ou age de forma individualista. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q5Ini" value="1" required> Colabora em algumas situações, mas sem frequência ou impacto significativo. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q5Ini" value="2" required> Sempre colabora de forma ativa e ajuda no fortalecimento da equipe. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+
+        <div class="question">
+          <p>Observações: </p>
+          <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_iniciativa" required>
+        </div>
+      </div>
+      <hr>
+      <div id="div-disciplina" class="divs-margin">
+        <p class="title-container-notas mt-3" id="title-disciplina">Disciplina<span id="totalScore-disciplina"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-disciplina"></div>
+        </div>
+
+        <div class="question">
+          <p>1. O servidor utiliza o tempo da jornada de trabalho para finalidades pessoais, como resolver questões particulares, acessar redes sociais, usar dispositivos pessoais ou praticar comércio na repartição?</p>
+          <label><input type="radio" name="q1Disc" value="0" required> Em mais de uma ocasião, utilizou o tempo da jornada de trabalho para finalidades pessoais, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q1Disc" value="1" required> Houve uma ocasião de uso inadequado do tempo de trabalho, mas alterou a conduta após orientação da chefia.  <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q1Disc" value="2" required> Não utilizou o tempo da jornada de trabalho para finalidades pessoais. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>2. O servidor cumpre as normas internas da instituição, incluindo o uso de EPIs adequados, quando aplicável, bem como as políticas de segurança e conduta no trabalho?</p>
+          <label><input type="radio" name="q2Disc" value="0" required> Em mais de uma ocasião, descumpriu normas internas ou não utilizou os EPIs obrigatórios, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q2Disc" value="1" required> Houve uma ocasião de falha no cumprimento das normas ou no uso dos EPIs, mas corrigiu a conduta após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q2Disc" value="2" required> Cumpriu integralmente as normas internas e utilizou corretamente os EPIs quando aplicáveis. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>3. O servidor respeita as orientações e determinações da chefia imediata, não questionando em público as decisões ou instruções recebidas? </p>
+          <label><input type="radio" name="q3Disc" value="0" required> Em mais de uma ocasião, desrespeitou ou questionou publicamente as decisões da chefia, mesmo após orientação. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q3Disc" value="1" required> Houve uma ocasião de questionamento público ou desrespeito, mas alterou a conduta após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q3Disc" value="2" required> Sempre respeitou as orientações da chefa e evitou questionamentos públicos. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>4. O servidor evita propagarfofocas, boatos ou darrespostas atravessadas amunícipes e colegas?</p>
+          <label><input type="radio" name="q4Disc" value="0" required> NEm mais de uma ocasião, propagou fofocas, boatos ou deu respostas atravessadas, mesmo após        orientação da chefa. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q4Disc" value="1" required> Houve uma ocasião de comportamento inadequado, mas alterou a conduta após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q4Disc" value="2" required> Sempre evitou comportamentos inadequados, tratando munícipes e colegas com respeito. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>5. O servidor veste-se de forma prossional e mantém o asseio pessoal adequado ao ambiente de trabalho? </p>
+          <label><input type="radio" name="q5Disc" value="0" required> Em mais de uma ocasião, apresentou vestimenta ou asseio inadequados, mesmo após orientação da chefia.  <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q5Disc" value="1" required> Houve uma ocasião de inadequação na vestimenta ou asseio, mas corrigiu a conduta após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q5Disc" value="2" required> Sempre apresentou vestimenta prossional e asseio pessoal adequados ao ambiente de trabalho. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+
+        <div class="question">
+          <p>Observações: </p>
+          <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_disciplina" required>
+        </div>
+      </div>
+      <hr>
+      <div id="div-responsabilidade" class="divs-margin">
+        <p class="title-container-notas mt-3" id="title-responsabilidade">Responsabilidade<span id="totalScore-responsabilidade"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-responsabilidade"></div>
+        </div>
+
+        <div class="question">
+          <p>1. O servidor cumpre as metas e prazos estabelecidos para as tarefas, mesmo sem supervisão constante?</p>
+          <label><input type="radio" name="q1Resp" value="0" required> Em mais de uma ocasião, não cumpriu metas ou prazos, mesmo após orientações da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q1Resp" value="1" required> Houve uma ocasião de falha no cumprimento de metas ou prazos, mas corrigiu após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q1Resp" value="2" required> Sempre cumpre as metas e prazos estabelecidos sem necessidade de supervisão. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>2. O servidor utiliza os recursos fornecidos pela instituição, como equipamentos, veículos, materiais e impressões, de forma responsável e sem desperdícios?</p>
+          <label><input type="radio" name="q2Resp" value="0" required> Em mais de uma ocasião, utilizou equipamentos, veículos ou materiais de forma inadequada ou causou desperdícios, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q2Resp" value="1" required> Houve uma ocasião de uso inadequado ou desperdício, mas corrigiu após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q2Resp" value="2" required> Sempre utilizou os recursos de forma responsável, evitando desperdícios e danos. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>3. O servidor mantém seu ambiente de trabalho organizado, sem acúmulo de tarefas ou materiais?</p>
+          <label><input type="radio" name="q3Resp" value="0" required> Em mais de uma ocasião, deixou o ambiente desorganizado ou acumulou tarefas, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q3Resp" value="1" required> Houve uma ocasião de desorganização ou acúmulo, mas corrigiu após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q3Resp" value="2" required> Sempre manteve o ambiente de trabalho organizado e funcional. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>4. O servidor respeita os procedimentos de segurança e cuida da conservação dos equipamentos e instalações de trabalho?</p>
+          <label><input type="radio" name="q4Resp" value="0" required> Em mais de uma ocasião, desrespeitou normas de segurança ou negligenciou a conservação de equipamentos e instalações, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q4Resp" value="1" required> Houve uma ocasião de falha, mas alterou a conduta após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q4Resp" value="2" required> Sempre respeitou os procedimentos de segurança e cuidou da conservação dos equipamentos e instalações. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>5. O servidor assume a responsabilidade por erros que cometeu e age para corrigi-los prontamente?</p>
+          <label><input type="radio" name="q5Resp" value="0" required> Em mais de uma ocasião, tentou transferir a responsabilidade por erros cometidos, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q5Resp" value="1" required> Houve uma ocasião em que hesitou em assumir responsabilidade, mas corrigiu após orientação da chefia. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q5Resp" value="2" required> Sempre assumiu seus erros e agiu prontamente para corrigir falhas. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+
+        <div class="question">
+          <p>Observações: </p>
+          <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_responsabilidade" required>
+        </div>
+      </div>
+      <hr>
+      <div id="div-qualidade" class="divs-margin">
+        <p class="title-container-notas mt-3" id="title-qualidade">Qualidade do Trabalho<span id="totalScore-qualidade"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-qualidade"></div>
+        </div>
+
+        <div class="question">
+          <p>1. O servidor entrega as tarefas com precisão e de acordo com os padrões exigidos pela chefia?</p>
+          <label><input type="radio" name="q1Qual" value="0" required> Frequentemente entrega tarefas com erros ou abaixo dos padrões exigidos, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q1Qual" value="1" required> Eventualmente entrega tarefas com falhas ou abaixo do padrão, mas as corrige após orientação. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q1Qual" value="2" required> Sempre entrega tarefas com precisão e de acordo com os padrões exigidos pela chefia. <span class="valor-notas">(2 pts)</span></label>
+      </div>
+      
+      <div class="question">
+          <p>2. O servidor realiza as tarefas sem necessidade de retrabalho?</p>
+          <label><input type="radio" name="q2Qual" value="0" required> Em mais de uma ocasião, apresentou tarefas que exigiram retrabalho significativo, mesmo após orientação. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q2Qual" value="1" required> Houve uma ocasião de retrabalho devido a falhas ou omissões, mas corrigiu o problema após orientação. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q2Qual" value="2" required> Realiza as tarefas sem necessidade de retrabalho, garantindo qualidade na primeira entrega. <span class="valor-notas">(2 pts)</span></label>
+      </div>
+      
+      <div class="question">
+          <p>3. O servidor demonstra habilidades técnicas adequadas ao cargo para realizar suas funções com excelência?</p>
+          <label><input type="radio" name="q3Qual" value="0" required> Em mais de uma ocasião, demonstrou dificuldades técnicas que prejudicaram o desempenho de suas funções. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q3Qual" value="1" required> Apresenta habilidades técnicas básicas, mas ocasionalmente enfrenta dificuldades em tarefas mais complexas. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q3Qual" value="2" required> Demonstra pleno domínio das habilidades técnicas exigidas para o cargo, realizando as funções com excelência. <span class="valor-notas">(2 pts)</span></label>
+      </div>
+      
+      <div class="question">
+          <p>4. O servidor acompanha mudanças ou atualizações nas normas, processos ou ferramentas, adaptando seu trabalho para garantir qualidade?</p>
+          <label><input type="radio" name="q4Qual" value="0" required> Ignora mudanças ou atualizações, mantendo práticas desatualizadas, mesmo após orientação da chefia. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q4Qual" value="1" required> Adapta-se às mudanças de forma parcial, apresentando dificuldades iniciais ou necessitando de supervisão frequente. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q4Qual" value="2" required> Acompanha e adapta-se prontamente às mudanças, garantindo que o trabalho atenda aos novos padrões ou processos. <span class="valor-notas">(2 pts)</span></label>
+      </div>
+      
+      <div class="question">
+          <p>5. O servidor desempenha as tarefas com eficiência igual ou superior à de seus colegas de trabalho ou de outros servidores com funções parecidas?</p>
+          <label><input type="radio" name="q5Qual" value="0" required> Apresenta eficiência significativamente inferior à de colegas ou servidores em funções semelhantes. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q5Qual" value="1" required> Apresenta eficiência compatível com a média dos colegas ou servidores com funções semelhantes. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q5Qual" value="2" required> Desempenha as tarefas com eficiência superior à de colegas ou servidores em funções semelhantes. <span class="valor-notas">(2 pts)</span></label>
+      </div>
+      
+        <div class="question">
+          <p>Observações: </p>
+          <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_qualidade" required>
+        </div>
+      </div>
+      <hr>
+      <div id="div-aperfeicoamento" class="divs-margin">
+        <p class="title-container-notas mt-3" id="title-aperfeicoamento">Aperfeiçoamento <span id="totalScore-aperfeicoamento"> - 0 pts</span></p>
+        <div class="progress-container">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar-aperfeicoamento"></div>
+        </div>
 
         
-  </form>
-  <form method="POST" action="/admin/notas/voltar" class="mb-5">
-    <div style="margin-left: 45px; margin-right: 45px;">
-      <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
-    </div>
-  </form>
-  <!--FIM DO FORMULARIO PARA LANÇAR AS NOTAS-->
- 
+        <div class="question">
+          <p>1. O servidor realizou cursos de aperfeiçoamento com duração mínima de 40 (quarenta) horas no período avaliado?</p>
+          <label><input type="radio" name="q1Ape" value="0" required> Não realizou nenhum curso de aperfeiçoamento durante o período. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q1Ape" value="1" required> Realizou pelo menos um curso, mas com duração inferior a 40 (quarenta) horas. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q1Ape" value="2" required> Realizou pelo menos um curso de aperfeiçoamento com duração mínima de 40 (quarenta) horas. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>2. O curso realizado pelo servidor é pertinente às atribuições de seu cargo ou área de atuação?</p>
+          <label><input type="radio" name="q2Ape" value="0" required> Não apresentou cursos relacionados às suas funções ou área de atuação. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q2Ape" value="1" required> O curso possui relevância parcial para as atribuições do cargo, mas sem aplicação direta no trabalho. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q2Ape" value="2" required> O curso realizado é diretamente relacionado às atribuições do cargo e aplicável ao desempenho da função. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>3. O servidor aplicou os conhecimentos adquiridos no curso para melhorar seu desempenho profissional?</p>
+          <label><input type="radio" name="q3Ape" value="0" required> Não demonstrou aplicação prática ou melhoria no desempenho após a realização do curso. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q3Ape" value="1" required> Apresentou aplicação parcial dos conhecimentos adquiridos, mas sem impacto significativo no desempenho. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q3Ape" value="2" required> Aplicou de forma clara os conhecimentos adquiridos, demonstrando impacto positivo no desempenho. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>4. O servidor demonstrou crescimento profissional ou técnico como resultado dos cursos realizados?</p>
+          <label><input type="radio" name="q4Ape" value="0" required> Não demonstrou crescimento profissional ou técnico perceptível após os cursos. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q4Ape" value="1" required> Houve algum crescimento profissional ou técnico, mas sem impacto significativo nas funções exercidas. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q4Ape" value="2" required> Demonstrou crescimento profissional ou técnico evidente, contribuindo para o exercício das funções. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+        
+        <div class="question">
+          <p>5. O servidor participou de cursos, capacitações ou treinamentos oferecidos direta ou indiretamente pela Prefeitura Municipal?</p>
+          <label><input type="radio" name="q5Ape" value="0" required> Não participou de nenhum curso ou capacitação oferecida diretamente ou indiretamente pela Prefeitura. <span class="valor-notas">(0 pts)</span></label><br>
+          <label><input type="radio" name="q5Ape" value="1" required> Participou de algumas atividades de capacitação, mas sem regularidade ou impacto perceptível. <span class="valor-notas">(1 pt)</span></label><br>
+          <label><input type="radio" name="q5Ape" value="2" required> Participou ativamente das capacitações oferecidas e demonstrou comprometimento com o aprendizado. <span class="valor-notas">(2 pts)</span></label>
+        </div>
+
+        <div class="question">
+          <p>Observações: </p>
+          <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_aperfeicoamento" required>
+        </div>
+      </div>
+      <button class="btn btn-success ajuste-botao" style="float: right;" onclick="nextQuestionnaire()">PRÓXIMO <img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"></button>
+    </form>  
+    <form method="POST" action="/admin/notas/voltar" class="mb-5">
+      <div style="margin-right: 45px;">
+          <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- BARRA DE PROGRESSO -->
+  <script>
+    // Função para calcular a pontuação total de cada seção
+    function atualizarPontuacao() {
+        let pontuacaoAssiduidade = 0;
+        let pontuacaoPontualidade = 0;
+        let pontuacaoIniciativa = 0;
+        let pontuacaoDisciplina = 0;
+        let pontuacaoResponsabilidade = 0;
+        let pontuacaoQualidade = 0
+        let pontuacaoAperfeicoamento = 0
+
+        // Calcular a pontuação para a assiduidade
+        document.querySelectorAll('#div-assiduidade input[type="radio"]:checked').forEach((input) => {
+          pontuacaoAssiduidade += parseInt(input.value);
+        });
+
+        // Calcular a pontuação para a pontualidade
+        document.querySelectorAll('#div-pontualidade input[type="radio"]:checked').forEach((input) => {
+          pontuacaoPontualidade += parseInt(input.value);
+        });
+
+        // Calcular a pontuação para a iniciativa
+        document.querySelectorAll('#div-iniciativa input[type="radio"]:checked').forEach((input) => {
+          pontuacaoIniciativa += parseInt(input.value);
+        })
+
+        // Calcular a pontuação para a disciplina
+        document.querySelectorAll('#div-disciplina input[type="radio"]:checked').forEach((input) => {
+          pontuacaoDisciplina += parseInt(input.value);
+        })
+
+        // Calcular a pontuação para a responsabilidade
+        document.querySelectorAll('#div-responsabilidade input[type="radio"]:checked').forEach((input) => {
+          pontuacaoResponsabilidade += parseInt(input.value);
+        })
+
+        // Calcular a pontuação para a qualidade
+        document.querySelectorAll('#div-qualidade input[type="radio"]:checked').forEach((input) => {
+          pontuacaoQualidade += parseInt(input.value);
+        })
+
+        // Calcular a pontuação para a aperfeiçoamento
+        document.querySelectorAll('#div-aperfeicoamento input[type="radio"]:checked').forEach((input) => {
+          pontuacaoAperfeicoamento += parseInt(input.value);
+        })
+
+        // Atualizar as barras de progresso
+        atualizarBarraProgresso('assiduidade', pontuacaoAssiduidade);
+        atualizarBarraProgresso('pontualidade', pontuacaoPontualidade);
+        atualizarBarraProgresso('iniciativa', pontuacaoIniciativa);
+        atualizarBarraProgresso('disciplina', pontuacaoDisciplina);
+        atualizarBarraProgresso('responsabilidade', pontuacaoResponsabilidade);
+        atualizarBarraProgresso('qualidade', pontuacaoQualidade);
+        atualizarBarraProgresso('aperfeicoamento', pontuacaoAperfeicoamento);
+        
+
+        // Atualizar os totais de pontuação
+        document.getElementById('totalScore-assiduidade').textContent = ` - ${pontuacaoAssiduidade} pts`;
+        document.getElementById('totalScore-pontualidade').textContent = ` - ${pontuacaoPontualidade} pts`;
+        document.getElementById('totalScore-iniciativa').textContent = ` - ${pontuacaoIniciativa} pts`;
+        document.getElementById('totalScore-disciplina').textContent = ` - ${pontuacaoDisciplina} pts`;
+        document.getElementById('totalScore-responsabilidade').textContent = ` - ${pontuacaoResponsabilidade} pts`;
+        document.getElementById('totalScore-qualidade').textContent = ` - ${pontuacaoQualidade} pts`;
+        document.getElementById('totalScore-aperfeicoamento').textContent = ` - ${pontuacaoAperfeicoamento} pts`;
+    }
+
+    // Função para atualizar a barra de progresso
+    function atualizarBarraProgresso(tipo, pontos) {
+        const barra = document.getElementById(`progressBar-${tipo}`);
+        const totalPerguntas = 5; // Total de perguntas por seção
+        const porcentagem = (pontos / (totalPerguntas * 2)) * 100; // Cada pergunta tem 2 pontos no máximo
+
+        // Definir a cor da barra com base nos pontos
+        let cor = '';
+        if (pontos >= 1 && pontos <= 4) {
+            cor = 'red'; // Vermelho para notas de 1 a 4
+        } else if (pontos >= 5 && pontos <= 7) {
+            cor = '#eeb818'; // Amarelo para notas de 5 a 7
+        } else if (pontos >= 8 && pontos <= 10) {
+            cor = 'green'; // Verde para notas de 8 a 10
+        }
+
+        // Ajustar o estilo da barra
+        barra.style.width = `${porcentagem}%`;
+        barra.style.backgroundColor = cor;
+    }
+
+    // Adicionar os ouvintes de eventos para os inputs de tipo rádio
+    document.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.addEventListener('change', atualizarPontuacao);
+    });
+
+    // Chamada inicial para calcular a pontuação
+    atualizarPontuacao();
+
+  </script>
+
 </body>
 
 <%- include ('../../partials/footer.ejs') %>

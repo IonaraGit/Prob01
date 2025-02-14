@@ -14,9 +14,6 @@ const adminUser = require ('../middlewares/adminUser')
 const expirar = require('../middlewares/expirar')
 
 
-
-
-
 //LOGIN
 router.get ('/', (req, res) => {
  
@@ -167,50 +164,63 @@ router.get ('/semnotas', expirar, (req, res) => {
   res.render('admin/notas/semnota')
 }) 
 
-router.get ('/logout', (req, res) => {
-  req.session.funcionario = undefined;
-  res.redirect('/login')
-})
+router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Erro ao destruir a sessão:', err);
+      return res.redirect('/'); // Se houver erro, redireciona para a página inicial
+    }
+    res.clearCookie('connect.sid'); // Limpa o cookie da sessão
+    return res.redirect('/login');
+  });
+});
+
 
 router.get('/esqueci', (req, res) => {
   res.render('admin/login/esqueci')
 })
 
 //PAGINAÇÃO
-router.get('/admin/funcionarios/index/:num', adminAuth, adminUser, expirar, (req, res) =>{
-
-  let limit = parseInt(req.query.limit) || 10; // VALOR PADRÃO DE ITENS MOSTRADOS = 10
-  const pagina = parseInt(req.params.num) || 1; // VALOR PADRÃO DO NUMERO DA PAGINA = 10
+router.get('/admin/funcionarios/index/:num', adminAuth, adminUser, expirar, (req, res) => {
+  let limit = parseInt(req.query.limit) || 10; 
+  const pagina = parseInt(req.params.num) || 1; 
   const offset = (pagina - 1) * limit;
      
-    Funcionario.findAndCountAll({
-      
-      limit: limit, 
-      offset: offset
+  Funcionario.findAndCountAll({
+    limit: limit, 
+    offset: offset
+  }).then(funcionarios => {   
+    Permissao.findAll().then(permissoes => {
+      Setor.findAll().then(setores => {
+        
+        let totalFuncionarios = funcionarios.count;
+        if (limit > totalFuncionarios) {
+          limit = totalFuncionarios;
+        }
 
-    }).then(funcionarios => {   
+        const resultado = {
+          paginacao: pagina,
+          next: (pagina * limit) < totalFuncionarios,
+          funcionarios: funcionarios.rows || [], // Garante que sempre será um array
+          totalFuncionarios: totalFuncionarios
+        };
 
-      Permissao.findAll().then(permissoes => {
-        Setor.findAll().then(setores => {
-          
-      let totalFuncionarios = funcionarios.count;
-
-      if (limit > totalFuncionarios){
-        limit = totalFuncionarios 
-      }
-
-      const resultado = {
-        paginacao: pagina,
-        next: (pagina * limit) < totalFuncionarios,
-        funcionarios: funcionarios,
-        totalFuncionarios: totalFuncionarios
-      }
-      res.render('admin/funcionarios/index', {resultado, limit, funcionarios, permissoes, setores}) 
-   })
-  })
-}).catch(err => {
-  res.redirect('/login')})
-})
+        console.log("FUNCIONÁRIOS:", resultado.funcionarios); // Debug
+        res.render('admin/funcionarios/index', {
+          resultado,
+          limit,
+          funcionarios: resultado.funcionarios, // Alterado
+          permissoes,
+          setores,
+          funcionarioLogadoId: req.session.funcionario.id 
+        });
+      });
+    });
+  }).catch(err => {
+    console.error("Erro ao buscar funcionários:", err);
+    res.redirect('/login');
+  });
+});
 
 
 router.get ('/admin/funcionarios/novo', adminAuth, adminUser, expirar, (req, res) => {

@@ -32,13 +32,19 @@
               <% funcionarios.forEach((funcionario) => { %>
                 <% if (teste.id== funcionario.id) { %>
                   <% contadorNotas++; %>
-                  <% somaNotasAssiduidade += nota.nota_assiduidade; %>
-                  <% somaNotasPontualidade += nota.nota_pontualidade; %>
-                  <% somaNotasIniciativa += nota.nota_iniciativa %>
-                  <% somaNotasDisciplina += nota.nota_disciplina %>
-                  <% somaNotasResponsabilidade += nota.nota_responsabilidade %>
-                  <% somaNotasQualidade += nota.nota_qualidade %>
-                  <% somaNotasAperfeicoamento += nota.nota_aperfeicoamento %>            
+                  <% somaNotasAssiduidade += nota.nota_assiduidade1 + nota.nota_assiduidade2 + nota.nota_assiduidade3 + nota.nota_assiduidade4+ nota.nota_assiduidade5; %>
+
+                  <% somaNotasPontualidade += nota.nota_pontualidade1 + nota.nota_pontualidade2 + nota.nota_pontualidade3 + nota.nota_pontualidade4 + nota.nota_pontualidade5; %>
+
+                  <% somaNotasIniciativa += nota.nota_iniciativa1 + nota.nota_iniciativa2 + nota.nota_iniciativa3 + nota.nota_iniciativa4 + nota.nota_iniciativa5 %>
+
+                  <% somaNotasDisciplina += nota.nota_disciplina1 +  nota.nota_disciplina2 + nota.nota_disciplina3 + nota.nota_disciplina4 + nota.nota_disciplina5%>
+
+                  <% somaNotasResponsabilidade += nota.nota_responsabilidade1 +  nota.nota_responsabilidade2 + nota.nota_responsabilidade3 + nota.nota_responsabilidade4 + nota.nota_responsabilidade5 %>
+
+                  <% somaNotasQualidade += nota.nota_qualidade1 + nota.nota_qualidade2 + nota.nota_qualidade3 + nota.nota_qualidade4 + nota.nota_qualidade5 %>
+
+                  <% somaNotasAperfeicoamento += nota.nota_aperfeicoamento1 +  nota.nota_aperfeicoamento2 + nota.nota_aperfeicoamento3 + nota.nota_aperfeicoamento4 + nota.nota_aperfeicoamento5%>            
                 <% } %>
               <% }) %>  
             <% } %>
@@ -406,6 +412,7 @@
               %>
  
               <div class="col-12">
+              
              <%funcionarios.forEach((funcionario) => {%>
               <%if (funcionario.id == teste.id) {%>
                 <%respostas.forEach((resposta) =>{%>
@@ -456,10 +463,21 @@
               
 
               <!-- Inicio tabela -->
+               
               <div class="container d-flex justify-content-center">
+                
                 <!--obs apagar a de baixo e descomentar essa, caso queira tirar o collapse>-->
                 <div class="transicao-tabela collapse" id="tabela-dados" style="width: 600px">
                   <!--<div id="tabela-dados"> Div sem collapse-->
+                  <div class="row">
+                    <div class="col-12 container-ver-completo">
+                      <a class="btn btn-danger btn-ver-completo" href="#" onclick="gerarPDF()">
+                        <i class="bi bi-filetype-pdf"> Ver completo </i>
+                    </a>
+           
+                    </div>
+                  </div>
+                      
                   <table class="table border mt-3">
                     <thead class="text-center">
                       <tr>
@@ -471,7 +489,8 @@
                     <tbody>
                       <tr class="ajuste-tr">
                         <td class="ajuste-td">Assiduidade</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_assiduidade%></td>
+                        <% const nota_total_assiduidade = (nota.nota_assiduidade1 +  nota.nota_assiduidade2 + nota.nota_assiduidade3 + nota.nota_assiduidade4 + nota.nota_assiduidade5) %>
+                        <td class="text-center ajuste-td"><%=nota_total_assiduidade%></td>
                         <td class="td3 text-center ajuste-td" data-toggle="popover" title="Assiduidade"
                         data-trigger="hover"
                         data-placement="top"
@@ -481,7 +500,8 @@
                       </tr>
                       <tr class="ajuste-tr">
                         <td class="ajuste-td">Pontualidade</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_pontualidade%></td>
+                         <% const nota_total_pontualidade = (nota.nota_pontualidade1 +  nota.nota_pontualidade2 + nota.nota_pontualidade3 + nota.nota_pontualidade4 + nota.nota_pontualidade5) %>
+                        <td class="text-center ajuste-td"><%= nota_total_pontualidade%></td>
                         <td class="td3 text-center ajuste-td" data-toggle="popover"
                         title="Pontualidade"
                         data-trigger="hover"
@@ -492,7 +512,8 @@
                       </tr>
                       <tr  class="ajuste-tr">
                         <td class="ajuste-td">Iniciativa</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_iniciativa%></td>
+                        <% const nota_total_iniciativa = (nota.nota_iniciativa1 +  nota.nota_iniciativa2 + nota.nota_iniciativa3 + nota.nota_iniciativa4 + nota.nota_iniciativa5) %>
+                        <td class="text-center ajuste-td"><%=nota_total_iniciativa%></td>
                         <td class="td3 text-center ajuste-td"
                         data-toggle="popover"
                         title="Iniciativa"
@@ -504,7 +525,8 @@
                       </tr>
                       <tr class="ajuste-tr">
                         <td class="ajuste-td">Disciplina</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_disciplina%></td>
+                        <% const nota_total_disciplina = (nota.nota_disciplina1 +  nota.nota_disciplina2 + nota.nota_disciplina3 + nota.nota_disciplina4 + nota.nota_disciplina5) %>
+                        <td class="text-center ajuste-td"><%=nota_total_disciplina%></td>
                         <td class="td3 text-center ajuste-td"
                         data-toggle="popover"
                         title="Disciplina"
@@ -516,7 +538,8 @@
                       </tr>
                       <tr class="ajuste-tr">
                         <td class="ajuste-td">Responsabilidade</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_responsabilidade%></td>
+                        <% const nota_total_responsabilidade = (nota.nota_responsabilidade1 +  nota.nota_responsabilidade2 + nota.nota_responsabilidade3 + nota.nota_responsabilidade4 + nota.nota_responsabilidade5) %>
+                        <td class="text-center ajuste-td"><%=nota_total_responsabilidade%></td>
                         <td class="td3 text-center ajuste-td"
                         data-toggle="popover"
                             title="Responsabilidade"
@@ -528,7 +551,8 @@
                       </tr>
                       <tr class="ajuste-tr">
                         <td class="ajuste-td">Qualidade do Trabalho</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_qualidade%></td>
+                        <% const nota_total_qualidade = (nota.nota_qualidade1 +  nota.nota_qualidade2 + nota.nota_qualidade3 + nota.nota_qualidade4 + nota.nota_qualidade5) %>
+                        <td class="text-center ajuste-td"><%=nota_total_qualidade%></td>
                         <td class="td3 text-center ajuste-td"
                         data-toggle="popover"
                             title="Qualidade do Trabalho"
@@ -540,7 +564,8 @@
                       </tr>
                       <tr>
                         <td class="ajuste-td">Aperfeiçoamento</td>
-                        <td class="text-center ajuste-td"><%=nota.nota_aperfeicoamento%></td>
+                        <% const nota_total_aperfeicoamento = (nota.nota_aperfeicoamento1 +  nota.nota_aperfeicoamento2 + nota.nota_aperfeicoamento3 + nota.nota_aperfeicoamento4 + nota.nota_aperfeicoamento5) %>
+                        <td class="text-center ajuste-td"><%=nota_total_aperfeicoamento%></td>
                         <td class="td3 text-center ajuste-td"
                         data-toggle="popover"
                             title="Aperfeiçoamento"
@@ -552,11 +577,14 @@
                       </tr>
                     </tbody>
                   </table>
+                
                   <!--</div> Div sem collapse -->
                   <div style="text-align: center;">
                     <a class="btn btn-info" style="float: left; margin-bottom: 15px" href="" data-toggle="modal" data-target="#questionado">
                       <i class="bi bi-clipboard-data"></i> Ver Questionamentos
                     </a>
+                
+                 
                     
                 
                     <% let naoaceito = "NAO" %>
@@ -649,7 +677,7 @@
                   <!--Q1 - A1-- Q2 -->
                   <% if ((naoaceito == 'NAO') && (nota.periodoId == 2) && (questaonao == 2) && (questaosim == 1)) {%>
                     <a class="btn btn-success" style="float: right; margin-bottom: 15px" href="/aceito/<%=nota.funcionarioId%>/<%=nota.periodoId%>">
-                      <i class="bi bi-clipboard-check"></i> Aceitar AvaliaçãO
+                      <i class="bi bi-clipboard-check"></i> Aceitar Avaliação
                     </a>
                   <%}%>
 
@@ -688,9 +716,11 @@
                   
                   </div>
                   
-
+            
+                  </div>
+                  
                 </div>
-                
+              
                 <!--Div com collapse-->
                 <!--Fim tabela-->
               
@@ -935,4 +965,15 @@
         rangeInput.value = fixedValue;
     }
 }
+</script>
+<!-- PDF -->
+<script>
+  function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.text("Olá, este é o conteúdo do seu PDF!", 10, 10);
+    doc.save("documento.pdf"); // Faz o download do PDF
+}
+
 </script>

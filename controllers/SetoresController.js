@@ -68,7 +68,6 @@ router.post('/setores/deletar', adminAuth, adminUser, expirar, (req, res) => {
   }
 })
 
-
 router.get('/admin/setores/edicao/:id', adminAuth, adminUser, expirar, (req, res) => {
   var id = req.params.id
 
@@ -115,7 +114,6 @@ router.get('/admin/setores/ver/:setorId', adminAuth, adminUser, expirar, (req, r
     res.redirect('/login')})
 
 })
-
 
 router.get('/admin/setores/ver/:setorId', adminAuth, adminUser, expirar, (req, res) => {
 

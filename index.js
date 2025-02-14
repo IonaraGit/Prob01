@@ -35,7 +35,7 @@ const Comissao = require ('./models/Comissao')
 //SESSIONS
 app.use(session({
   secret: 'qualquercoisa',
-  cookie: {maxAge: 900000} //VALOR EM MILISEGUNDOS - 15 MINUTOS
+  cookie: {maxAge: 900000000} //VALOR EM MILISEGUNDOS - 15 MINUTOS
 }))
 
 //VIEW ENGINE
@@ -55,6 +55,13 @@ connection.authenticate()
   }).catch((err) => {
     console.log(`Aconteceu um erro: ${err}`)
 })
+
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+});
 
 //PREFIXOS DAS ROTAS
 app.use('/', FuncionariosController)

@@ -1,0 +1,298 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_chefia.ejs') %>
+
+
+<body class="fundonotas">
+  <br />
+ 
+  <!--Inicio container informacoes de progresso-->
+  <div class="col-8 background-banner-principal mx-auto" style="height: auto";>
+    
+     <!--Inicio informações primeiro banner-->
+     <div id="infospc" class="container">
+      <div class="row mx-auto justify-content-md-center">
+        
+
+        <table class="rtable table text-center table-borderless" style="z-index: 2;">
+          <thead>
+            <tr style="background: none;">
+              <th><i class="bi bi-circle-fill" style="color: rgb(60, 60, 238);"></i></th>
+              <th><i class="bi bi-square-fill" style="color: rgb(53, 151, 53);"></i></th>
+              <th><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+              <th><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+            </tr>
+          </thead>
+    
+          <tbody>
+            
+            <tr id="response-info" style="background: none;">
+              <td class="align-middle pb-0 font-weight-bold">Ingresso: </td>
+              <td class="align-middle pb-0 font-weight-bold">1° Avaliação</td>
+              <td class="align-middle pb-0 font-weight-bold">2° Avaliação</td>
+              <td class="align-middle pb-0 font-weight-bold">3° Avaliação</td>
+            </tr>
+
+            <tr style="background: none;">
+              <th id="response-ajuste-icone"><i class="bi bi-circle-fill" style="color: rgb(60, 60, 238);"></i></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="INGRESSO:" style="font-size: 14px;">18/01/2022</td>
+              <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(53, 151, 53);"></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="1° AVALIAÇÃO:" style="font-size: 14px;">18/01/2023</td>
+              <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="2° AVALIAÇÃO:" style="font-size: 14px;">18/01/2024</td>
+              <th id="response-ajuste-icone"><i class="bi bi-square-fill" style="color: rgb(248, 81, 81);"></i></th>
+              <td class="align-middle ajuste-cor-tabela-resp" data-title="3° AVALIAÇÃO:" style="font-size: 14px;">18/01/2025</td>
+            </tr>
+
+          </tbody>
+        </table>  
+      </div>       
+    </div>
+    <!--Fim informações primeiro banner-->
+
+    
+  </div>
+  <!--Fim container informacoes de progresso-->
+   
+    
+
+  <h5 class="text-center" style="background-color: #d9d9d9; padding: 11px; height: 50px; margin-top: 15px;">LANÇAR NOTAS<img src="/imagens/notas2.png" width="25px"> </h5>
+  <hr />
+    
+
+  <!--INICIO DO FORMULARIO PARA LANÇAR AS NOTAS-->
+  <form method="POST" action="/notas/salvar" class="lancar_notas">
+    <input name="avaliador" value="<%=chefia_av.id%>" type="hidden"></input>
+    <input name="avaliador_nome" value="<%=chefia_av.nome%>" type="hidden"></input>
+    <input name="av_mat" value="<%=chefia_av.matricula%>" type="hidden"></input>
+    <% var quantidadeNotasLancadas = 1 %>
+    <% funcionarios.forEach((funcionario) => { %>
+      <% if (id == funcionario.id) { %>
+        <input name="funcionario" value="<%=funcionario.id%>" type="hidden"></input>
+        <input name="funcionario_matricula" value="<%=funcionario.matricula%>" type="hidden"></input>
+        <img src="/imagens/servidor2.png" width="42px"><input name="funcionario_nome" value="<%=funcionario.nome%>" type="hidden"><%=funcionario.nome%>
+        </input>
+       
+
+      <% }}) %>
+  
+
+      <br>
+      <br>
+    <div class="form-row">
+      <div class="col-sm-4 mb-3">
+        <h5 class="text-rigth">SENDO AVALIADO DE <input type="date" name="data_inicio" class="form-control font-weight-bold" required>  </h5>
+      </div>
+      <div class="col-sm-4 mb-3">
+        <h5>ATÉ <input type="date" name="data_fim" class="form-control font-weight-bold" required></h5>
+      </div>
+      <div class="col-sm-4 mb-3">
+        <h5>PERÍODO:
+         
+          <% funcionarios.forEach((funcionario) => { %>    
+            <% if (id == funcionario.id) { %>      
+              <% notas.forEach((nota) => { %>
+                  <% if (nota.funcionarioId == funcionario.id) { %>
+                      <% quantidadeNotasLancadas++ %>
+                  <% } %>
+                <% }) %>
+            <%}%>
+          <%})%>
+              
+          <input type="text" name="periodo" value="<%=quantidadeNotasLancadas%>" class="form-control font-weight-bold" readonly>
+      </h5>
+      
+
+      </div>
+    </div>
+      
+    <div class="form-row">
+    
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Assiduidade" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_assiduidade" id="nota_assiduidade" required>
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_assiduidade" required>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-row">
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Pontualidade" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_pontualidade" id="nota_pontualidade">
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_pontualidade" required>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-row">
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Iniciativa" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_iniciativa" id="nota_iniciativa">
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_iniciativa" required>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-row">
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Disciplina" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_disciplina" id="nota_disciplina">
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_disciplina" required>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-row">
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Responsabilidade" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_responsabilidade" id="nota_responsabilidade">
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_responsabilidade" required>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-row">
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Qualidade de Trabalho" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_qualidade" id="nota_qualidade">
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_qualidade" required>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-row">
+      <div class="col-sm-3">
+        <input type="text" class="form-control font-weight-bold" placeholder="Aperfeiçoamento" disabled>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-select form-control" aria-label="" name="nota_aperfeicoamento" id="nota_aperfeicoamento">
+          <option  disabled>Notas</option>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <div class="col-sm-7">
+        <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_aperfeicoamento" required>
+      </div>
+    </div>  
+    <br>
+
+    <button class="btn btn-success ajuste-botao" style="float: right;">SALVAR <img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"></button>
+
+        
+  </form>
+  <form method="POST" action="/admin/notas/voltar" class="mb-5">
+    <div style="margin-left: 45px; margin-right: 45px;">
+      <button class="btn btn-secondary ajuste-botao" style="float: left;"><img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR</button>
+    </div>
+  </form>
+  <!--FIM DO FORMULARIO PARA LANÇAR AS NOTAS-->
+ 
+</body>
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>

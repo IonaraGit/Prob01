@@ -69,250 +69,259 @@
   <hr />
 
   <!--INICIO VER NOTAS JÁ LANÇADAS-->
-  <div class="container-fluid">
-    <div id="ajuste-lateral-responsivo" class="row">
-   
-      
-      <%
-      let maiorPeriodo = 0;
-      let notaMaiorPeriodo;
-      
-      notas.forEach(function(nota) {
-        if ((nota.periodoId > maiorPeriodo) && (id == nota.funcionarioId)) {
-          maiorPeriodo = nota.periodoId;
-          notaMaiorPeriodo = nota;
-        }
-      });
-      %>
-      <!--Inicio coluna lateral esquerda-->
-      <div class="col-lg-12">
-        <div id="dados-lateral" class="row mt-2 mb-2 ml-2 mr-2">
 
-          <!--Inicio container pontuações e dados pessoais-->
-          <% notas.forEach((nota) => { %>
-            <% if (id == nota.funcionarioId) {%>
-              
-              <div class="col-md-4 mx-auto background-banner-lateral">
-                <br>
-                <%
-                const data_inicio = new Date(nota.data_inicio);
-                data_inicio.setUTCDate(data_inicio.getUTCDate() + 1);
+<div class="container-fluid">
+  <div id="ajuste-lateral-responsivo" class="row">
+ 
+    
+    <%
+    let maiorPeriodo = 0;
+    let notaMaiorPeriodo;
+    
+    notas.forEach(function(nota) {
+      if ((nota.periodoId > maiorPeriodo) && (id == nota.funcionarioId)) {
+        maiorPeriodo = nota.periodoId;
+        notaMaiorPeriodo = nota;
+      }
+    });
+    %>
+    <!--Inicio coluna lateral esquerda-->
+    <div class="col-lg-12">
+      <div id="dados-lateral" class="row mt-2 mb-2 ml-2 mr-2">
 
-                const data_fim = new Date(nota.data_fim);
-                data_fim.setUTCDate(data_fim.getUTCDate() + 1);
-                %>
+        <!--Inicio container pontuações e dados pessoais-->
+        <% notas.forEach((nota) => { %>
+          <% if (id == nota.funcionarioId) {%>
+            
+            <div class="col-md-4 mx-auto background-banner-lateral">
+              <br>
+              <%
+              const data_inicio = new Date(nota.data_inicio);
+              data_inicio.setUTCDate(data_inicio.getUTCDate() + 1);
 
-                <h5><%= data_inicio.toLocaleDateString('pt-BR') %> - <%= data_fim.toLocaleDateString('pt-BR') %></h5>
+              const data_fim = new Date(nota.data_fim);
+              data_fim.setUTCDate(data_fim.getUTCDate() + 1);
+              %>
 
-                <br>
-                <% if (nota.periodoId == 1) {%>
-                  <div class="col mx-auto background-banner-lateral"><h5>PRIMEIRA AVALIAÇÃO</h5></div>
-                <% } else if (nota.periodoId == 2) { %>
-                  <div class="col mx-auto background-banner-lateral"><h5>SEGUNDA AVALIAÇÃO</h5></div>
-                <%} else if (nota.periodoId == 3) {%>
-                  <div class="col mx-auto background-banner-lateral"><h5>TERCEIRA AVALIAÇÃO</h5></div>
-                <%}%>
+              <h5><%= data_inicio.toLocaleDateString('pt-BR') %> - <%= data_fim.toLocaleDateString('pt-BR') %></h5>
 
-                <!--Inicio informações/pontuacoes lateral-->
-                <div class="container">
-                  <ul class="lista-personalizada">
-                    <li>
-                      <div class="row justify-content-md-center align-items-center">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/1-assiduidade.png" class="icones-quesitos"/></div>
-                        <div class="col-7 barra-response" style="padding: 0px"><span class="ajuste-descricao">Assiduidade</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover" 
-                          data-content="<%=nota.comentario_assiduidade%>" data-placement="right"/>
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_assiduidade < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_assiduidade < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_assiduidade * 10 %>%" aria-valuenow="<%=nota.nota_assiduidade * 10 %>"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+              <br>
+              <% if (nota.periodoId == 1) {%>
+                <div class="col mx-auto background-banner-lateral"><h5>PRIMEIRA AVALIAÇÃO</h5></div>
+              <% } else if (nota.periodoId == 2) { %>
+                <div class="col mx-auto background-banner-lateral"><h5>SEGUNDA AVALIAÇÃO</h5></div>
+              <%} else if (nota.periodoId == 3) {%>
+                <div class="col mx-auto background-banner-lateral"><h5>TERCEIRA AVALIAÇÃO</h5></div>
+              <%}%>
+
+              <!--Inicio informações/pontuacoes lateral-->
+              <div class="container">
+                <ul class="lista-personalizada">
+                  <li>
+                    <div class="row justify-content-md-center align-items-center">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/1-assiduidade.png" class="icones-quesitos"/></div>
+                      <div class="col-7 barra-response" style="padding: 0px"><span class="ajuste-descricao">Assiduidade</span>
+                        <% const nota_total_assiduidade = (nota.nota_assiduidade1 +  nota.nota_assiduidade2 + nota.nota_assiduidade3 + nota.nota_assiduidade4 + nota.nota_assiduidade5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover" 
+                        data-content="<%=nota.comentario_assiduidade%>" data-placement="right"/>
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_assiduidade < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_assiduidade < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_assiduidade * 10 %>%" aria-valuenow="<%=nota.nota_assiduidade * 10 %>"
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3 numero-response">
-                          <p class="texto-numero-lateral"><%=nota.nota_assiduidade%>/10</p>
-                        </div>
                       </div>
-                    </li>
+                      <div class="col-3 numero-response">
+                        <p class="texto-numero-lateral"><%=nota_total_assiduidade%>/10</p>
+                      </div>
+                    </div>
+                  </li>
 
-                    <li>
-                      <div class="row">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/2-pontualidade.png" class="icones-quesitos"/></div>
-                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Pontualidade</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao"  data-toggle="popover" data-trigger="hover"
-                          data-content="<%=nota.comentario_pontualidade%>"
-                          data-placement="right"/>
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_pontualidade < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_pontualidade < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_pontualidade * 10 %>%" aria-valuenow="<%=nota.nota_pontualidade * 10 %>"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+                  <li>
+                    <div class="row">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/2-pontualidade.png" class="icones-quesitos"/></div>
+                      <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Pontualidade</span>
+                        <% const nota_total_pontualidade = (nota.nota_pontualidade1 +  nota.nota_pontualidade2 + nota.nota_pontualidade3 + nota.nota_pontualidade4 + nota.nota_pontualidade5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao"  data-toggle="popover" data-trigger="hover"
+                        data-content="<%=nota.comentario_pontualidade%>"
+                        data-placement="right"/>
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_pontualidade < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_pontualidade < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_pontualidade * 10 %>%" aria-valuenow="<%=nota.nota_pontualidade * 10 %>"
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3">
-                          <p class="texto-numero-lateral"><%=nota.nota_pontualidade%>/10</p>
-                        </div>
                       </div>
-                    </li>
+                      <div class="col-3">
+                        <p class="texto-numero-lateral"><%=nota_total_pontualidade%>/10</p>
+                      </div>
+                    </div>
+                  </li>
 
-                    <li>
-                      <div class="row">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/3-iniciativa.png" class="icones-quesitos"/></div>
-                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Iniciativa</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
-                          data-content="<%=nota.comentario_iniciativa%>" data-placement="right"/>
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_iniciativa < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_iniciativa < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_iniciativa * 10%>%" aria-valuenow="<%=nota.nota_iniciativa%>"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+                  <li>
+                    <div class="row">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/3-iniciativa.png" class="icones-quesitos"/></div>
+                      <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Iniciativa</span>
+                        <% const nota_total_iniciativa = (nota.nota_iniciativa1 +  nota.nota_iniciativa2 + nota.nota_iniciativa3 + nota.nota_iniciativa4 + nota.nota_iniciativa5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                        data-content="<%=nota.comentario_iniciativa%>" data-placement="right"/>
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_iniciativa < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_iniciativa < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_iniciativa * 10%>%" aria-valuenow="<%=nota.nota_iniciativa%>"
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3">
-                          <p class="texto-numero-lateral"><%=nota.nota_iniciativa%>/10</p>
-                        </div>
                       </div>
-                    </li>
-                    
-                    <li>
-                      <div class="row">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/4-disciplina.png" class="icones-quesitos"/></div>
-                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Disciplina</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
-                          data-content="<%=nota.comentario_disciplina%>" data-placement="right"/>
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_disciplina < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_disciplina < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_disciplina * 10%>%" aria-valuenow="<%=nota.nota_disciplina%>" 
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+                      <div class="col-3">
+                        <p class="texto-numero-lateral"><%=nota_total_iniciativa%>/10</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li>
+                    <div class="row">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/4-disciplina.png" class="icones-quesitos"/></div>
+                      <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Disciplina</span>
+                        <% const nota_total_disciplina = (nota.nota_disciplina1 +  nota.nota_disciplina2 + nota.nota_disciplina3 + nota.nota_disciplina4 + nota.nota_disciplina5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                        data-content="<%=nota.comentario_disciplina%>" data-placement="right"/>
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_disciplina < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_disciplina < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_disciplina * 10%>%" aria-valuenow="<%=nota.nota_disciplina%>" 
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3">
-                          <p class="texto-numero-lateral"><%=nota.nota_disciplina%>/10</p>
-                        </div>
                       </div>
-                    </li>
+                      <div class="col-3">
+                        <p class="texto-numero-lateral"><%=nota_total_disciplina%>/10</p>
+                      </div>
+                    </div>
+                  </li>
 
-                    <li>
-                      <div class="row">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/4-responsabilidade.png"class="icones-quesitos"/></div>
-                          <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Responsabilidade</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
-                          data-content="<%=nota.comentario_responsabilidade%>" data-placement="right"/>
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_responsabilidade < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_responsabilidade < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_responsabilidade *10%>%" aria-valuenow="<%=nota.nota_responsabilidade%>"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+                  <li>
+                    <div class="row">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/4-responsabilidade.png"class="icones-quesitos"/></div>
+                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Responsabilidade</span>
+                          <% const nota_total_responsabilidade = (nota.nota_responsabilidade1 +  nota.nota_responsabilidade2 + nota.nota_responsabilidade3 + nota.nota_responsabilidade4 + nota.nota_responsabilidade5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                        data-content="<%=nota.comentario_responsabilidade%>" data-placement="right"/>
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_responsabilidade < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_responsabilidade < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_responsabilidade *10%>%" aria-valuenow="<%=nota.nota_responsabilidade%>"
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3">
-                          <p class="texto-numero-lateral"><%=nota.nota_responsabilidade%>/10</p>
-                        </div>
                       </div>
-                    </li>
+                      <div class="col-3">
+                        <p class="texto-numero-lateral"><%=nota_total_responsabilidade%>/10</p>
+                      </div>
+                    </div>
+                  </li>
 
-                    <li>
-                      <div class="row">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/5-qualidade.png" class="icones-quesitos"/></div>
-                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Qualidade do Trabalho</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
-                          data-content="<%=nota.comentario_qualidade%>" data-placement="right"/>
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_qualidade < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_qualidade < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_qualidade *10%>%" aria-valuenow="<%=nota.nota_qualidade%>"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+                  <li>
+                    <div class="row">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/5-qualidade.png" class="icones-quesitos"/></div>
+                      <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Qualidade do Trabalho</span>
+                        <% const nota_total_qualidade = (nota.nota_qualidade1 +  nota.nota_qualidade2 + nota.nota_qualidade3 + nota.nota_qualidade4 + nota.nota_qualidade5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                        data-content="<%=nota.comentario_qualidade%>" data-placement="right"/>
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_qualidade < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_qualidade < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_qualidade *10%>%" aria-valuenow="<%=nota.nota_qualidade%>"
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3">
-                          <p class="texto-numero-lateral"><%=nota.nota_qualidade%>/10</p>
-                        </div>
                       </div>
-                    </li>
+                      <div class="col-3">
+                        <p class="texto-numero-lateral"><%=nota_total_qualidade%>/10</p>
+                      </div>
+                    </div>
+                  </li>
 
-                    <li>
-                      <div class="row">
-                        <div class="col-2" style="margin: auto"><img src="/imagens/6-aperfeicoamento.png" class="icones-quesitos"/></div>
-                        <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Aperfeiçoamento</span>
-                          <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
-                          data-content="<%=nota.comentario_aperfeicoamento%>" data-placement="right" />
-                          <div class="progress" style="background: #9e9e9e; border-radius: 0">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated
-                              <% if (nota.nota_aperfeicoamento < 6) { %>
-                                bg-danger
-                              <% } else if (nota.nota_aperfeicoamento < 9) { %>
-                                bg-warning
-                              <% } else { %>
-                                bg-success
-                              <% } %>"
-                              style="width: <%=nota.nota_aperfeicoamento *10%>%" aria-valuenow="<%=nota.nota_aperfeicoamento%>"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
+                  <li>
+                    <div class="row">
+                      <div class="col-2" style="margin: auto"><img src="/imagens/6-aperfeicoamento.png" class="icones-quesitos"/></div>
+                      <div class="col-7" style="padding: 0px"><span class="ajuste-descricao">Aperfeiçoamento</span>
+                        <% const nota_total_aperfeicoamento = (nota.nota_aperfeicoamento1 +  nota.nota_aperfeicoamento2 + nota.nota_aperfeicoamento3 + nota.nota_aperfeicoamento4 + nota.nota_aperfeicoamento5) %>
+                        <img src="/imagens/vercomentario.png" class="ajustes-interrogacao" data-toggle="popover" data-trigger="hover"
+                        data-content="<%=nota.comentario_aperfeicoamento%>" data-placement="right" />
+                        <div class="progress" style="background: #9e9e9e; border-radius: 0">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated
+                            <% if (nota_total_aperfeicoamento < 6) { %>
+                              bg-danger
+                            <% } else if (nota_total_aperfeicoamento < 9) { %>
+                              bg-warning
+                            <% } else { %>
+                              bg-success
+                            <% } %>"
+                            style="width: <%=nota_total_aperfeicoamento *10%>%" aria-valuenow="<%=nota.nota_aperfeicoamento%>"
+                            aria-valuemin="0" aria-valuemax="100">
                           </div>
                         </div>
-                        <div class="col-3">
-                          <p class="texto-numero-lateral"><%=nota.nota_aperfeicoamento%>/10</p>
-                        </div>
                       </div>
-                    </li>
-                  </ul>
-                </div>
-                <!--Fim informações/pontuacoes lateral-->
+                      <div class="col-3">
+                        <p class="texto-numero-lateral"><%=nota_total_aperfeicoamento%>/10</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            <%}%>
-          <%})%>
-          <!--Fim container pontuações e dados pessoais-->
+              <!--Fim informações/pontuacoes lateral-->
+            </div>
+          <%}%>
+        <%})%>
+        <!--Fim container pontuações e dados pessoais-->
 
-        </div>
       </div>
-      <!--Fim coluna lateral esquerda-->
-
     </div>
+    <!--Fim coluna lateral esquerda-->
+
   </div>
-  <!--FIM VER NOTAS JÁ LANÇADAS-->
+</div>
+<!--FIM VER NOTAS JÁ LANÇADAS-->
+ 
     
   <!--INICIO DO FORMULARIO PARA LANÇAR AS NOTAS-->
   <form method="POST" action="/notas/atualizar" class="lancar_notas">
@@ -323,11 +332,9 @@
     <% var quantidadeNotasLancadas = 1 %>
     <% funcionarios.forEach((funcionario) => { %>
       <% if (id == funcionario.id) { %>
-        
         <input name="funcionario_matricula" value="<%=funcionario.matricula%>" type="hidden"></input>
         <img src="/imagens/servidor2.png" width="42px"><input name="funcionario_nome" value="<%=funcionario.nome%>" type="hidden"><%=funcionario.nome%>
         </input>
-       
 
       <% }}) %>
 
@@ -362,164 +369,814 @@
             </h5>
           </div>
         </div>
-  
-        <div class="form-row mt-3">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Assiduidade" disabled></div>
-            <div class="col-sm-2">
-              <select class="form-select form-control" aria-label="" name="nota_assiduidade" id="nota_assiduidade">
-                <option value="1" <%= nota.nota_assiduidade === 1 ? 'selected' : '' %>>1</option>
-                <option value="2" <%= nota.nota_assiduidade === 2 ? 'selected' : '' %>>2</option>
-                <option value="3" <%= nota.nota_assiduidade === 3 ? 'selected' : '' %>>3</option>
-                <option value="4" <%= nota.nota_assiduidade === 4 ? 'selected' : '' %>>4</option>
-                <option value="5" <%= nota.nota_assiduidade === 5 ? 'selected' : '' %>>5</option>
-                <option value="6" <%= nota.nota_assiduidade === 6 ? 'selected' : '' %>>6</option>
-                <option value="7" <%= nota.nota_assiduidade === 7 ? 'selected' : '' %>>7</option>
-                <option value="8" <%= nota.nota_assiduidade === 8 ? 'selected' : '' %>>8</option>
-                <option value="9" <%= nota.nota_assiduidade === 9 ? 'selected' : '' %>>9</option>
-                <option value="10" <%= nota.nota_assiduidade === 10 ? 'selected' : '' %>>10</option>
-              </select>
+ 
+        <div class="container">
+          <div id="div-assiduidade">
+            <p class="title-container-notas">1/7 - Assiduidade - <span class="totalScore-assiduidade"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+                <div class="progress-bar progress-bar-striped progress-bar-animated progressBar progressBar-assiduidade"></div>
             </div>
-            <div class="col-sm-7">
-              <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_assiduidade" value="<%=nota.comentario_assiduidade%>" required>
+        
+              <div class="question">
+                  <p>1. O servidor compareceu regularmente ao trabalho durante o período avaliado?</p>
+                  <label><input type="radio" name="q1Ass" value="0" <%= nota.nota_assiduidade1 === 0 ? 'checked' : '' %>> 
+                    Faltou injustificadamente mais de uma vez no período. 
+                    <span class="valor-notas">(0 pts)</span>
+                  </label>
+                  <br>
+                  <label><input type="radio" name="q1Ass" value="1" <%= nota.nota_assiduidade1 === 1 ? 'checked' : '' %>> 
+                    Faltou uma vez sem justificativa ou teve faltas justificadas recorrentes. 
+                    <span class="valor-notas">(1 pt)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q1Ass" value="2" <%= nota.nota_assiduidade1 === 2 ? 'checked' : '' %>> 
+                    Compareceu a todos os dias ou teve apenas raras ausências justificadas. 
+                    <span class="valor-notas">(2 pts)</span>
+                  </label>
+              </div>
+    
+              <div class="question">
+                  <p>2. O servidor justificou adequadamente suas ausências, em conformidade comas normas??</p>
+                  <label>
+                    <input type="radio" name="q2Ass" value="0" <%= nota.nota_assiduidade2 === 0 ? 'checked' : '' %>> 
+                    Não justificou ou apresentou justificativas inadequadas para as ausências. 
+                    <span class="valor-notas">(0 pts)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q2Ass" value="1" <%= nota.nota_assiduidade2 === 1 ? 'checked' : '' %>> 
+                    Justificou a maioria das auseências, mas houve atrasos ou inconsistências nas justificativas. 
+                    <span class="valor-notas">(1 pts)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q2Ass" value="2" <%= nota.nota_assiduidade2 === 2 ? 'checked' : '' %>> 
+                    Justicou todas as ausências de forma clara e dentro das normas. 
+                    <span class="valor-notas">(2 pts)</span>
+                  </label>
+              </div>
+    
+              <div class="question">
+                  <p>3. O servidor permaneceu no local de trabalho durante o expediente, sem ausências injustificadas?</p>
+                  <label>
+                    <input type="radio" name="q3Ass" value="0" <%= nota.nota_assiduidade3 === 0 ? 'checked' : '' %>> 
+                    Ausentou-se sem justicativa durante o expediente mais de uma vez. 
+                    <span class="valor-notas">(0 pts)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q3Ass" value="1" <%= nota.nota_assiduidade3 === 1 ? 'checked' : '' %>> 
+                    Ocorreram ausências pontuais e justicadas durante o expediente. 
+                    <span class="valor-notas">(1 pt)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q3Ass" value="2" <%= nota.nota_assiduidade3 === 2 ? 'checked' : '' %>> 
+                    Permaneceu no local de trabalho durante todo o expediente, cumprindo integralmente sua jornada. 
+                    <span class="valor-notas">(2 pts)</span>
+                  </label>
+              </div>
+    
+              <div class="question">
+                  <p>4. Oservidorretornou pontualmente ao trabalho após intervalos, como almoço e café?</p>
+                  <label>
+                    <input type="radio" name="q4Ass" value="0" <%= nota.nota_assiduidade4 === 0 ? 'checked' : '' %>> 
+                    Retorna frequentemente com atrasos ou excede os intervalos estabelecidos. 
+                    <span class="valor-notas">(0 pts)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q4Ass" value="1" <%= nota.nota_assiduidade4 === 1 ? 'checked' : '' %>> 
+                    Houve atrasos ocasionais, mas o retorno foi pontual na maior parte das vezes. 
+                    <span class="valor-notas">(1 pt)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q4Ass" value="2" <%= nota.nota_assiduidade4 === 2 ? 'checked' : '' %>> 
+                    Retorna sempre pontualmente,respeitando integralmente os horários dos intervalos. 
+                    <span class="valor-notas">(2 pts)</span>
+                  </label>
+              </div>
+    
+              <div class="question">
+                  <p>5. Oservidor participou das reuniões e eventos institucionais obrigatórios?</p>
+                  <label>
+                    <input type="radio" name="q5Ass" value="0" <%= nota.nota_assiduidade5 === 0 ? 'checked' : '' %>> 
+                    Não participou de nenhuma reunião ou evento, sem justicativa válida. 
+                    <span class="valor-notas">(0 pts)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q5Ass" value="1" <%= nota.nota_assiduidade5 === 1 ? 'checked' : '' %>> 
+                    Participou da maioria, mas justicou adequadamente as ausências em algumas ocasiões. 
+                    <span class="valor-notas">(1 pt)</span>
+                  </label>
+                  <br>
+                  <label>
+                    <input type="radio" name="q5Ass" value="2" <%= nota.nota_assiduidade5 === 2 ? 'checked' : '' %>> 
+                    Participou de todas as reuniões e eventos obrigatórios, demonstrando compromisso. 
+                    <span class="valor-notas">(2 pts)</span>
+                  </label>
+              </div>
+    
+              <div class="question">
+                  <p>Observações: </p>
+                  <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_assiduidade"  value="<%= nota.comentario_assiduidade %>">
+              </div>
+          </div>
+          <hr>
+          <div id="div-pontualidade" class="divs-margin">
+            <p class="title-container-notas mt-3" id="title-pontualidade">2/7 - Pontualidade - <span class="totalScore-pontualidade"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+              <div class="progress-bar progress-bar-striped progress-bar-animated progressBar-pontualidade"></div>
             </div>
-        </div>
-        <br>
-
-        <div class="form-row">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Pontualidade" disabled></div>
-          <div class="col-sm-2">
-            <select class="form-select form-control" aria-label="" name="nota_pontualidade" id="nota_pontualidade">
-              <option value="1" <%= nota.nota_pontualidade === 1 ? 'selected' : '' %>>1</option>
-              <option value="2" <%= nota.nota_pontualidade === 2 ? 'selected' : '' %>>2</option>
-              <option value="3" <%= nota.nota_pontualidade === 3 ? 'selected' : '' %>>3</option>
-              <option value="4" <%= nota.nota_pontualidade === 4 ? 'selected' : '' %>>4</option>
-              <option value="5" <%= nota.nota_pontualidade === 5 ? 'selected' : '' %>>5</option>
-              <option value="6" <%= nota.nota_pontualidade === 6 ? 'selected' : '' %>>6</option>
-              <option value="7" <%= nota.nota_pontualidade === 7 ? 'selected' : '' %>>7</option>
-              <option value="8" <%= nota.nota_pontualidade === 8 ? 'selected' : '' %>>8</option>
-              <option value="9" <%= nota.nota_pontualidade === 9 ? 'selected' : '' %>>9</option>
-              <option value="10" <%= nota.nota_pontualidade === 10 ? 'selected' : '' %>>10</option>
-            </select>
-          </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_pontualidade" value="<%=nota.comentario_pontualidade%>" required>
-          </div>
-        </div>
-        <br>
-
-        <div class="form-row">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Iniciativa" disabled></div>
-          <div class="col-sm-2">
-            <select class="form-select form-control" aria-label="" name="nota_iniciativa" id="nota_iniciativa">
-              <option value="1" <%= nota.nota_iniciativa === 1 ? 'selected' : '' %>>1</option>
-              <option value="2" <%= nota.nota_iniciativa === 2 ? 'selected' : '' %>>2</option>
-              <option value="3" <%= nota.nota_iniciativa === 3 ? 'selected' : '' %>>3</option>
-              <option value="4" <%= nota.nota_iniciativa === 4 ? 'selected' : '' %>>4</option>
-              <option value="5" <%= nota.nota_iniciativa === 5 ? 'selected' : '' %>>5</option>
-              <option value="6" <%= nota.nota_iniciativa === 6 ? 'selected' : '' %>>6</option>
-              <option value="7" <%= nota.nota_iniciativa === 7 ? 'selected' : '' %>>7</option>
-              <option value="8" <%= nota.nota_iniciativa === 8 ? 'selected' : '' %>>8</option>
-              <option value="9" <%= nota.nota_iniciativa === 9 ? 'selected' : '' %>>9</option>
-              <option value="10" <%= nota.nota_iniciativa === 10 ? 'selected' : '' %>>10</option>
-            </select>
-          </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_iniciativa" value="<%=nota.comentario_iniciativa%>" required>
-          </div>
-        </div>
-        <br>
+    
+            <div class="question">
+              <p>1. O servidor cumpre os horários de entrada estabelecidos?</p>
+              <label>
+                <input type="radio" name="q1Pont" value="0" <%= nota.nota_pontualidade1 === 0 ? 'checked' : '' %>> 
+                Chega atrasado mais de uma vez por semana ou com atrasos que somam mais de 15 minutos por semana. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Pont" value="1" <%= nota.nota_pontualidade1 === 1 ? 'checked' : '' %>> 
+                Apresenta atrasos ocasionais (até uma vez por semana ou atrasos que não ultrapassam 15 minutos por semana). 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Pont" value="2" <%= nota.nota_pontualidade1 === 2 ? 'checked' : '' %>> 
+                Cumpre rigorosamente os horários de entrada. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
           
-        <div class="form-row">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Disciplina" disabled></div>
-          <div class="col-sm-2">
-            <select class="form-select form-control" aria-label="" name="nota_disciplina" id="nota_disciplina">
-              <option value="1" <%= nota.nota_disciplina === 1 ? 'selected' : '' %>>1</option>
-              <option value="2" <%= nota.nota_disciplina === 2 ? 'selected' : '' %>>2</option>
-              <option value="3" <%= nota.nota_disciplina === 3 ? 'selected' : '' %>>3</option>
-              <option value="4" <%= nota.nota_disciplina === 4 ? 'selected' : '' %>>4</option>
-              <option value="5" <%= nota.nota_disciplina === 5 ? 'selected' : '' %>>5</option>
-              <option value="6" <%= nota.nota_disciplina === 6 ? 'selected' : '' %>>6</option>
-              <option value="7" <%= nota.nota_disciplina === 7 ? 'selected' : '' %>>7</option>
-              <option value="8" <%= nota.nota_disciplina === 8 ? 'selected' : '' %>>8</option>
-              <option value="9" <%= nota.nota_disciplina === 9 ? 'selected' : '' %>>9</option>
-              <option value="10" <%= nota.nota_disciplina === 10 ? 'selected' : '' %>>10</option>
-            </select>
+            <div class="question">
+              <p>2. O servidor cumpre os horários de saída estabelecidos?</p>
+              <label><input type="radio" name="q2Pont" value="0" <%= nota.nota_pontualidade2 === 0 ? 'checked' : '' %>> 
+                Sai frequentemente antes do horário sem autorização ou justificativa. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Pont" value="1" <%= nota.nota_pontualidade2 === 1 ? 'checked' : '' %>> 
+                Sai no horário na maior parte das vezes, mas com algumas exceções. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Pont" value="2" <%= nota.nota_pontualidade2 === 2 ? 'checked' : '' %>> 
+                Cumpre rigorosamente os horários de saída. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>3. O servidor entrega tarefas e demandas dentro dos prazos estabelecidos?</p>
+              <label>
+                <input type="radio" name="q3Pont" value="0" <%= nota.nota_pontualidade3 === 0 ? 'checked' : '' %>> 
+                Frequentemente deixa de entregar no prazo ou precisa ser lembrado. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Pont" value="1" <%= nota.nota_pontualidade3 === 1 ? 'checked' : '' %>> 
+                Entrega a maioria das demandas dentro do prazo, com algumas exceções. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Pont" value="2" <%= nota.nota_pontualidade3 === 2 ? 'checked' : '' %>> 
+                Sempre entrega as tarefas dentro dos prazos estabelecidos. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+          
+            <div class="question">
+              <p>4. O servidor registra corretamente os horários de saída e retorno dos intervalos de almoço?</p>
+              <label><input type="radio" name="q4Pont" value="0" <%= nota.nota_pontualidade4 === 0 ? 'checked' : '' %>> 
+                Comete erros de registro mais de uma vez por mês. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Pont" value="1" <%= nota.nota_pontualidade4 === 1 ? 'checked' : '' %>> 
+                Comete um erro de registro por mês. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Pont" value="2" <%= nota.nota_pontualidade4 === 2 ? 'checked' : '' %>> 
+                Sempre registra corretamente os horários de saída e retorno dos intervalos. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+          
+            <div class="question">
+              <p>5. O servidor realiza pausas não previstas na CLT, como tomar café da manhã durante a jornada ou pausas para fumar?</p>
+              <label>
+                <input type="radio" name="q5Pont" value="0" <%= nota.nota_pontualidade5 === 0 ? 'checked' : '' %>> 
+                Frequentemente faz pausas não autorizadas, prejudicando a rotina de trabalho. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Pont" value="1" <%= nota.nota_pontualidade5 === 1 ? 'checked' : '' %>> 
+                Ocasionalmente realiza pausas não previstas, mas sem impacto significativo. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Pont" value="2" <%= nota.nota_pontualidade5 === 2 ? 'checked' : '' %>> 
+                Não realiza pausas não autorizadas e cumpre integralmente a jornada. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+    
+            <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_pontualidade" value="<%=nota.comentario_pontualidade%>" required>
+            </div>
           </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_disciplina" value="<%=nota.comentario_disciplina%>" required>
+          <hr>
+          <div id="div-iniciativa" class="divs-margin">
+            <p class="title-container-notas mt-3" id="title-iniciativa">3/7 - Iniciativa - <span class="totalScore-iniciativa"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+              <div class="progress-bar progress-bar-striped progress-bar-animated progressBar-iniciativa"></div>
+            </div>
+    
+            <div class="question">
+              <p>1. O servidor propõe soluções para problemas do setor ou atividades de trabalho?</p>
+              <label><input type="radio" name="q1Ini" value="0" <%= nota.nota_iniciativa1 === 0 ? 'checked' : '' %>> 
+                Nunca propõe soluções, limitando-se apenas às orientações recebidas. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Ini" value="1" <%= nota.nota_iniciativa1 === 1 ? 'checked' : '' %>> 
+                Propõe soluções ocasionalmente, mas sem consistência ou proatividade regular. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Ini" value="2" <%= nota.nota_iniciativa1 === 2 ? 'checked' : '' %>> 
+                Frequentemente propõe soluções e colabora ativamente para melhorar o trabalho. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>2. O servidor realiza tarefas sem necessidade de cobranças constantes?</p>
+              <label><input type="radio" name="q2Ini" value="0" <%= nota.nota_iniciativa3 === 0 ? 'checked' : '' %>> 
+                Necessita ser frequentemente cobrado para executar suas tarefas. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Ini" value="1" <%= nota.nota_iniciativa3 === 1 ? 'checked' : '' %>> 
+                Realiza as tarefas com alguma autonomia, mas ainda precisa de cobranças ocasionais. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Ini" value="2" <%= nota.nota_iniciativa3 === 2 ? 'checked' : '' %>> 
+                Realiza as tarefas com total autonomia, sem necessidade de cobranças. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>3. O servidor busca formas de melhorar os processos e métodos de trabalho?</p>
+              <label><input type="radio" name="q3Ini" value="0" <%= nota.nota_iniciativa3 === 0 ? 'checked' : '' %>> 
+                Não demonstra interesse em melhorar processos ou métodos de trabalho. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Ini" value="1" <%= nota.nota_iniciativa3 === 1 ? 'checked' : '' %>> 
+                Demonstra interesse em algumas situações, mas sem regularidade. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Ini" value="2" <%= nota.nota_iniciativa3 === 2 ? 'checked' : '' %>> 
+                Busca ativamente formas de melhorar os processos e métodos de trabalho. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>4. O servidor identifica e resolve problemas no trabalho, mesmo antes de ser solicitado?</p>
+              <label><input type="radio" name="q4Ini" value="0" <%= nota.nota_iniciativa4 === 0 ? 'checked' : '' %>> 
+                Não identifica problemas ou apenas reage quando solicitado. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Ini" value="1" <%= nota.nota_iniciativa4 === 1 ? 'checked' : '' %>> 
+                Identifica e resolve problemas esporadicamente, mas sem consistência. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Ini" value="2" <%= nota.nota_iniciativa4 === 2 ? 'checked' : '' %>> 
+                Identifica e resolve problemas de forma proativa e consistente. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>5. O servidor colabora com os colegas de trabalho e contribui para o fortalecimento da equipe?</p>
+              <label><input type="radio" name="q5Ini" value="0" <%= nota.nota_iniciativa5 === 0 ? 'checked' : '' %>> 
+                Não colabora com os colegas ou age de forma individualista. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Ini" value="1" <%= nota.nota_iniciativa5 === 1 ? 'checked' : '' %>> 
+                Colabora em algumas situações, mas sem frequência ou impacto significativo. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Ini" value="2" <%= nota.nota_iniciativa5 === 2 ? 'checked' : '' %>> 
+                Sempre colabora de forma ativa e ajuda no fortalecimento da equipe. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+    
+            <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_iniciativa" value="<%= nota.comentario_iniciativa %>" required>
+            </div>
+          </div>
+          <hr>
+          <div id="div-disciplina" class="divs-margin">
+            <p class="title-container-notas mt-3" id="title-disciplina">4/7 - Disciplina - <span class="totalScore-disciplina"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+              <div class="progress-bar progress-bar-striped progress-bar-animated progressBar-disciplina"></div>
+            </div>
+
+            <div class="question">
+              <p>1. O servidor utiliza o tempo da jornada de trabalho para finalidades pessoais, como resolver questões particulares, acessar redes sociais, usar dispositivos pessoais ou praticar comércio na repartição?</p>
+              <label>
+                <input type="radio" name="q1Disc" value="0" <%= nota.nota_disciplina1 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, utilizou o tempo da jornada de trabalho para finalidades pessoais, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Disc" value="1" <%= nota.nota_disciplina1 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de uso inadequado do tempo de trabalho, mas alterou a conduta após orientação da chefia.  
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Disc" value="2" <%= nota.nota_disciplina1 === 2 ? 'checked' : '' %>> 
+                Não utilizou o tempo da jornada de trabalho para finalidades pessoais. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>2. O servidor cumpre as normas internas da instituição, incluindo o uso de EPIs adequados, quando aplicável, bem como as políticas de segurança e conduta no trabalho?</p>
+              <label>
+                <input type="radio" name="q2Disc" value="0" <%= nota.nota_disciplina2 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, descumpriu normas internas ou não utilizou os EPIs obrigatórios, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Disc" value="1" <%= nota.nota_disciplina2 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de falha no cumprimento das normas ou no uso dos EPIs, mas corrigiu a conduta após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Disc" value="2" <%= nota.nota_disciplina2 === 2 ? 'checked' : '' %>> 
+                Cumpriu integralmente as normas internas e utilizou corretamente os EPIs quando aplicáveis. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>3. O servidor respeita as orientações e determinações da chefia imediata, não questionando em público as decisões ou instruções recebidas? </p>
+              <label>
+                <input type="radio" name="q3Disc" value="0" <%= nota.nota_disciplina3 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, desrespeitou ou questionou publicamente as decisões da chefia, mesmo após orientação. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Disc" value="1" <%= nota.nota_disciplina3 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de questionamento público ou desrespeito, mas alterou a conduta após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Disc" value="2" <%= nota.nota_disciplina3 === 2 ? 'checked' : '' %>> 
+                Sempre respeitou as orientações da chefa e evitou questionamentos públicos. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>4. O servidor evita propagarfofocas, boatos ou darrespostas atravessadas amunícipes e colegas?</p>
+              <label><input type="radio" name="q4Disc" value="0" <%= nota.nota_disciplina4 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, propagou fofocas, boatos ou deu respostas atravessadas, mesmo após orientação da chefa. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Disc" value="1" <%= nota.nota_disciplina4 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de comportamento inadequado, mas alterou a conduta após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Disc" value="2" <%= nota.nota_disciplina4 === 2 ? 'checked' : '' %>> 
+                Sempre evitou comportamentos inadequados, tratando munícipes e colegas com respeito. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>5. O servidor veste-se de forma prossional e mantém o asseio pessoal adequado ao ambiente de trabalho? </p>
+              <label>
+                <input type="radio" name="q5Disc" value="0" <%= nota.nota_disciplina5 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, apresentou vestimenta ou asseio inadequados, mesmo após orientação da chefia.  
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Disc" value="1" <%= nota.nota_disciplina5 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de inadequação na vestimenta ou asseio, mas corrigiu a conduta após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Disc" value="2" <%= nota.nota_disciplina5 === 2 ? 'checked' : '' %>> 
+                Sempre apresentou vestimenta prossional e asseio pessoal adequados ao ambiente de trabalho. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+
+            <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_disciplina" value="<%= nota.comentario_disciplina %>" required>
+            </div>
+          </div>
+          <hr>
+          <div id="div-responsabilidade" class="divs-margin">
+            <p class="title-container-notas mt-3" id="title-responsabilidade">5/7 - Responsabilidade - <span class="totalScore-responsabilidade"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+              <div class="progress-bar progress-bar-striped progress-bar-animated progressBar-responsabilidade"></div>
+            </div>
+
+            <div class="question">
+              <p>1. O servidor cumpre as metas e prazos estabelecidos para as tarefas, mesmo sem supervisão constante?</p>
+              <label>
+                <input type="radio" name="q1Resp" value="0" <%= nota.nota_responsabilidade1 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, não cumpriu metas ou prazos, mesmo após orientações da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Resp" value="1" <%= nota.nota_responsabilidade1 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de falha no cumprimento de metas ou prazos, mas corrigiu após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Resp" value="2" <%= nota.nota_responsabilidade1 === 2 ? 'checked' : '' %>> 
+                Sempre cumpre as metas e prazos estabelecidos sem necessidade de supervisão. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>2. O servidor utiliza os recursos fornecidos pela instituição, como equipamentos, veículos, materiais e impressões, de forma responsável e sem desperdícios?</p>
+              <label>
+                <input type="radio" name="q2Resp" value="0" <%= nota.nota_responsabilidade2 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, utilizou equipamentos, veículos ou materiais de forma inadequada ou causou desperdícios, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Resp" value="1" <%= nota.nota_responsabilidade2 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de uso inadequado ou desperdício, mas corrigiu após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Resp" value="2" <%= nota.nota_responsabilidade2 === 2 ? 'checked' : '' %>> 
+                Sempre utilizou os recursos de forma responsável, evitando desperdícios e danos. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>3. O servidor mantém seu ambiente de trabalho organizado, sem acúmulo de tarefas ou materiais?</p>
+              <label><input type="radio" name="q3Resp" value="0" <%= nota.nota_responsabilidade1 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, deixou o ambiente desorganizado ou acumulou tarefas, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label><input type="radio" name="q3Resp" value="1" <%= nota.nota_responsabilidade1 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de desorganização ou acúmulo, mas corrigiu após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Resp" value="2" <%= nota.nota_responsabilidade1 === 2 ? 'checked' : '' %>> 
+                Sempre manteve o ambiente de trabalho organizado e funcional. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>4. O servidor respeita os procedimentos de segurança e cuida da conservação dos equipamentos e instalações de trabalho?</p>
+              <label><input type="radio" name="q4Resp" value="0" <%= nota.nota_responsabilidade4 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, desrespeitou normas de segurança ou negligenciou a conservação de equipamentos e instalações, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label
+              ><br>
+              <label>
+                <input type="radio" name="q4Resp" value="1" <%= nota.nota_responsabilidade4 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de falha, mas alterou a conduta após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Resp" value="2" <%= nota.nota_responsabilidade4 === 2 ? 'checked' : '' %>> 
+                Sempre respeitou os procedimentos de segurança e cuidou da conservação dos equipamentos e instalações. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>5. O servidor assume a responsabilidade por erros que cometeu e age para corrigi-los prontamente?</p>
+              <label>
+                <input type="radio" name="q5Resp" value="0" <%= nota.nota_responsabilidade5 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, tentou transferir a responsabilidade por erros cometidos, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Resp" value="1" <%= nota.nota_responsabilidade5 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião em que hesitou em assumir responsabilidade, mas corrigiu após orientação da chefia. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Resp" value="2" <%= nota.nota_responsabilidade5 === 2 ? 'checked' : '' %>> Sempre assumiu seus erros e agiu prontamente para corrigir falhas. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+
+            <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_responsabilidade" value="<%= nota.comentario_responsabilidade %>" required>
+            </div>
+          </div>
+          <hr>
+          <div id="div-qualidade" class="divs-margin">
+            <p class="title-container-notas mt-3" id="title-qualidade">6/7 - Qualidade do Trabalho - <span class="totalScore-qualidade"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+              <div class="progress-bar progress-bar-striped progress-bar-animated progressBar-qualidade"></div>
+            </div>
+    
+            <div class="question">
+              <p>1. O servidor entrega as tarefas com precisão e de acordo com os padrões exigidos pela chefia?</p>
+              <label>
+                <input type="radio" name="q1Qual" value="0" <%= nota.nota_qualidade1 === 0 ? 'checked' : '' %>> 
+                Frequentemente entrega tarefas com erros ou abaixo dos padrões exigidos, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Qual" value="1" <%= nota.nota_qualidade1 === 1 ? 'checked' : '' %>> 
+                Eventualmente entrega tarefas com falhas ou abaixo do padrão, mas as corrige após orientação. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Qual" value="2" <%= nota.nota_qualidade1 === 2 ? 'checked' : '' %>> 
+                Sempre entrega tarefas com precisão e de acordo com os padrões exigidos pela chefia. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+          </div>
+          
+          <div class="question">
+              <p>2. O servidor realiza as tarefas sem necessidade de retrabalho?</p>
+              <label>
+                <input type="radio" name="q2Qual" value="0" <%= nota.nota_qualidade2 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, apresentou tarefas que exigiram retrabalho significativo, mesmo após orientação. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Qual" value="1" <%= nota.nota_qualidade2 === 1 ? 'checked' : '' %>> 
+                Houve uma ocasião de retrabalho devido a falhas ou omissões, mas corrigiu o problema após orientação. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Qual" value="2" <%= nota.nota_qualidade2 === 2 ? 'checked' : '' %>> 
+                Realiza as tarefas sem necessidade de retrabalho, garantindo qualidade na primeira entrega. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+          </div>
+          
+          <div class="question">
+              <p>3. O servidor demonstra habilidades técnicas adequadas ao cargo para realizar suas funções com excelência?</p>
+              <label>
+                <input type="radio" name="q3Qual" value="0" <%= nota.nota_qualidade3 === 0 ? 'checked' : '' %>> 
+                Em mais de uma ocasião, demonstrou dificuldades técnicas que prejudicaram o desempenho de suas funções. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Qual" value="1" <%= nota.nota_qualidade3 === 1 ? 'checked' : '' %>> 
+                Apresenta habilidades técnicas básicas, mas ocasionalmente enfrenta dificuldades em tarefas mais complexas. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Qual" value="2" <%= nota.nota_qualidade3 === 2 ? 'checked' : '' %>> 
+                Demonstra pleno domínio das habilidades técnicas exigidas para o cargo, realizando as funções com excelência. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+          </div>
+          
+          <div class="question">
+              <p>4. O servidor acompanha mudanças ou atualizações nas normas, processos ou ferramentas, adaptando seu trabalho para garantir qualidade?</p>
+              <label>
+                <input type="radio" name="q4Qual" value="0" <%= nota.nota_qualidade4 === 0 ? 'checked' : '' %>> 
+                Ignora mudanças ou atualizações, mantendo práticas desatualizadas, mesmo após orientação da chefia. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Qual" value="1" <%= nota.nota_qualidade4 === 1 ? 'checked' : '' %>> 
+                Adapta-se às mudanças de forma parcial, apresentando dificuldades iniciais ou necessitando de supervisão frequente. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Qual" value="2" <%= nota.nota_qualidade4 === 2 ? 'checked' : '' %>> 
+                Acompanha e adapta-se prontamente às mudanças, garantindo que o trabalho atenda aos novos padrões ou processos. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+          </div>
+          
+          <div class="question">
+              <p>5. O servidor desempenha as tarefas com eficiência igual ou superior à de seus colegas de trabalho ou de outros servidores com funções parecidas?</p>
+              <label>
+                <input type="radio" name="q5Qual" value="0" <%= nota.nota_qualidade5 === 0 ? 'checked' : '' %>> 
+                Apresenta eficiência significativamente inferior à de colegas ou servidores em funções semelhantes. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Qual" value="1" <%= nota.nota_qualidade5 === 1 ? 'checked' : '' %>> 
+                Apresenta eficiência compatível com a média dos colegas ou servidores com funções semelhantes. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Qual" value="2" <%= nota.nota_qualidade5 === 2 ? 'checked' : '' %>> 
+                Desempenha as tarefas com eficiência superior à de colegas ou servidores em funções semelhantes. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+          </div>
+          
+            <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_qualidade" value="<%= nota.comentario_qualidade %>" required>
+            </div>
+          </div>
+          <div id="div-aperfeicoamento" class="divs-margin">
+            <p class="title-container-notas mt-3" id="title-aperfeicoamento">7/7 - Aperfeiçoamento - <span class="totalScore-aperfeicoamento"> - 0 pts</span> pts</p>
+            <div class="progress-container">
+              <div class="progress-bar progress-bar-striped progress-bar-animated progressBar-aperfeicoamento"></div>
+            </div>
+    
+            
+            <div class="question">
+              <p>1. O servidor realizou cursos de aperfeiçoamento com duração mínima de 40 (quarenta) horas no período avaliado?</p>
+              <label>
+                <input type="radio" name="q1Ape" value="0" <%= nota.nota_aperfeicoamento1 === 0 ? 'checked' : '' %>> 
+                Não realizou nenhum curso de aperfeiçoamento durante o período. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Ape" value="1" <%= nota.nota_aperfeicoamento1 === 1 ? 'checked' : '' %>> 
+                Realizou pelo menos um curso, mas com duração inferior a 40 (quarenta) horas. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q1Ape" value="2" <%= nota.nota_aperfeicoamento1 === 2 ? 'checked' : '' %>> 
+                Realizou pelo menos um curso de aperfeiçoamento com duração mínima de 40 (quarenta) horas. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>2. O curso realizado pelo servidor é pertinente às atribuições de seu cargo ou área de atuação?</p>
+              <label>
+                <input type="radio" name="q2Ape" value="0" <%= nota.nota_aperfeicoamento2 === 0 ? 'checked' : '' %>> 
+                Não apresentou cursos relacionados às suas funções ou área de atuação. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Ape" value="1" <%= nota.nota_aperfeicoamento2 === 1 ? 'checked' : '' %>> 
+                O curso possui relevância parcial para as atribuições do cargo, mas sem aplicação direta no trabalho. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q2Ape" value="2" <%= nota.nota_aperfeicoamento2 === 2 ? 'checked' : '' %>> 
+                O curso realizado é diretamente relacionado às atribuições do cargo e aplicável ao desempenho da função. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>3. O servidor aplicou os conhecimentos adquiridos no curso para melhorar seu desempenho profissional?</p>
+              <label>
+                <input type="radio" name="q3Ape" value="0" <%= nota.nota_aperfeicoamento3 === 0 ? 'checked' : '' %>> 
+                Não demonstrou aplicação prática ou melhoria no desempenho após a realização do curso. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Ape" value="1" <%= nota.nota_aperfeicoamento3 === 1 ? 'checked' : '' %>> 
+                Apresentou aplicação parcial dos conhecimentos adquiridos, mas sem impacto significativo no desempenho. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q3Ape" value="2" <%= nota.nota_aperfeicoamento3 === 2 ? 'checked' : '' %>> 
+                Aplicou de forma clara os conhecimentos adquiridos, demonstrando impacto positivo no desempenho. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>4. O servidor demonstrou crescimento profissional ou técnico como resultado dos cursos realizados?</p>
+              <label>
+                <input type="radio" name="q4Ape" value="0" <%= nota.nota_aperfeicoamento4 === 0 ? 'checked' : '' %>> 
+                Não demonstrou crescimento profissional ou técnico perceptível após os cursos. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Ape" value="1" <%= nota.nota_aperfeicoamento4 === 1 ? 'checked' : '' %>> 
+                Houve algum crescimento profissional ou técnico, mas sem impacto significativo nas funções exercidas. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q4Ape" value="2" <%= nota.nota_aperfeicoamento4 === 2 ? 'checked' : '' %>> 
+                Demonstrou crescimento profissional ou técnico evidente, contribuindo para o exercício das funções. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+            
+            <div class="question">
+              <p>5. O servidor participou de cursos, capacitações ou treinamentos oferecidos direta ou indiretamente pela Prefeitura Municipal?</p>
+              <label>
+                <input type="radio" name="q5Ape" value="0" <%= nota.nota_aperfeicoamento5 === 0 ? 'checked' : '' %>> 
+                Não participou de nenhum curso ou capacitação oferecida diretamente ou indiretamente pela Prefeitura. 
+                <span class="valor-notas">(0 pts)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Ape" value="1" <%= nota.nota_aperfeicoamento5 === 1 ? 'checked' : '' %>> 
+                Participou de algumas atividades de capacitação, mas sem regularidade ou impacto perceptível. 
+                <span class="valor-notas">(1 pt)</span>
+              </label>
+              <br>
+              <label>
+                <input type="radio" name="q5Ape" value="2" <%= nota.nota_aperfeicoamento5 === 2 ? 'checked' : '' %>> 
+                Participou ativamente das capacitações oferecidas e demonstrou comprometimento com o aprendizado. 
+                <span class="valor-notas">(2 pts)</span>
+              </label>
+            </div>
+    
+            <div class="question">
+              <p>Observações: </p>
+              <input type="text" class="form-control text-uppercase" placeholder="Observações" name="comentario_aperfeicoamento" value="<%= nota.comentario_aperfeicoamento %>" required>
+            </div>
           </div>
         </div>
-        <br>
-
-        <div class="form-row">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Responsabilidade" disabled></div>
-          <div class="col-sm-2">
-            <select class="form-select form-control" aria-label="" name="nota_responsabilidade" id="nota_responsabilidade">
-              <option value="1" <%= nota.nota_responsabilidade === 1 ? 'selected' : '' %>>1</option>
-              <option value="2" <%= nota.nota_responsabilidade === 2 ? 'selected' : '' %>>2</option>
-              <option value="3" <%= nota.nota_responsabilidade === 3 ? 'selected' : '' %>>3</option>
-              <option value="4" <%= nota.nota_responsabilidade === 4 ? 'selected' : '' %>>4</option>
-              <option value="5" <%= nota.nota_responsabilidade === 5 ? 'selected' : '' %>>5</option>
-              <option value="6" <%= nota.nota_responsabilidade === 6 ? 'selected' : '' %>>6</option>
-              <option value="7" <%= nota.nota_responsabilidade === 7 ? 'selected' : '' %>>7</option>
-              <option value="8" <%= nota.nota_responsabilidade === 8 ? 'selected' : '' %>>8</option>
-              <option value="9" <%= nota.nota_responsabilidade === 9 ? 'selected' : '' %>>9</option>
-              <option value="10" <%= nota.nota_responsabilidade === 10 ? 'selected' : '' %>>10</option>
-            </select>
-          </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_responsabilidade" value="<%=nota.comentario_responsabilidade%>" required>
-          </div>
-        </div>
-        <br>
-
-        <div class="form-row">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Qualidade de Trabalho" disabled></div>
-          <div class="col-sm-2">
-            <select class="form-select form-control" aria-label="" name="nota_qualidade" id="nota_qualidade">
-              <option value="1" <%= nota.nota_qualidade === 1 ? 'selected' : '' %>>1</option>
-              <option value="2" <%= nota.nota_qualidade === 2 ? 'selected' : '' %>>2</option>
-              <option value="3" <%= nota.nota_qualidade === 3 ? 'selected' : '' %>>3</option>
-              <option value="4" <%= nota.nota_qualidade === 4 ? 'selected' : '' %>>4</option>
-              <option value="5" <%= nota.nota_qualidade === 5 ? 'selected' : '' %>>5</option>
-              <option value="6" <%= nota.nota_qualidade === 6 ? 'selected' : '' %>>6</option>
-              <option value="7" <%= nota.nota_qualidade === 7 ? 'selected' : '' %>>7</option>
-              <option value="8" <%= nota.nota_qualidade === 8 ? 'selected' : '' %>>8</option>
-              <option value="9" <%= nota.nota_qualidade === 9 ? 'selected' : '' %>>9</option>
-              <option value="10" <%= nota.nota_qualidade === 10 ? 'selected' : '' %>>10</option>
-            </select>
-          </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_qualidade" value="<%=nota.comentario_qualidade%>" required>
-          </div>
-        </div>
-        <br>
-
-        <div class="form-row">
-          <div class="col-sm-3"><input type="text" class="form-control font-weight-bold" placeholder="Aperfeiçoamento" disabled></div>
-          <div class="col-sm-2">
-            <select class="form-select form-control" aria-label="" name="nota_aperfeicoamento" id="nota_aperfeicoamento">
-              <option value="1" <%= nota.nota_aperfeicoamento === 1 ? 'selected' : '' %>>1</option>
-              <option value="2" <%= nota.nota_aperfeicoamento === 2 ? 'selected' : '' %>>2</option>
-              <option value="3" <%= nota.nota_aperfeicoamento === 3 ? 'selected' : '' %>>3</option>
-              <option value="4" <%= nota.nota_aperfeicoamento === 4 ? 'selected' : '' %>>4</option>
-              <option value="5" <%= nota.nota_aperfeicoamento === 5 ? 'selected' : '' %>>5</option>
-              <option value="6" <%= nota.nota_aperfeicoamento === 6 ? 'selected' : '' %>>6</option>
-              <option value="7" <%= nota.nota_aperfeicoamento === 7 ? 'selected' : '' %>>7</option>
-              <option value="8" <%= nota.nota_aperfeicoamento === 8 ? 'selected' : '' %>>8</option>
-              <option value="9" <%= nota.nota_aperfeicoamento === 9 ? 'selected' : '' %>>9</option>
-              <option value="10" <%= nota.nota_aperfeicoamento === 10 ? 'selected' : '' %>>10</option>
-            </select>
-          </div>
-          <div class="col-sm-7">
-            <input type="text" class="form-control text-uppercase" placeholder="Comentário" name="comentario_aperfeicoamento" value="<%=nota.comentario_aperfeicoamento%>" required>
-          </div>
-        </div>  
-        <br>
-        
-      
-        
-     
+ 
      <% } %>
      <% })%>
       
@@ -535,6 +1192,129 @@
     </div>
   </form>
      
+  <!-- BARRA DE PROGRESSO -->
+<script>
+  function atualizarPontuacao() {
+    let pontuacaoAssiduidade = 0;
+    let pontuacaoPontualidade = 0;
+    let pontuacaoIniciativa = 0;
+    let pontuacaoDisciplina = 0;
+    let pontuacaoResponsabilidade = 0;
+    let pontuacaoQualidade = 0;
+    let pontuacaoAperfeicoamento = 0;
+
+    // Calcular a pontuação para a assiduidade
+    document.querySelectorAll('#div-assiduidade input[type="radio"]:checked').forEach((input) => {
+        pontuacaoAssiduidade += parseInt(input.value);
+    });
+
+    // Calcular a pontuação para a pontualidade
+    document.querySelectorAll('#div-pontualidade input[type="radio"]:checked').forEach((input) => {
+      pontuacaoPontualidade += parseInt(input.value);
+    });
+
+    // Calcular a pontuação para a iniciativa
+    document.querySelectorAll('#div-iniciativa input[type="radio"]:checked').forEach((input) => {
+      pontuacaoIniciativa += parseInt(input.value);
+    });
+
+    // Calcular a pontuação para a disciplina
+    document.querySelectorAll('#div-disciplina input[type="radio"]:checked').forEach((input) => {
+      pontuacaoDisciplina += parseInt(input.value);
+    });
+    
+    // Calcular a pontuação para a responsabilidade
+    document.querySelectorAll('#div-responsabilidade input[type="radio"]:checked').forEach((input) => {
+      pontuacaoResponsabilidade += parseInt(input.value);
+    });
+
+    // Calcular a pontuação para a qualidade
+    document.querySelectorAll('#div-qualidade input[type="radio"]:checked').forEach((input) => {
+      pontuacaoQualidade += parseInt(input.value);
+    });
+
+    // Calcular a pontuação para a aperfeicoamento
+    document.querySelectorAll('#div-aperfeicoamento input[type="radio"]:checked').forEach((input) => {
+      pontuacaoAperfeicoamento += parseInt(input.value);
+    });
+
+    // Atualizar todas as barras de progresso
+    atualizarBarraProgresso('assiduidade', pontuacaoAssiduidade);
+    atualizarBarraProgresso('pontualidade', pontuacaoPontualidade);
+    atualizarBarraProgresso('iniciativa', pontuacaoIniciativa);
+    atualizarBarraProgresso('disciplina', pontuacaoDisciplina);
+    atualizarBarraProgresso('responsabilidade', pontuacaoResponsabilidade);
+    atualizarBarraProgresso('qualidade', pontuacaoQualidade);
+    atualizarBarraProgresso('aperfeicoamento', pontuacaoAperfeicoamento);
+
+    // Atualizar todos os elementos de pontuação da assiduidade
+    document.querySelectorAll('.totalScore-assiduidade').forEach((elemento) => {
+        elemento.textContent = `${pontuacaoAssiduidade}`;
+    });
+
+    // Atualizar todos os elementos de pontuação da pontualidade
+    document.querySelectorAll('.totalScore-pontualidade').forEach((elemento) => {
+        elemento.textContent = `${pontuacaoPontualidade}`;
+    });
+
+    // Atualizar todos os elementos de pontuação da iniciativa
+    document.querySelectorAll('.totalScore-iniciativa').forEach((elemento) => {
+        elemento.textContent = `${pontuacaoIniciativa}`;
+    });
+
+    // Atualizar todos os elementos de pontuação da disciplina
+    document.querySelectorAll('.totalScore-disciplina').forEach((elemento) => {
+      elemento.textContent = `${pontuacaoDisciplina}`;
+    });
+
+    // Atualizar todos os elementos de pontuação da responsabilidade
+    document.querySelectorAll('.totalScore-responsabilidade').forEach((elemento) => {
+      elemento.textContent = `${pontuacaoResponsabilidade}`;
+    });
+
+     // Atualizar todos os elementos de pontuação da qualidade
+     document.querySelectorAll('.totalScore-qualidade').forEach((elemento) => {
+      elemento.textContent = `${pontuacaoQualidade}`;
+    });
+
+    // Atualizar todos os elementos de pontuação da aperfeicoamento
+    document.querySelectorAll('.totalScore-aperfeicoamento').forEach((elemento) => {
+      elemento.textContent = `${pontuacaoAperfeicoamento}`;
+    });
+    
+    
+  }
+
+  function atualizarBarraProgresso(tipo, pontos) {
+      const barras = document.querySelectorAll(`.progressBar-${tipo}`);
+      const totalPerguntas = 5;
+      const porcentagem = (pontos / (totalPerguntas * 2)) * 100;
+
+      let cor = 'gray';
+      if (pontos >= 1 && pontos <= 4) cor = 'red';
+      else if (pontos >= 5 && pontos <= 7) cor = '#eeb818';
+      else if (pontos >= 8 && pontos <= 10) cor = 'green';
+
+      // Atualizar todas as barras do mesmo tipo
+      barras.forEach((barra) => {
+          barra.style.width = `${porcentagem}%`;
+          barra.style.backgroundColor = cor;
+      });
+  }
+
+  // Adicionar ouvintes de eventos para inputs
+  document.querySelectorAll('input[type="radio"]').forEach((input) => {
+      input.addEventListener('change', atualizarPontuacao);
+  });
+
+  // Chamada inicial para calcular a pontuação
+  atualizarPontuacao();
+
+</script>
+
+
+
+
 </body>
 
 
