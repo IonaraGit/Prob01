@@ -171,6 +171,7 @@ ul li::before {
   text-align: center;
   border-radius: 15px;
   border: solid #EAE7EF;
+  margin-top: 15px;
 }
 
 .ajustes-fonte-lateral {
@@ -238,7 +239,7 @@ ul li::before {
   border-radius: 0px 7px 0px 7px;
   border: solid;
   border-color: #a67014;
-  float: right;
+
 }
 /*FIM LATERAL AVALIADO*/
 
@@ -894,4 +895,8 @@ input[type="radio"] {
 .btn-ver-completo {
   width: 39%;
   font-weight: 600;
+}
+
+.title-ver-notas {
+  font-size: 21px;
 }

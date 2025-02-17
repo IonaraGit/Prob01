@@ -471,8 +471,9 @@
                   <!--<div id="tabela-dados"> Div sem collapse-->
                   <div class="row">
                     <div class="col-12 container-ver-completo">
-                      <a class="btn btn-danger btn-ver-completo" href="#" onclick="gerarPDF()">
-                        <i class="bi bi-filetype-pdf"> Ver completo </i>
+
+                        
+                        <a href="/servidor/notas/ver/<%=teste.id%>" class="btn btn-danger btn-ver-completo"><i class="bi bi-filetype-pdf"> Ver completo </i></a>
                     </a>
            
                     </div>
@@ -966,14 +967,7 @@
     }
 }
 </script>
-<!-- PDF -->
-<script>
-  function gerarPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
 
-    doc.text("Olá, este é o conteúdo do seu PDF!", 10, 10);
-    doc.save("documento.pdf"); // Faz o download do PDF
-}
 
-</script>
+
+

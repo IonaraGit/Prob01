@@ -9,6 +9,13 @@ const Historico = require('../models/Historico')
 const Questionamento = require('../models/Questionamento');
 const Resposta = require ('../models/Resposta')
 const Comissao = require('../models/Comissao')
+const Assiduidade = require('../models/Assiduidade')
+const Pontualidade = require('../models/Pontualidade')
+const Iniciativa = require('../models/Iniciativa')
+const Disciplina = require('../models/Disciplina')
+const Responsabilidade = require('../models/Responsabilidade')
+const Qualidade = require('../models/Qualidade')
+const Aperfeicoamento = require('../models/Aperfeicoamento')
 
 const adminAuth = require('../middlewares/adminAuth');
 const expirar = require('../middlewares/expirar')
@@ -387,6 +394,38 @@ router.post ('/notas/atualizar', adminAuth, expirar, (req, res) => {
   }).catch(err => {
     res.redirect('/')})       
 })
+
+router.get('/servidor/notas/ver/:id', adminAuth, expirar, (req, res) => {
+  var id = req.params.id
+  const chefia_av = req.session.funcionario
+  
+  Nota.findAll({
+    include: [{model: Funcionario}]
+  }).then(notas =>{
+  Funcionario.findAll().then(funcionarios => {
+    Periodo.findAll().then(periodos => {
+      Assiduidade.findAll().then(assiduidades => {
+        Pontualidade.findAll().then(pontualidades => {
+          Iniciativa.findAll().then(iniciativas => {
+            Disciplina.findAll().then(disciplinas => {
+              Responsabilidade.findAll().then(responsabilidades => {
+                Qualidade.findAll().then(qualidades => {
+                  Aperfeicoamento.findAll().then(aperfeicoamentos => {
+                    res.render('admin/notas/veravaliacao', {funcionarios: funcionarios, periodos: periodos, notas: notas, chefia_av, assiduidades, pontualidades, iniciativas, disciplinas, responsabilidades, qualidades, aperfeicoamentos, id})
+
+                  })
+                })
+              })
+            })
+
+        })
+        })
+      })
+     
+   
+    }).catch(err => {
+      res.redirect('/')})  
+})})})
 
 //EXCEL 
 router.get('/sistemas/pdi/relatorios/:id', (req, res) => {

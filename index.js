@@ -29,7 +29,14 @@ const Historico = require ('./models/Historico')
 const Questionamento = require ('./models/Questionamento')
 const Resposta = require ('./models/Resposta')
 const Comissao = require ('./models/Comissao')
-
+const Questao = require ('./models/Questao')
+const Assiduidade = require ('./models/Assiduidade')
+const Pontualidade = require ('./models/Pontualidade')
+const Iniciativa = require('./models/Iniciativa')
+const Disciplina = require('./models/Disciplina')
+const Responsabilidade = require('./models/Responsabilidade')
+const Qualidade = require('./models/Qualidade')
+const Aperfeicoamento = require('./models/Aperfeicoamento')
 
 
 //SESSIONS
