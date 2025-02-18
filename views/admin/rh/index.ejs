@@ -105,7 +105,23 @@
   </div>
   
   <br>
+  <!--INICIO PAGINAÇÃO-->
+  <nav aria-label="Page navigation example" class="mt-2">
+    <ul class="pagination pagination justify-content-center">
+      <li class="page-item">
+        <% if (resultado.paginacao > 1){ %>
+        <a class="page-link text-purple" href="/admin/funcionarios/index/<%=resultado.paginacao - 1%>?limit=<%= limit %>" style="color: blueviolet; text-align: center;"><span aria-hidden="true">&laquo; &laquo; &laquo; Anterior</span></a>
+        <% } else if (resultado.paginacao == 1) { %><%}%>
+      </li>
 
+      <li class="page-item">
+        <% if (resultado.next) { %>
+        <a class="page-link text-purple" href="/admin/funcionarios/index/<%= resultado.paginacao + 1 %>?limit=<%= limit %>" style="color: blueviolet; text-align: center;"><span aria-hidden="true">Próximo &raquo; &raquo; &raquo;</span></a>
+        <% } %>
+      </li>
+    </ul>
+  </nav>
+  <!--FIM PAGINAÇÃO-->
 </div>
 </body>
 
@@ -164,13 +180,6 @@
   document.getElementById('permissao-filter').addEventListener('change', filtrarTabela);
   document.getElementById('setor-filter').addEventListener('change', filtrarTabela);
 </script>
-
-
-
-
-
-
-
 
 
   

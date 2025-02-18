@@ -17,6 +17,7 @@ const HistoricosController = require ('./controllers/HistoricosController')
 const QuestionamentosController = require ('./controllers/QuestionamentosController')
 const RelatoriosController = require ('./controllers/RelatoriosController')
 const ComissoesController = require ('./controllers/ComissoesController')
+const RhController = require  ('./controllers/RhController')
 
 //MODELS
 const Funcionario = require ('./models/Funcionario')
@@ -81,6 +82,7 @@ app.use('/', HistoricosController)
 app.use('/', QuestionamentosController)
 app.use('/', RelatoriosController)
 app.use('/', ComissoesController)
+app.use('/', RhController)
 
 app.get('/', (req, res) =>{
   res.render('index')

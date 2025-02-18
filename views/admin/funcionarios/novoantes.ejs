@@ -1,0 +1,118 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_adm.ejs') %>
+
+<body>
+  <div class="container">
+    <br />
+    <div class="card">
+      <div class="card-header">
+        <h2>CADASTRAR DE FUNCIONÁRIO</h2>
+       
+        
+        
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/funcionarios/salvar" id="form-funcionario">
+            <h5>MATRICULA:</h5>
+            <input class="form-control" type="text" name="matricula" onkeypress="$(this).mask('0000000');" required />
+            <br />
+            <h5>CPF:</h5>
+            <input class="form-control" type="text" name="cpf" onkeypress="$(this).mask('000.000.000-00');" required />
+            <br />
+            <h5>NOME:</h5>
+            <input class="form-control text-uppercase" type="text" name="nome" required />
+            <br />
+            <h5>DATA ADMISSÃO: </h5>
+            <input type="date" class="form-control" name="dataAdmissao" required onkeydown="return false">
+            <br />
+            <h5>PERMISSÃO:</h5>
+            <select name="permissao" class="form-control">
+                <% permissoes.forEach((permissao) => { %>
+                    <option value="<%= permissao.id %>"><%= permissao.descricao %></option>
+                <% }) %>
+            </select>
+            <br />
+            <h5>SETOR:</h5>
+            <select name="setor" class="form-control">
+                <% setores.forEach((setor) => { %>
+                    <option value="<%= setor.id %>"><%= setor.descricao %></option>
+                <% }) %>
+            </select>
+            <br />
+            <h5>E-MAIL:</h5>
+            <input class="form-control text-uppercase" type="email" name="email" required />
+            <br>
+            <h5>SEXO:</h5>
+            <select class="form-select form-control" aria-label="" name="sexo">
+                <option disabled>SEXO</option>
+                <option selected value="FEM">FEMININO</option>
+                <option value="MAS">MASCULINO</option>
+            </select>
+            <br />
+    
+            <button class="btn btn-success ajuste-botao" style="float: right;">SALVAR <img src="/imagens/salvar.png" width="25px" style="padding-bottom: 5px;"></button>
+        </form>
+    
+        <form method="GET" action="/admin/funcionarios/index/1" class="mb-5">
+            <div>
+                <button class="btn btn-secondary ajuste-botao" style="float: left;">
+                    <img src="/imagens/voltar.png" width="25px" style="padding-bottom: 5px;"> VOLTAR
+                </button>
+            </div>
+        </form>
+    
+        <!-- Exibir a mensagem de erro -->
+        <div id="error-message" style="color: red; display: none;"></div>
+    </div>
+    
+ 
+    
+    
+    
+      
+      
+    </div>
+  </div>
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("erro")) {
+      alert(params.get("erro"));
+    }
+  });
+</script>
+
+<script>
+  // Quando o formulário for enviado
+  document.getElementById('form-funcionario').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Realizar a requisição POST
+      fetch('/funcionarios/salvar', {
+          method: 'POST',
+          body: new FormData(this)
+      })
+      .then(response => {
+          if (!response.ok) {
+              // Se o status não for ok (erro), tenta obter o erro no corpo da resposta
+              return response.json(); 
+          }
+          // Se for bem-sucedido, redireciona
+          window.location.href = '/admin/funcionarios/index/1'; 
+      })
+      .then(data => {
+          if (data.error) {
+              // Se houver erro na resposta, exibe a mensagem de erro
+              document.getElementById('error-message').style.display = 'block';
+              document.getElementById('error-message').textContent = data.error;
+          }
+      })
+      .catch(err => {
+          console.error('Erro ao enviar dados:', err);
+      });
+  });
+</script>
+<%- include ('../../partials/footer.ejs') %> 
+<%- include ('../../partials/configure_footer.ejs') %>

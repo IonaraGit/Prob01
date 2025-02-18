@@ -43,6 +43,10 @@ const Funcionario = connection.define('funcionarios', {
   imagem_perfil: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  data_admissao: {
+    type: Sequelize.DATEONLY,
+    allowNull: false
   }
 })
 

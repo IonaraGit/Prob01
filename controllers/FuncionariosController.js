@@ -6,6 +6,10 @@ const Funcionario = require ('../models/Funcionario');
 const Nota = require ('../models/Nota');
 const Periodo = require('../models/Periodo');
 const Questionamento = require ('../models/Questionamento')
+const moment = require('moment');
+const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
+
 
 
 const bcrypt = require ('bcryptjs')
@@ -68,7 +72,7 @@ router.post('/autenticacao', (req, res) =>{
               Setor.findAll().then(setores =>{
                 Nota.findAll().then(notas =>{
                   Periodo.findAll().then(periodos => {
-                    res.redirect('/admin/funcionarios/index/1')
+                    res.redirect('/admin/funcionarios/index')
           })})})})})
 
         } else if (funcionario.permissoId == 3) {
@@ -94,6 +98,17 @@ router.post('/autenticacao', (req, res) =>{
         
         } else if (funcionario.permissoId == 4) {
           res.redirect('/painel/inicio')
+        } else  if (funcionario.permissoId == 5){
+          Funcionario.findAll({
+            include: [{model: Permissao}] //NA BUSCA, INCLUI AS CATEGORIAS PELO RELACIONAMENTO
+          }).then(funcionarios =>{
+            Permissao.findAll().then(permissoes =>{
+              Setor.findAll().then(setores =>{
+                Nota.findAll().then(notas =>{
+                  Periodo.findAll().then(periodos => {
+                    res.redirect('/admin/rh/index')
+          })})})})})
+
         }
       }else{
         res.render('admin/login/login');
@@ -181,26 +196,20 @@ router.get('/esqueci', (req, res) => {
 })
 
 //PAGINAÇÃO
-router.get('/admin/funcionarios/index/:num', adminAuth, adminUser, expirar, (req, res) => {
-  let limit = parseInt(req.query.limit) || 10; 
-  const pagina = parseInt(req.params.num) || 1; 
-  const offset = (pagina - 1) * limit;
+router.get('/admin/funcionarios/index', adminAuth, adminUser, (req, res) => {
+ 
      
   Funcionario.findAndCountAll({
-    limit: limit, 
-    offset: offset
+   
   }).then(funcionarios => {   
     Permissao.findAll().then(permissoes => {
       Setor.findAll().then(setores => {
+        Periodo.findAll().then(periodos => {
+          
         
         let totalFuncionarios = funcionarios.count;
-        if (limit > totalFuncionarios) {
-          limit = totalFuncionarios;
-        }
-
+       
         const resultado = {
-          paginacao: pagina,
-          next: (pagina * limit) < totalFuncionarios,
           funcionarios: funcionarios.rows || [], // Garante que sempre será um array
           totalFuncionarios: totalFuncionarios
         };
@@ -208,11 +217,13 @@ router.get('/admin/funcionarios/index/:num', adminAuth, adminUser, expirar, (req
         console.log("FUNCIONÁRIOS:", resultado.funcionarios); // Debug
         res.render('admin/funcionarios/index', {
           resultado,
-          limit,
+     
           funcionarios: resultado.funcionarios, // Alterado
           permissoes,
           setores,
+          periodos,
           funcionarioLogadoId: req.session.funcionario.id 
+        });
         });
       });
     });
@@ -222,61 +233,68 @@ router.get('/admin/funcionarios/index/:num', adminAuth, adminUser, expirar, (req
   });
 });
 
-
-router.get ('/admin/funcionarios/novo', adminAuth, adminUser, expirar, (req, res) => {
-
+router.get('/admin/funcionarios/novo', adminAuth, adminUser, expirar, (req, res) => {
   Permissao.findAll().then(permissoes => {
     Setor.findAll().then(setores => {
-      res.render('admin/funcionarios/novo', {permissoes: permissoes, setores: setores})
-    })
+      // Passando a variável error, caso ela exista
+      res.render('admin/funcionarios/novo', { 
+        permissoes: permissoes, 
+        setores: setores,
+        error: req.query.error || null  // Se houver erro, passa o valor, senão passa null
+      });
+    });
   }).catch(err => {
-    res.redirect('/login')})
-})
+    res.redirect('/login');
+  });
+});
 
-router.post ('/funcionarios/salvar', adminAuth, adminUser, expirar, (req, res) => {
-  var matricula = req.body.matricula
-  var cpf = req.body.cpf
-  var nome = req.body.nome.toUpperCase()
-  var senha = 'semacesso'
-  var permissao = req.body.permissao
-  var setor = req.body.setor
-  var sexo = req.body.sexo
-  var email = req.body.email
-  var imagem = 'sem imagem'
+router.post('/funcionarios/salvar', adminAuth, adminUser, expirar, async (req, res) => {
+  try {
+    var { matricula, cpf, nome, permissao, setor, sexo, email, dataAdmissao } = req.body;
+    var senha = 'semacesso';
+    var imagem = 'sem imagem';
+    dataAdmissao = moment(dataAdmissao).format('YYYY-MM-DD');
 
+    // Buscar permissões e setores para preencher o select novamente
+    const permissoes = await Permissao.findAll();
+    const setores = await Setor.findAll();
 
-  //VERIFICANDO SE JÁ EXISTE UMA MATRICULA
-  Funcionario.findOne({
-    where: {
-      matricula: matricula
+    // Verificar se a matrícula já existe
+    const funcionarioExistente = await Funcionario.findOne({ where: { matricula } });
+    const funcionarioCpfExistente = await Funcionario.findOne({ where: { cpf } })
+
+    if ((funcionarioExistente) || (funcionarioCpfExistente)) {
+      return res.render('admin/funcionarios/novo', { 
+        errorMessage: 'Matrícula e/ou CPF já cadastrada.', 
+        permissoes, 
+        setores,
+        dados: req.body // Retornar os valores preenchidos
+      });
     }
-  }).then ( funcionario => {
-    if (funcionario == undefined){
-    
-      Funcionario.create ({
-        matricula: matricula,
-        cpf: cpf,
-        nome: nome,
-        senha: senha,
-        permissoId: permissao,
-        setoreId: setor,
-        primeiro_acesso: 0,
-        pergunta_secreta: 'SEM PERGUNTA',
-        resposta_secreta: 'SEM DEFINICAO',
-        sexo: sexo,
-        email: email,
-        imagem_perfil: imagem
-        
-      }).then (() => {
 
-        res.redirect('/admin/funcionarios/index/1')
-      })
-    }else {
-      res.redirect('/admin/funcionarios/novo')
-    }
-  }).catch(err => {
-    res.redirect('/login')})
-})
+
+    // Criar funcionário
+    await Funcionario.create({
+      matricula, cpf, nome: nome.toUpperCase(), senha, permissoId: permissao, setoreId: setor,
+      primeiro_acesso: 0, pergunta_secreta: 'SEM PERGUNTA', resposta_secreta: 'SEM DEFINICAO',
+      sexo, email, imagem_perfil: imagem, data_admissao: dataAdmissao
+    });
+
+    return res.redirect('/admin/funcionarios/index');
+
+  } catch (err) {
+    console.error('Erro no banco de dados:', err);
+    const permissoes = await Permissao.findAll();
+    const setores = await Setor.findAll();
+
+    return res.render('admin/funcionarios/novo', { 
+      errorMessage: 'Erro interno do servidor.', 
+      permissoes, 
+      setores, 
+      dados: req.body // Retorna os valores preenchidos
+    });
+  }
+});
 
 router.post('/funcionarios/deletar', adminAuth, adminUser, expirar, (req, res) => {
   var id = req.body.id
@@ -431,5 +449,78 @@ router.post('/alterar', (req, res) => {
   }).catch(err => {
     res.redirect('/login')})
 })
+
+router.get('/admin/funcionarios/todos', async (req, res) => {
+  try {
+    // 1️⃣ Busca todos os funcionários
+    const funcionarios = await Funcionario.findAll();
+
+    // 2️⃣ Busca permissões e setores para adicionar a descrição correta
+    const permissoes = await Permissao.findAll();
+    const setores = await Setor.findAll();
+
+    // 3️⃣ Mapeia os dados para enviar apenas o que interessa
+    const funcionariosFormatados = funcionarios.map(funcionario => ({
+      id: funcionario.id,
+      matricula: funcionario.matricula,
+      cpf: funcionario.cpf,
+      nome: funcionario.nome,
+      permissao: permissoes.find(p => p.id === funcionario.permissoId)?.descricao || "Não informado",
+      setor: setores.find(s => s.id === funcionario.setoreId)?.descricao || "Não informado"
+    }));
+
+    res.json(funcionariosFormatados);
+  } catch (error) {
+    console.error("Erro ao buscar todos os funcionários:", error);
+    res.status(500).json({ error: "Erro ao buscar os funcionários." });
+  }
+});
+
+
+router.get('/admin/funcionarios', adminAuth, adminUser, async (req, res) => {
+  try {
+    const { setor, permissao, periodo } = req.query;
+
+    let filtros = {}; // Objeto que armazena os filtros ativos
+
+    if (setor) {
+      filtros.setoreId = setor;
+    }
+    if (permissao) {
+      filtros.permissoId = permissao;
+    }
+    if (periodo) {
+      // Supondo que "periodo" seja um intervalo de datas. Ajuste conforme necessário.
+      const inicioPeriodo = moment().subtract(periodo, 'months').format('YYYY-MM-DD');
+      filtros.data_admissao = { [Op.gte]: inicioPeriodo }; // Filtra apenas os que entraram no período
+    }
+
+    const funcionarios = await Funcionario.findAll({
+      where: filtros,
+      include: [Permissao, Setor]
+    });
+
+    const permissoes = await Permissao.findAll();
+    const setores = await Setor.findAll();
+    const periodos = [
+      { id: 1, descricao: 'Último mês' },
+      { id: 3, descricao: 'Últimos 3 meses' },
+      { id: 6, descricao: 'Últimos 6 meses' },
+      { id: 12, descricao: 'Último ano' }
+    ];
+
+    res.render('admin/funcionarios/index', {
+      resultado: { funcionarios },
+      permissoes,
+      setores,
+      periodos,
+      req // Passamos `req` para manter as opções selecionadas no front-end
+    });
+
+  } catch (err) {
+    console.error('Erro ao buscar funcionários:', err);
+    res.redirect('/admin/funcionarios');
+  }
+});
 
 module.exports = router
