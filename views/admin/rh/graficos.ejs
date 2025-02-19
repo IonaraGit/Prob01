@@ -1,0 +1,106 @@
+<%- include ('../../partials/configure_header.ejs') %> 
+<%- include ('../../partials/header_info.ejs') %>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-between m-1">
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_usuario.png" alt="Imagem sobre usuarios">
+        <div class="card-text ms-3">
+          <h5 class="txt-secretary-title">Usuários do Sistema</h5>
+          <p class="txt-info-grafico"><%= totalUsuarios %> pessoas</p> <!-- Exibe o total de usuários -->
+        </div>
+      </div>
+      
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_avaliador.png" alt="Imagem sobre avaliadores">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">Avaliadores</h5>
+          <p class="txt-info-grafico"><%= chefiasCount %> chefias</p> <!-- Exibe o total de chefias -->
+        </div>
+      </div>
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_estagiarios.png" alt="Imagem sobre estagiarios">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">Estagiarios</h5>
+          <p class="txt-info-grafico"><%= estagiariosCount %> estagiários</p>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between m-1">
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_adm.png" alt="Imagem sobre usuarios">
+        <div class="card-text ms-3">
+          <h5 class="txt-secretary-title">Admnistradores</h5>
+          <p class="txt-info-grafico"><%= administradoresCount %> administradores</p> <!-- Exibe o total de usuários -->
+        </div>
+      </div>
+      
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_comissao.png" alt="Imagem sobre comissao">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">Comissão</h5>
+          <p class="txt-info-grafico"><%= comissaoCount %> pessoas</p> <!-- Exibe o total de chefias -->
+        </div>
+      </div>
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_rh.png" alt="Imagem sobre rh">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">Rh</h5>
+          <p class="txt-info-grafico"><%= rhCount %> membros do RH</p>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between m-1">
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_1.png" alt="Imagem numero 1">
+        <div class="card-text ms-3">
+          <h5 class="txt-secretary-title">1° avaliação</h5>
+          <p class="txt-info-grafico"><%= periodosCount.periodo1Count %> avaliações</p> 
+        </div>
+      </div>
+      
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_2.png" alt="Imagem numero 2">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">2° Avaliação</h5>
+          <p class="txt-info-grafico"><%= periodosCount.periodo2Count %> avaliações</p>
+        </div>
+      </div>
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_3.png" alt="Imagem numero 3">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">3° Avaliação </h5>
+          <p class="txt-info-grafico"><%= periodosCount.periodo3Count %> avaliações </p>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between m-1">
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_4.png" alt="Imagem numero 4">
+        <div class="card-text ms-3">
+          <h5 class="txt-secretary-title">4° avaliação</h5>
+          <p class="txt-info-grafico"><%= periodosCount.periodo4Count %> avaliações</p> 
+        </div>
+      </div>
+      
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_5.png" alt="Imagem numero 2">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">5° Avaliação</h5>
+          <p class="txt-info-grafico"><%= periodosCount.periodo5Count %> avaliações</p>
+        </div>
+      </div>
+      <div class="col-md-3 card-about d-flex align-items-center shadow">
+        <img src="/imagens/graf_1.png" alt="Imagem numero 3">
+        <div class="card-text ms-3"> <!-- Novo contêiner para texto -->
+          <h5 class="txt-secretary-title">6° Avaliação </h5>
+          <p class="txt-info-grafico"><%= periodosCount.periodo6Count %> avaliações </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<%- include ('../../partials/footer.ejs') %>
+<%- include ('../../partials/configure_footer.ejs') %>

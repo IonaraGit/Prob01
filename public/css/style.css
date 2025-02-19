@@ -35,6 +35,10 @@ h5 {
   margin: 0;
 }
 
+input {
+  text-transform: uppercase;
+}
+
 /*geral class*/
 .fontes_input {
   color: #5B2FF4 !important;
@@ -904,4 +908,35 @@ input[type="radio"] {
 
 .title-ver-notas {
   font-size: 21px;
+}
+
+.card-about {
+  margin-top: 15px;
+  border-radius: 8px;
+  background-color: #ffb06cc7;
+  padding: 10px; /* Espaçamento interno */
+  display: flex; /* Flexbox para layout horizontal */
+  align-items: center; /* Centraliza verticalmente */
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Animação suave */
+}
+
+/* Imagem dentro do card */
+.card-about img {
+  height: 70px; /* Define altura fixa */
+  object-fit: cover; /* Ajusta a imagem sem distorção */
+  border-radius: 15px; /* Faz a imagem ficar circular (opcional) */
+}
+
+/* Efeito ao passar o mouse */
+.card-about:hover {
+  transform: scale(1.05); /* Aumenta o tamanho do card */
+  background-color: #ff9270; /* Altera a cor de fundo */
+}
+
+.card-text {
+  margin-left: 18px;
+}
+
+.txt-info-grafico{
+  margin-top: 9px;
 }

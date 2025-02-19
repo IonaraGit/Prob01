@@ -1,6 +1,8 @@
 <%- include ('../../partials/configure_header.ejs') %> 
-<%- include ('../../partials/header_adm.ejs') %>
+<%- include ('../../partials/header_info.ejs') %>
 
+
+  
 <body>
   <br />
   <div class="container">
@@ -9,18 +11,22 @@
     <h5 class="text-center">FUNCIONÁRIOS CADASTRADOS</h5>
     
     <hr />
-<br>
+    <br>
     <div class="row">
-      <div class="col-lg-2">
-        <a class="btn btn-block btn-info"  href="/admin/funcionarios/novo">NOVO</a>
+      <div class="col-lg-5">
+        <label for="">-</label>
+
+        <a class="btn btn-block btn-info"  href="/admin/funcionarios/novo">NOVO + </a>
       </div>
-     
+      <div class="col-lg-7">
+        <label for="">Pesquisar</label>
+        <input type="text" id="searchAtt" class="form-control" placeholder="Buscar">
+      </div>
     
     </div>
 
-
     <div class="row mt-3">
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <label for="">Permissão</label>
         <select name="permissao" class="form-control" id="permissao-filter">
           <option value="">Todas</option>
@@ -30,7 +36,7 @@
         </select>
       </div>
     
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <label for="">Setor</label>
         <select name="setor" class="form-control" id="setor-filter">
           <option value="">Todos</option>
@@ -40,10 +46,19 @@
         </select>
       </div>
 
-      <div class="col-lg-6">
-        <label for="">Pesquisar</label>
-        <input type="text" id="searchAtt" class="form-control" placeholder="Buscar">
+      <div class="col-lg-4">
+        <label for="">Avaliações</label>
+        <select name="periodo" class="form-control" id="periodo-filter">
+          <option value="">Todos</option>
+          <option value="-">Sem notas</option>
+
+          <% periodos.forEach((periodo) => { %> 
+            <option value="<%= periodo.descricao %>"><%= periodo.descricao %></option>
+          <%}) %>
+        </select>
       </div>
+
+   
     </div>
     
     <div class="table content mt-3" id="table-container">
@@ -55,6 +70,8 @@
             <th>NOME</th>
             <th>PERMISSÃO</th>
             <th>SETOR</th>
+            <th>DATA ADMISSÃO</th>
+            <th>AVALIAÇÕES</th>
             <th>AÇÕES</th>
           </tr>
         </thead>
@@ -72,73 +89,261 @@
       
               <td class="align-middle permissao" data-title="PERMISSÃO:"><%= permissaoDescricao %></td>
               <td class="align-middle setor" data-title="SETOR:"><%= setorDescricao %></td>
-      
-              <td class="align-middle">
-                <% if (funcionario.id !== funcionarioLogadoId) { %>
-                  <a href="/admin/funcionarios/editar/<%= funcionario.id %>" class="btn btn-warning">
-                    <i class="bi bi-brush"></i>
-                  </a>
-                  <form method="POST" action="/funcionarios/deletar" style="display: inline" onsubmit="confirmardelete(event,this)">
-                    <input type="hidden" name="id" value="<%= funcionario.id %>">
-                    <button class="btn btn-danger ajuste_botao_delete">
-                      <i class="bi bi-trash3"></i>
-                    </button>
-                  </form>
-                <% } else { %>
-                  <button class="btn btn-secondary" disabled>
-                    <i class="bi bi-brush"></i>
-                  </button>
-                  <button class="btn btn-secondary ajuste_botao_delete" disabled>
-                    <i class="bi bi-trash3"></i>
-                  </button>
-                <% } %>
+         
+              <td class="align-middle data_admissao" data-title="DATA ADMISSÃO">
+                <%= new Date(funcionario.data_admissao + 'T00:00:00').toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) %>
               </td>
+              
+              <td class="align-middle periodo" data-title="AVALIAÇÕES">
+        
+                <%notas.forEach ((nota) => {%>
+                  <%if (nota.funcionarioId == funcionario.id) {%>
+                    <%= nota.periodoId %>
+                    <!-- Button trigger modal -->
+
+                    <button type="button" class="btn btn-link text-dark" data-toggle="modal" data-target="#exampleModalCenter">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+              
+                  <%} else { %>
+                    -
+                  <%}%>
+                <%})%>
+                
+                </td>
+                <td class="align-middle">
+                  <% if (funcionario.id !== funcionarioLogadoId) { %>
+                    <a href="#" 
+                    class="btn btn-warning btn-editar" 
+                    data-toggle="modal" 
+                    data-target="#ModalEditar"
+                    data-id="<%= funcionario.id %>"
+                    data-matricula="<%= funcionario.matricula %>"
+                    data-cpf="<%= funcionario.cpf %>"
+                    data-nome="<%= funcionario.nome %>"
+                    data-permissao="<%= funcionario.permissoId %>"
+                    data-setor="<%= funcionario.setoreId %>"
+                    data-data_admissao="<%= funcionario.data_admissao %>">
+                      <i class="bi bi-brush"></i>
+                    </a>
+                  <% }  %>
+                </td>
             </tr>
           <% }) %> 
         </tbody>
       </table>
     </div>
 
-    
-  <div>
-    <label style="float: right;">Quantidade de funcionarios: <span style="font-weight: 500;"><%=resultado.totalFuncionarios%></span></label>
-  </div>
-  
-  <br>
-  <!--INICIO PAGINAÇÃO-->
-  <nav aria-label="Page navigation example" class="mt-2">
-    <ul class="pagination pagination justify-content-center">
-      <li class="page-item">
-        <% if (resultado.paginacao > 1){ %>
-        <a class="page-link text-purple" href="/admin/funcionarios/index/<%=resultado.paginacao - 1%>?limit=<%= limit %>" style="color: blueviolet; text-align: center;"><span aria-hidden="true">&laquo; &laquo; &laquo; Anterior</span></a>
-        <% } else if (resultado.paginacao == 1) { %><%}%>
-      </li>
+    <button class="btn btn-danger" style="float: right;">
+      <i class="bi bi-file-earmark-text-fill"></i> Gerar Relatório
+    </button>
 
-      <li class="page-item">
-        <% if (resultado.next) { %>
-        <a class="page-link text-purple" href="/admin/funcionarios/index/<%= resultado.paginacao + 1 %>?limit=<%= limit %>" style="color: blueviolet; text-align: center;"><span aria-hidden="true">Próximo &raquo; &raquo; &raquo;</span></a>
-        <% } %>
-      </li>
-    </ul>
-  </nav>
-  <!--FIM PAGINAÇÃO-->
+  </div>
+
+<!-- MODAL EDITAR -->
+<div class="modal fade" id="ModalEditar" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Editar</h5>
+    
+      </div>
+      <div class="modal-body">
+        <form id="form-editar">
+          <input type="hidden" id="id" name="id">
+      
+          <div class="form-group">
+            <label for="matricula">Matrícula</label>
+            <input type="text" class="form-control" id="matricula" name="matricula" readonly>
+          </div>
+      
+          <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" readonly>
+          </div>
+      
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome">
+          </div>
+      
+          <div class="form-group">
+            <label for="permissao">Permissão</label>
+            <select class="form-control" id="permissao" name="permissao">
+              <% permissoes.forEach(permissao => { %>
+                <option value="<%= permissao.id %>"><%= permissao.descricao %></option>
+              <% }) %>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="setor">Setor</label>
+            <select class="form-control" id="setor" name="setor">
+              <% setores.forEach(setor => { %>
+                <option value="<%= setor.id %>"><%= setor.descricao %></option>
+              <% }) %>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="data_admissao">Data de Admissão</label>
+            <input type="date" class="form-control" id="data_admissao" name="data_admissao">
+          </div>
+          <button type="submit" class="btn btn-success">Salvar</button>
+        </form>
+      </div>
+     
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+
+       
+
+
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- MODAL VER NOTAS -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Avaliações</h5>
+      </div>
+      <div class="modal-body">
+        <div id="nota-container">
+          <!-- As notas serão inseridas aqui -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Salvar alterações</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </body>
 
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+
+<!-- DADOS VIREM PREENCHIDOS NO MODAL E SALVAR -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const modal = new bootstrap.Modal(document.getElementById("ModalEditar"));
+
+  // Captura os botões de edição
+  document.querySelectorAll(".btn-editar").forEach(botao => {
+    botao.addEventListener("click", function () {
+      const id = this.getAttribute("data-id");
+      const matricula = this.getAttribute("data-matricula");
+      const cpf = this.getAttribute("data-cpf");
+      const nome = this.getAttribute("data-nome");
+      const permissao = this.getAttribute("data-permissao");
+      const setor = this.getAttribute("data-setor");
+      const dataAdmissao = this.getAttribute("data-data_admissao"); // Acessando o valor diretamente do atributo
+
+      // Preencher os inputs do modal
+      document.getElementById("id").value = id;
+      document.getElementById("matricula").value = matricula;
+      document.getElementById("cpf").value = cpf;
+      document.getElementById("nome").value = nome;
+
+      // Função para formatar a data no formato YYYY-MM-DD
+      document.getElementById("data_admissao").value = formatData(dataAdmissao); // Formatar a data
+
+      // Função para formatar a data para o formato YYYY-MM-DD
+      function formatData(data) {
+        const partes = data.split('-'); // Divide a data no formato YYYY-MM-DD
+        return partes[0] + '-' + partes[1] + '-' + partes[2]; // Retorna no formato YYYY-MM-DD
+      }
+
+      // Preencher os selects corretamente
+      document.getElementById("permissao").value = permissao || "";
+      document.getElementById("setor").value = setor || "";
+
+      modal.show();
+    });
+  });
+
+  // Captura o formulário de edição
+  document.getElementById("form-editar").addEventListener("submit", function (event) {
+    event.preventDefault(); // Impede o recarregamento da página
+
+    const id = document.getElementById("id").value;
+    const nome = document.getElementById("nome").value;
+    const permissao = document.getElementById("permissao").value;
+    const setor = document.getElementById("setor").value;
+    const dataAdmissao = document.getElementById("data_admissao").value;
+
+    // Enviar dados para o backend via Fetch API
+    fetch("/atualizar-funcionario", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ id, nome, permissao, setor, dataAdmissao })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.sucesso) {
+        Swal.fire({
+          title: 'Sucesso!',
+          text: 'Funcionário atualizado com sucesso!',
+          icon: 'success',
+          confirmButtonColor: '#28a745'
+        }).then(() => {
+          // Fechar o modal
+          modal.hide();
+
+          // Atualizar os dados na tabela
+          const row = document.querySelector(`.btn-editar[data-id="${id}"]`).closest("tr");
+          row.querySelector("td:nth-child(3)").textContent = nome;
+          row.querySelector(".permissao").textContent = document.getElementById("permissao").selectedOptions[0].text;
+          row.querySelector(".setor").textContent = document.getElementById("setor").selectedOptions[0].text;
+          row.querySelector(".data_admissao").textContent = dataAdmissao;
+
+          // Redirecionar imediatamente para a página desejada
+          window.location.href = "/admin/rh/index";
+        });
+      } else {
+        Swal.fire({
+          title: 'Erro!',
+          text: 'Erro ao atualizar funcionário!',
+          icon: 'error',
+          confirmButtonColor: '#d33'
+        });
+      }
+    })
+    .catch(error => {
+      console.error("Erro ao enviar os dados:", error);
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Não foi possível atualizar os dados!',
+        icon: 'error',
+        confirmButtonColor: '#d33'
+      });
+    });
+  });
+});
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.27/jspdf.plugin.autotable.min.js"></script>
+
 
 <%- include ('../../partials/footer.ejs') %>
 <%- include ('../../partials/configure_footer.ejs') %>
 
-<script>
-  function confirmardelete(event, form) {
-    event.preventDefault()
-    var decisao = confirm('Deletar permanentemente esse funcionario?')
-    if (decisao) {
-      form.submit()
-    }
-  }
-</script>
 
 <script>
   document.getElementById("searchAtt").addEventListener("input", function() {
@@ -157,18 +362,24 @@
   function filtrarTabela() {
     const permissaoFilter = document.getElementById('permissao-filter').value; // Obtém o valor selecionado no filtro de permissão
     const setorFilter = document.getElementById('setor-filter').value; // Obtém o valor selecionado no filtro de setor
+    const periodoFilter = document.getElementById('periodo-filter').value; // Obtém o valor selecionado no filtro de periodo
+
     const rows = document.querySelectorAll('#table-body tr'); // Seleciona todas as linhas da tabela
     
     rows.forEach(row => {
       const permissao = row.querySelector('.permissao').textContent.trim(); // Obtém o valor da permissão da célula
       const setor = row.querySelector('.setor').textContent.trim(); // Obtém o valor do setor da célula
+      const periodo = row.querySelector('.periodo').textContent.trim(); // Obtém o valor do periodo da célula
+
 
       // Verifica se a permissão e o setor correspondem aos filtros ou se os filtros estão vazios
       const mostrarPermissao = !permissaoFilter || permissao.includes(permissaoFilter);
       const mostrarSetor = !setorFilter || setor.includes(setorFilter);
+      const mostrarPeriodo = !periodoFilter || periodo.includes(periodoFilter);
+
 
       // Se ambos os filtros forem atendidos, exibe a linha, caso contrário, esconde a linha
-      if (mostrarPermissao && mostrarSetor) {
+      if (mostrarPermissao && mostrarSetor && mostrarPeriodo) {
         row.style.display = ''; // Exibe a linha
       } else {
         row.style.display = 'none'; // Esconde a linha
@@ -179,7 +390,163 @@
   // Adicionando eventos de mudança nos filtros
   document.getElementById('permissao-filter').addEventListener('change', filtrarTabela);
   document.getElementById('setor-filter').addEventListener('change', filtrarTabela);
+  document.getElementById('periodo-filter').addEventListener('change', filtrarTabela);
+
 </script>
+
+<script>
+  function gerarRelatorioPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF("p", "mm", "a4"); // Formato retrato A4
+  
+      const imgPath1 = "/imagens/prob02.png"; // Caminho da primeira imagem
+      const imgPath2 = "/imagens/logoPrefeituraP.png"; // Caminho da segunda imagem (logo da prefeitura)
+  
+      // Criar o primeiro objeto de imagem (prob02.png)
+      const img1 = new Image();
+      img1.src = imgPath1;
+  
+      // Criar o segundo objeto de imagem (logo_prefeitura.png)
+      const img2 = new Image();
+      img2.src = imgPath2;
+  
+      img1.onload = function () { // Gera o PDF só depois da primeira imagem carregar
+          img2.onload = function () { // Gera o PDF só depois da segunda imagem carregar
+  
+              // Adiciona a primeira imagem (prob02.png) centralizada no topo
+              const imgWidth1 = 50; // Largura da primeira imagem
+              const imgHeight1 = 20; // Altura da primeira imagem
+              const x1 = (doc.internal.pageSize.width - imgWidth1) / 2; // Centraliza a imagem no eixo X
+              doc.addImage(img1, "PNG", x1, 10, imgWidth1, imgHeight1);
+  
+              // Adiciona a segunda imagem (logo_prefeitura.png) logo abaixo da primeira
+              const imgWidth2 = 40; // Largura da segunda imagem
+              const imgHeight2 = 20; // Altura da segunda imagem
+              doc.addImage(img2, "PNG", 10, 40, imgWidth2, imgHeight2); // Ajuste da posição vertical para ficar perto
+  
+              // Adiciona os dados da prefeitura ao lado da logo
+              doc.setFont("helvetica", "normal");
+              doc.setFontSize(10);
+              // Ajuste do espaço entre as imagens e os dados da prefeitura
+              doc.text("Prefeitura Municipal de Exemplo", 60, 42); // Posição ajustada
+              doc.text("Rua Exemplo, 123 - Centro - Cidade/Estado - CEP: 00000-000", 60, 47); // Posição ajustada
+              doc.text("Telefone: (11) 9999-9999", 60, 52); // Posição ajustada
+              doc.text("www.prefeituraexemplo.com.br", 60, 57); // Posição ajustada
+  
+              // Linha Separadora (agora será desenhada antes do título "Relatório")
+              doc.line(10, 65, 200, 65); // Linha mais próxima dos dados
+  
+              // Título do Relatório
+              doc.setFontSize(16);
+              doc.text("Relatório", 10, 73); // Título mais perto da linha
+  
+              // Pegar os valores selecionados nos filtros
+              const permissaoSelecionada = document.querySelector("#permissao-filter").value;
+              const setorSelecionado = document.querySelector("#setor-filter").value;
+              const periodoSelecionado = document.querySelector("#periodo-filter").value;
+  
+              // Adicionar os filtros ao PDF depois do título
+              doc.setFontSize(12);
+              doc.setFont("helvetica", "normal");
+              doc.text(`Permissão Selecionada: ${permissaoSelecionada || "Todas"}`, 10, 80);
+              doc.text(`Setor Selecionado: ${setorSelecionado || "Todos"}`, 10, 85);
+              doc.text(`Avaliações Selecionadas: ${periodoSelecionado || "Todos"}`, 10, 90);
+  
+              // Posição inicial da tabela
+              let startY = 100;
+  
+              // Seleciona apenas as linhas visíveis na tabela
+              const rows = document.querySelectorAll("#table-body tr");
+              let tableData = [];
+  
+              rows.forEach(row => {
+                  if (row.style.display !== "none") { // Apenas funcionários visíveis
+                      let rowData = [];
+                      row.querySelectorAll("td").forEach((cell, index) => {
+                          // Remover a segunda coluna (CPF)
+                          if (index !== 1) {
+                              rowData.push(cell.textContent.trim());
+                          }
+                      });
+                      tableData.push(rowData);
+                  }
+              });
+  
+              // Cabeçalhos da tabela (sem CPF)
+              const headers = [
+                  ["MATRÍCULA", "NOME", "PERMISSÃO", "SETOR", "DATA ADMISSÃO", "AVALIAÇÕES"]
+              ];
+  
+              // Criar tabela no PDF
+              doc.autoTable({
+                  head: headers,
+                  body: tableData,
+                  startY: startY,
+                  theme: "striped",
+                  headStyles: { fillColor: [0, 0, 128], textColor: [255, 255, 255], fontSize: 10 },
+                  styles: { fontSize: 9, cellPadding: 3 },
+                  margin: { top: 40, left: 10, right: 10 },
+                  columnStyles: {
+                      0: { cellWidth: 30 }, // Matrícula
+                      1: { cellWidth: 40 }, // Nome
+                      2: { cellWidth: 30 }, // Permissão
+                      3: { cellWidth: 30 }, // Setor
+                      4: { cellWidth: 30 }, // Data Admissão
+                      5: { cellWidth: "auto" }  // Avaliações ajustado
+                  }
+              });
+  
+              // Rodapé
+              const pageHeight = doc.internal.pageSize.height;
+              const dataAtual = new Date().toLocaleDateString("pt-BR");
+              doc.setFontSize(10);
+              doc.text(`Data de Emissão: ${dataAtual}`, 150, pageHeight - 10); // Posiciona a data no rodapé
+  
+              // Baixar o PDF
+              doc.save("relatorio_funcionarios.pdf");
+          };
+      };
+  
+      img1.onerror = function () {
+          alert("Erro ao carregar a primeira imagem. Verifique se o caminho está correto.");
+      };
+  
+      img2.onerror = function () {
+          alert("Erro ao carregar a segunda imagem. Verifique se o caminho está correto.");
+      };
+  }
+  
+  // Evento para o botão
+  document.querySelector(".btn-danger").addEventListener("click", gerarRelatorioPDF);
+  </script>
+  
+  
+  
+  <script>
+    // Função para abrir o modal e mostrar as notas
+    function exibirNotas() {
+      // Supondo que as notas estejam em uma array ou em um formato específico, como:
+      const notas = [7.5, 8.0, 9.5, 6.0]; // Exemplo de notas
+  
+      // Obtendo o container onde as notas serão exibidas
+      const notaContainer = document.getElementById('nota-container');
+  
+      // Limpando o container antes de adicionar novas notas
+      notaContainer.innerHTML = '';
+  
+      // Adicionando as notas no modal
+      notas.forEach((nota, index) => {
+        const notaElement = document.createElement('p');
+        notaElement.textContent = `Nota ${index + 1}: ${nota}`;
+        notaContainer.appendChild(notaElement);
+      });
+    }
+  
+    // Evento que será disparado quando o modal for aberto
+    $('#exampleModalCenter').on('shown.bs.modal', function () {
+      exibirNotas(); // Chama a função para exibir as notas
+    });
+  </script>
 
 
   
